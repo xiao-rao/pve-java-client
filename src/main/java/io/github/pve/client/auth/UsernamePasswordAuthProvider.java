@@ -32,7 +32,7 @@ public class UsernamePasswordAuthProvider implements AuthenticationProvider {
             throw new ProxmoxAuthException("UsernamePasswordAuthProvider cannot handle auth type: " + authConfig.getAuthType());
         }
 
-        String loginUrl = nodeConnectionConfig.apiUrl().replace("/api2/json", "") + "/access/ticket";
+        String loginUrl = nodeConnectionConfig.apiUrl() + "/access/ticket";
         LOGGER.debug("Attempting username/password login to {} for user {} @ realm {}",
                 loginUrl, authConfig.getUsername(), authConfig.getRealm());
 

@@ -59,7 +59,7 @@ public class ApiTokenAuthProvider implements AuthenticationProvider {
         // 为了获取 CSRF token 和一个 "ticket" (PVEAuthCookie) 以便统一会话管理，
         // 我们尝试像用户名/密码登录一样 POST 到 /access/ticket。
         // Proxmox API允许使用 Token ID 作为 username，Token Secret 作为 password。
-        String loginUrl = nodeConnectionConfig.apiUrl().replace("/api2/json", "") + "/access/ticket";
+        String loginUrl = nodeConnectionConfig.apiUrl() + "/access/ticket";
         String apiTokenId = authConfig.getUsername(); // This is user@realm!tokenId
         String apiTokenSecret = authConfig.getPassword(); // This is the UUID secret
 
