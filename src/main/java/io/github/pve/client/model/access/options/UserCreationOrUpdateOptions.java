@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserCreationOptions {
+public class UserCreationOrUpdateOptions {
     // Note: userid is part of the path, not the body, for create/update.
 
     private String password; // Only for creation
@@ -34,5 +34,8 @@ public class UserCreationOptions {
      * A list of group IDs to which this user should belong.
      */
     private String groups; // comma-separated list of group IDs
+
+    private String keys; // For two-factor auth (Yubico)
+
 }
 

@@ -10,6 +10,7 @@ import io.github.pve.client.auth.UsernamePasswordAuthProvider;
 import io.github.pve.client.config.AuthenticationConfig;
 import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.resource.*;
+import io.github.pve.client.resource.access.AccessResourceClient;
 import io.github.pve.client.session.InMemoryProxmoxSessionCache;
 import io.github.pve.client.session.ProxmoxSessionManager;
 import okhttp3.OkHttpClient;
@@ -55,18 +56,39 @@ public class ProxmoxApiClient {
                 config.authenticationConfig().getAuthType());
     }
 
-    public ClusterResourceClient cluster() { return clusterClient; }
-    public NodeResourceClient nodes() { return nodeClient; }
-    public VirtualMachineResourceClient virtualMachines() { return vmClient; }
-    public StorageResourceClient storage() { return storageClient; }
-    public NetworkResourceClient network() { return networkClient; }
-    public AccessResourceClient access() { return accessClient; }
-    public PoolResourceClient pools() { return poolClient; }
+    public ClusterResourceClient cluster() {
+        return clusterClient;
+    }
+
+    public NodeResourceClient nodes() {
+        return nodeClient;
+    }
+
+    public VirtualMachineResourceClient virtualMachines() {
+        return vmClient;
+    }
+
+    public StorageResourceClient storage() {
+        return storageClient;
+    }
+
+    public NetworkResourceClient network() {
+        return networkClient;
+    }
+
+    public AccessResourceClient access() {
+        return accessClient;
+    }
+
+    public PoolResourceClient pools() {
+        return poolClient;
+    }
 
     public void connect() throws ProxmoxAuthException {
         LOGGER.debug("Explicitly connecting/pre-warming session...");
         try {
-            this.apiExecutor.get("/version", null, new TypeReference<>() {});
+            this.apiExecutor.get("/version", null, new TypeReference<>() {
+            });
             LOGGER.info("Successfully connected and pre-warmed session.");
         } catch (ProxmoxApiException e) {
             LOGGER.warn("Pre-warming session encountered an API issue: {}", e.getMessage());

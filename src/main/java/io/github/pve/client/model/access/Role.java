@@ -3,6 +3,8 @@ package io.github.pve.client.model.access;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.util.Map;
+
 /**
  * Proxmox VE 角色信息
  * Corresponds to an item in the response from GET /access/roles
@@ -27,5 +29,8 @@ public class Role {
      * Special role, only for internal use.
      */
     private Integer special;
+
+    // For GET /access/roles/{roleid}, privs is a Map
+    private Map<String, Integer> privileges;
 }
 
