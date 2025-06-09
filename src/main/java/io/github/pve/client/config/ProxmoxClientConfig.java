@@ -1,13 +1,21 @@
 package io.github.pve.client.config;
 
+import lombok.Getter;
+
 import java.util.Objects;
 
 /**
  * Proxmox API客户端的整体配置
  * 聚合了连接、认证、HTTP和缓存配置
  */
-public record ProxmoxClientConfig(NodeConnectionConfig nodeConnectionConfig, AuthenticationConfig authenticationConfig,
-                                  HttpConfig httpConfig, CacheConfig cacheConfig) {
+@Getter
+public class ProxmoxClientConfig {
+
+    private final NodeConnectionConfig nodeConnectionConfig;
+    private final AuthenticationConfig authenticationConfig;
+    private final HttpConfig httpConfig;
+    private final CacheConfig cacheConfig;
+
     public ProxmoxClientConfig(NodeConnectionConfig nodeConnectionConfig,
                                AuthenticationConfig authenticationConfig,
                                HttpConfig httpConfig,

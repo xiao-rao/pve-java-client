@@ -1,8 +1,6 @@
 package io.github.pve.client.resource.access.base;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import io.github.pve.client.exception.ProxmoxApiException;
-import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.model.access.options.PasswordUpdateOptions;
 import io.github.pve.client.resource.BaseResourceClient;
@@ -18,7 +16,7 @@ public class PasswordResourceClient extends BaseResourceClient {
         super(executor);
     }
 
-    public void update(PasswordUpdateOptions options) throws ProxmoxApiException, ProxmoxAuthException {
+    public void update(PasswordUpdateOptions options)   {
         String path = "/access/password";
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {});
         executor.put(path, null, params, new TypeReference<Void>() {});

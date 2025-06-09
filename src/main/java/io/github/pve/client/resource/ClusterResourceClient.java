@@ -23,7 +23,7 @@ public class ClusterResourceClient extends BaseResourceClient {
     /**
      * 获取集群状态。
      */
-    public List<ClusterStatus> getStatus() throws ProxmoxApiException, ProxmoxAuthException {
+    public List<ClusterStatus> getStatus()   {
         PveResponse<List<ClusterStatus>> response = executor.get("/cluster/status", null, new TypeReference<>() {});
         return response.getData().orElse(Collections.emptyList());
     }
@@ -31,7 +31,7 @@ public class ClusterResourceClient extends BaseResourceClient {
     /**
      * 获取集群中的所有资源。
      */
-    public List<ClusterResource> getResources() throws ProxmoxApiException, ProxmoxAuthException {
+    public List<ClusterResource> getResources()   {
         PveResponse<List<ClusterResource>> response = executor.get("/cluster/resources", null, new TypeReference<>() {});
         return response.getData().orElse(Collections.emptyList());
     }
@@ -39,7 +39,7 @@ public class ClusterResourceClient extends BaseResourceClient {
     /**
      * 获取集群中下一个可用的VMID。
      */
-    public Integer getNextVmId() throws ProxmoxApiException, ProxmoxAuthException {
+    public Integer getNextVmId()   {
         PveResponse<String> response = executor.get("/cluster/nextid", null, new TypeReference<>() {});
         String nextIdStr = response.getData().orElseThrow(() -> new ProxmoxApiException("Next VMID not returned", response.getStatusCode(), null, null, "/cluster/nextid"));
         return Integer.parseInt(nextIdStr);

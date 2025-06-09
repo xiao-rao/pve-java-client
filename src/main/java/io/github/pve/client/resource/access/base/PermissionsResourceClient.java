@@ -2,7 +2,6 @@ package io.github.pve.client.resource.access.base;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.exception.ProxmoxApiException;
-import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.Permissions;
@@ -20,7 +19,7 @@ public class PermissionsResourceClient extends BaseResourceClient {
         super(executor);
     }
 
-    public Permissions get(String userId, String path, boolean checkAll) throws ProxmoxApiException, ProxmoxAuthException {
+    public Permissions get(String userId, String path, boolean checkAll)   {
         String apiPath = "/access/permissions";
         Map<String, String> params = new HashMap<>();
         params.put("userid", userId);

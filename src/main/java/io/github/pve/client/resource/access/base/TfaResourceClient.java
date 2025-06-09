@@ -2,7 +2,6 @@ package io.github.pve.client.resource.access.base;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.exception.ProxmoxApiException;
-import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.TfaChallenge;
@@ -33,14 +32,14 @@ public class TfaResourceClient extends BaseResourceClient {
         return "/access/users/" + userId + "/tfa";
     }
 
-    public TfaStatus getStatus() throws ProxmoxApiException, ProxmoxAuthException {
+    public TfaStatus getStatus()   {
         // The response is not wrapped in "data"
         PveResponse<TfaStatus> response = executor.get(getBasePath(), null, new TypeReference<>() {
         });
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Get TFA status data is null", response.getStatusCode(), null, null, getBasePath()));
     }
 
-    public TfaChallenge addTotp(String description) throws ProxmoxApiException, ProxmoxAuthException {
+    public TfaChallenge addTotp(String description)   {
         String path = getBasePath();
         Map<String, String> params = new HashMap<>();
         params.put("type", "totp");
@@ -52,7 +51,7 @@ public class TfaResourceClient extends BaseResourceClient {
         return response.getData().orElseThrow(() -> new ProxmoxApiException("TFA challenge not returned", response.getStatusCode(), null, null, path));
     }
 
-    public void verifyTotp(String totp, String challenge) throws ProxmoxApiException, ProxmoxAuthException {
+    public void verifyTotp(String totp, String challenge)   {
         String path = getBasePath();
         Map<String, String> params = new HashMap<>();
         params.put("code", totp);
@@ -61,7 +60,7 @@ public class TfaResourceClient extends BaseResourceClient {
         });
     }
 
-    public void delete(String tfaId, String password) throws ProxmoxApiException, ProxmoxAuthException {
+    public void delete(String tfaId, String password)   {
         String path = getBasePath() + "/" + tfaId;
         Map<String, String> params = new HashMap<>();
         params.put("password", password);

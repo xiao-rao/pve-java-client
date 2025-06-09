@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.exception.ProxmoxApiException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
-import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.model.storage.StorageSummary;
 import io.github.pve.client.model.storage.options.StorageCreationOrUpdateOptions;
 import io.github.pve.client.resource.BaseResourceClient;
@@ -30,7 +29,7 @@ public class StorageResourceClient extends BaseResourceClient {
      * @param enabledOnly 仅返回启用的存储
      * @return 存储摘要列表
      */
-    public List<StorageSummary> list(String typeFilter, String contentFilter, Boolean enabledOnly) throws ProxmoxApiException, ProxmoxAuthException {
+    public List<StorageSummary> list(String typeFilter, String contentFilter, Boolean enabledOnly)   {
         Map<String, String> params = new HashMap<>();
         if (typeFilter != null) params.put("type", typeFilter);
         if (contentFilter != null) params.put("content", contentFilter);
@@ -42,29 +41,29 @@ public class StorageResourceClient extends BaseResourceClient {
     /**
      * 列出所有存储 (无参数)。
      */
-    public List<StorageSummary> list() throws ProxmoxApiException, ProxmoxAuthException {
+    public List<StorageSummary> list()   {
         return list(null, null, null);
     }
 
-    public void create(String storageId, String type, StorageCreationOrUpdateOptions options) throws ProxmoxApiException, ProxmoxAuthException {
+    public void create(String storageId, String type, StorageCreationOrUpdateOptions options)   {
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {});
         params.put("storage", storageId);
         params.put("type", type); // 'type' is a required parameter for creation
         executor.post("/storage", null, params, new TypeReference<Void>() {});
     }
 
-    public StorageSummary get(String storageId) throws ProxmoxApiException, ProxmoxAuthException {
+    public StorageSummary get(String storageId)   {
         String path = "/storage/" + storageId;
         PveResponse<StorageSummary> response = executor.get(path, null, new TypeReference<>() {});
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Get Storage data is null", response.getStatusCode(), null, null, path));
     }
 
-    public void update(String storageId, StorageCreationOrUpdateOptions options) throws ProxmoxApiException, ProxmoxAuthException {
+    public void update(String storageId, StorageCreationOrUpdateOptions options)   {
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {});
         executor.put("/storage/" + storageId, null, params, new TypeReference<Void>() {});
     }
 
-    public void delete(String storageId) throws ProxmoxApiException, ProxmoxAuthException {
+    public void delete(String storageId)   {
         executor.delete("/storage/" + storageId, null, null, new TypeReference<Void>() {});
     }
 }

@@ -2,7 +2,6 @@ package io.github.pve.client.resource.access.base;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.exception.ProxmoxApiException;
-import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.AuthDomain;
@@ -22,21 +21,21 @@ public class DomainResourceClient extends BaseResourceClient {
         super(executor);
     }
 
-    public List<AuthDomain> list() throws ProxmoxApiException, ProxmoxAuthException {
+    public List<AuthDomain> list() {
         PveResponse<List<AuthDomain>> response = executor.get("/access/domains", null, new TypeReference<>() {
         });
         return response.getData().orElse(Collections.emptyList());
     }
 
 
-    public AuthDomain get(String realm) throws ProxmoxApiException, ProxmoxAuthException {
+    public AuthDomain get(String realm) {
         String path = "/access/domains/" + realm;
         PveResponse<AuthDomain> response = executor.get(path, null, new TypeReference<>() {
         });
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Get AuthDomain data is null", response.getStatusCode(), null, null, path));
     }
 
-    public void update(String realm, AuthDomainCreationOrUpdateOptions options) throws ProxmoxApiException, ProxmoxAuthException {
+    public void update(String realm, AuthDomainCreationOrUpdateOptions options)   {
         String path = "/access/domains/" + realm;
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
         });
@@ -44,13 +43,13 @@ public class DomainResourceClient extends BaseResourceClient {
         });
     }
 
-    public void delete(String realm) throws ProxmoxApiException, ProxmoxAuthException {
+    public void delete(String realm)   {
         String path = "/access/domains/" + realm;
         executor.delete(path, null, null, new TypeReference<Void>() {
         });
     }
 
-    public void create(String realm, AuthDomainCreationOrUpdateOptions options) throws Exception {
+    public void create(String realm, AuthDomainCreationOrUpdateOptions options) {
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
         });
         params.put("realm", realm);

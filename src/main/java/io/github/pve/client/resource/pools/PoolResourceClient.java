@@ -3,7 +3,6 @@ package io.github.pve.client.resource.pools;
 import io.github.pve.client.exception.ProxmoxApiException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
-import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.model.pool.Pool;
 import io.github.pve.client.model.pool.options.PoolUpdateOptions;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -23,13 +22,13 @@ public class PoolResourceClient extends BaseResourceClient {
         super(executor);
     }
 
-    public List<Pool> list() throws ProxmoxApiException, ProxmoxAuthException {
+    public List<Pool> list()   {
         PveResponse<List<Pool>> response = executor.get("/pools", null, new TypeReference<>() {
         });
         return response.getData().orElse(Collections.emptyList());
     }
 
-    public void create(String poolId, String comment) throws ProxmoxApiException, ProxmoxAuthException {
+    public void create(String poolId, String comment)   {
         Map<String, String> params = new HashMap<>();
         params.put("poolid", poolId);
         if (comment != null && !comment.isEmpty()) {
@@ -39,14 +38,14 @@ public class PoolResourceClient extends BaseResourceClient {
         });
     }
 
-    public void updateAll(PoolsBulkUpdateOrDeleteOptions options) throws ProxmoxApiException, ProxmoxAuthException {
+    public void updateAll(PoolsBulkUpdateOrDeleteOptions options)   {
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
         });
         executor.put("/pools", null, params, new TypeReference<Void>() {
         });
     }
 
-    public void deleteAll(PoolsBulkUpdateOrDeleteOptions options) throws ProxmoxApiException, ProxmoxAuthException {
+    public void deleteAll(PoolsBulkUpdateOrDeleteOptions options)   {
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
         });
         executor.delete("/pools", null, params, new TypeReference<Void>() {
@@ -54,7 +53,7 @@ public class PoolResourceClient extends BaseResourceClient {
     }
 
 
-    public Pool get(String poolId, Boolean listVms) throws ProxmoxApiException, ProxmoxAuthException {
+    public Pool get(String poolId, Boolean listVms)   {
         String path = "/pools/" + poolId;
         Map<String, String> params = null;
         if (listVms != null) {
@@ -66,18 +65,18 @@ public class PoolResourceClient extends BaseResourceClient {
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Get Pool data is null", response.getStatusCode(), null, null, path));
     }
 
-    public Pool get(String poolId) throws ProxmoxApiException, ProxmoxAuthException {
+    public Pool get(String poolId)   {
         return get(poolId, null);
     }
 
-    public void update(String poolId, PoolUpdateOptions options) throws ProxmoxApiException, ProxmoxAuthException {
+    public void update(String poolId, PoolUpdateOptions options)   {
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
         });
         executor.put("/pools/" + poolId, null, params, new TypeReference<Void>() {
         });
     }
 
-    public void delete(String poolId) throws ProxmoxApiException, ProxmoxAuthException {
+    public void delete(String poolId)   {
         executor.delete("/pools/" + poolId, null, null, new TypeReference<Void>() {
         });
     }

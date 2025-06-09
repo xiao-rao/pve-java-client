@@ -20,11 +20,11 @@ public class AclResourceClient extends BaseResourceClient {
         super(executor);
     }
 
-    public List<Acl> list() throws Exception {
+    public List<Acl> list() {
         PveResponse<List<Acl>> response = executor.get("/access/acl", null, new TypeReference<>() {});
         return response.getData().orElse(Collections.emptyList());
     }
-    public void update(AclUpdateOptions options) throws Exception {
+    public void update(AclUpdateOptions options){
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {});
         executor.put("/access/acl", null, params, new TypeReference<Void>() {});
     }

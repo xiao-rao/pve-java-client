@@ -3,7 +3,6 @@ package io.github.pve.client.resource.version;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.exception.ProxmoxApiException;
-import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.version.Version;
@@ -18,7 +17,7 @@ public class VersionResourceClient extends BaseResourceClient {
         super(executor);
     }
 
-    public Version get() throws ProxmoxApiException, ProxmoxAuthException {
+    public Version get()   {
         String path = "/version";
         PveResponse<Version> response = executor.get(path, null, new TypeReference<>() {
         });

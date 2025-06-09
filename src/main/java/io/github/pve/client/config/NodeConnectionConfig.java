@@ -1,16 +1,22 @@
 package io.github.pve.client.config;
 
 
+import lombok.Getter;
+
 import java.util.Objects;
 
 /**
  * Proxmox VE节点连接的核心配置
- *
- * @param nodeId               节点的唯一标识符，用于缓存等
- * @param apiUrl               PVE API基础URL, e.g., "https://pve.example.com:8006/api2/json"
- * @param trustSelfSignedCerts 是否信任自签名SSL证书
  */
-public record NodeConnectionConfig(String nodeId, String apiUrl, boolean trustSelfSignedCerts) {
+@Getter
+public class NodeConnectionConfig {
+
+    //  节点的唯一标识符，用于缓存等
+    private final String nodeId;
+    //  PVE API基础URL, e.g., "https://pve.example.com:8006/api2/json"
+    private final String apiUrl;
+    // 是否信任自签名SSL证书
+    private final boolean trustSelfSignedCerts;
 
     public NodeConnectionConfig(String nodeId, String apiUrl, boolean trustSelfSignedCerts) {
         if (nodeId == null || nodeId.trim().isEmpty()) {

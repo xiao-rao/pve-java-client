@@ -27,7 +27,7 @@ public class NetworkResourceClient extends BaseResourceClient {
      * @throws ProxmoxApiException API调用失败
      * @throws ProxmoxAuthException 认证失败
      */
-    public List<NetworkDevice> listNetworkDevices(String pveNodeName) throws ProxmoxApiException, ProxmoxAuthException {
+    public List<NetworkDevice> listNetworkDevices(String pveNodeName)   {
         String path = String.format("/nodes/%s/network", pveNodeName);
         PveResponse<List<NetworkDevice>> response = executor.get(path, null, new TypeReference<>() {});
         return response.getData().orElse(Collections.emptyList());

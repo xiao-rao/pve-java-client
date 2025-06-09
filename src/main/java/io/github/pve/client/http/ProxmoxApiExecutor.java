@@ -51,11 +51,11 @@ public class ProxmoxApiExecutor {
 
         // 根据配置定制OkHttpClient
         OkHttpClient.Builder builder = sharedHttpClientTemplate.newBuilder() // 从模板克隆
-                .connectTimeout(clientConfig.httpConfig().getConnectTimeout())
-                .readTimeout(clientConfig.httpConfig().getReadTimeout())
-                .writeTimeout(clientConfig.httpConfig().getWriteTimeout());
+                .connectTimeout(clientConfig.getHttpConfig().getConnectTimeout())
+                .readTimeout(clientConfig.getHttpConfig().getReadTimeout())
+                .writeTimeout(clientConfig.getHttpConfig().getWriteTimeout());
 
-        if (clientConfig.nodeConnectionConfig().trustSelfSignedCerts()) {
+        if (clientConfig.getNodeConnectionConfig().isTrustSelfSignedCerts()) {
             configureToTrustSelfSignedCerts(builder);
         }
         this.httpClient = builder.build();
@@ -85,38 +85,54 @@ public class ProxmoxApiExecutor {
             builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
             builder.hostnameVerifier((hostname, session) -> true);
             LOGGER.warn("OkHttpClient for node '{}' is configured to trust self-signed certificates. THIS IS INSECURE AND SHOULD ONLY BE USED IN DEVELOPMENT/TESTING ENVIRONMENTS.",
-                    clientConfig.nodeConnectionConfig().nodeId());
+                    clientConfig.getNodeConnectionConfig().getNodeId());
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            LOGGER.error("Failed to configure OkHttpClient to trust self-signed certificates for node '{}'", clientConfig.nodeConnectionConfig().nodeId(), e);
+            LOGGER.error("Failed to configure OkHttpClient to trust self-signed certificates for node '{}'", clientConfig.getNodeConnectionConfig().getNodeId(), e);
             throw new RuntimeException("Failed to configure SSL for self-signed certificates", e);
         }
     }
 
 
-    public <T> PveResponse<T> get(String path, Map<String, String> queryParams, TypeReference<T> responseType) throws ProxmoxApiException, ProxmoxAuthException {
+    public <T> PveResponse<T> get(String path, Map<String, String> queryParams, TypeReference<T> responseType) {
         return executeRequest("GET", path, queryParams, null, responseType, true);
     }
 
-    public <T> PveResponse<T> post(String path, Map<String, String> queryParams, Object body, TypeReference<T> responseType) throws ProxmoxApiException, ProxmoxAuthException {
+    public <T> PveResponse<T> post(String path, Map<String, String> queryParams, Object body, TypeReference<T> responseType) {
         return executeRequest("POST", path, queryParams, body, responseType, true);
     }
 
-    public <T> PveResponse<T> put(String path, Map<String, String> queryParams, Object body, TypeReference<T> responseType) throws ProxmoxApiException, ProxmoxAuthException {
+    public <T> PveResponse<T> put(String path, Map<String, String> queryParams, Object body, TypeReference<T> responseType) {
         return executeRequest("PUT", path, queryParams, body, responseType, true);
     }
 
-    public <T> PveResponse<T> delete(String path, Map<String, String> queryParams, Object body, TypeReference<T> responseType) throws ProxmoxApiException, ProxmoxAuthException {
+    public <T> PveResponse<T> delete(String path, Map<String, String> queryParams, Object body, TypeReference<T> responseType) {
         return executeRequest("DELETE", path, queryParams, body, responseType, true);
+    }
+
+    private RequestBody createRequestBody(Object body, String apiEndpoint) {
+        if (body == null) {
+            return FormBody.create(new byte[0]); // Empty body for some PVE POST/PUT
+        }else if (body instanceof Map) { // Form parameters
+            @SuppressWarnings("unchecked")
+            Map<String, Object> params = (Map<String, Object>) body;
+            FormBody.Builder formBuilder = new FormBody.Builder();
+            params.forEach((key, value) -> formBuilder.add(key, String.valueOf(value)));
+            return formBuilder.build();
+        }else {
+            try {
+              return RequestBody.create(OBJECT_MAPPER.writeValueAsString(body), MediaType.parse("application/json; charset=utf-f"));
+            } catch (JsonProcessingException e) {
+                throw new ProxmoxApiException("Failed to serialize request body to JSON", e, clientConfig.getNodeConnectionConfig().getNodeId(), apiEndpoint);
+            }
+        }
     }
 
 
     private <T> PveResponse<T> executeRequest(String method, String relativePath, Map<String, String> queryParams,
-                                              Object body, TypeReference<T> responseType, boolean retryOnAuthFailure)
-            throws ProxmoxApiException, ProxmoxAuthException {
-
-        NodeConnectionConfig nodeConfig = clientConfig.nodeConnectionConfig();
-        AuthenticationConfig authConfig = clientConfig.authenticationConfig();
-        String fullPath = nodeConfig.apiUrl() + relativePath; // API URL already contains /api2/json
+                                              Object body, TypeReference<T> responseType, boolean retryOnAuthFailure) {
+        NodeConnectionConfig nodeConfig = clientConfig.getNodeConnectionConfig();
+        AuthenticationConfig authConfig = clientConfig.getAuthenticationConfig();
+        String fullPath = nodeConfig.getApiUrl() + relativePath; // API URL already contains /api2/json
 
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(fullPath)).newBuilder();
         if (queryParams != null) {
@@ -127,7 +143,7 @@ public class ProxmoxApiExecutor {
         ProxmoxSession session = null;
         // 对于API Token认证，不需要预先获取会话来添加Cookie或CSRF Token，因为Token本身就是认证。
         // 但对于用户名密码认证，或者即使是API Token也想通过会话管理器统一管理CSRF，则需要获取会话。
-        if (authConfig.getAuthType() == AuthenticationConfig.AuthType.USERNAME_PASSWORD ) { // 暂时为所有类型都获取会话，以便统一CSRF处理
+        if (authConfig.getAuthType() == AuthenticationConfig.AuthType.USERNAME_PASSWORD) { // 暂时为所有类型都获取会话，以便统一CSRF处理
             session = sessionManager.getValidSession(nodeConfig, authConfig, this.httpClient, OBJECT_MAPPER);
         }
 
@@ -150,43 +166,29 @@ public class ProxmoxApiExecutor {
                 requestBuilder.header("CSRFPreventionToken", session.getCsrfToken());
             } else if (!method.equals("GET") && session.getCsrfToken() == null) {
                 LOGGER.warn("CSRF token is missing for a {} request to {} on node {} using session-based auth. This might fail.",
-                        method, url, nodeConfig.nodeId());
+                        method, url, nodeConfig.getNodeId());
             }
-        } else if (authConfig.getAuthType() != AuthenticationConfig.AuthType.API_TOKEN) {
+        } else {
             // Should not happen if sessionManager.getValidSession works correctly
-            throw new ProxmoxAuthException("Session is null for non-API_TOKEN authentication for node " + nodeConfig.nodeId());
+            throw new ProxmoxAuthException("Session is null for non-API_TOKEN authentication for node " + nodeConfig.getNodeId());
         }
 
 
         RequestBody requestBody = null;
         if (!method.equals("GET")) {
-            if (body == null) {
-                requestBody = FormBody.create(new byte[0]); // Empty body for some PVE POST/PUT
-            } else if (body instanceof Map) { // Form parameters
-                @SuppressWarnings("unchecked")
-                Map<String, Object> params = (Map<String, Object>) body;
-                FormBody.Builder formBuilder = new FormBody.Builder();
-                params.forEach((key, value) -> formBuilder.add(key, String.valueOf(value)));
-                requestBody = formBuilder.build();
-            } else { // JSON body
-                try {
-                    requestBody = RequestBody.create(OBJECT_MAPPER.writeValueAsString(body), MediaType.parse("application/json; charset=utf-f"));
-                } catch (JsonProcessingException e) {
-                    throw new ProxmoxApiException("Failed to serialize request body to JSON", e, nodeConfig.nodeId(), relativePath);
-                }
-            }
+            requestBody = createRequestBody(body, relativePath);
             requestBuilder.method(method, requestBody);
         } else {
             requestBuilder.get();
         }
 
         Request request = requestBuilder.build();
-        LOGGER.debug("Executing {} request to {} on node '{}'", method, url, nodeConfig.nodeId());
+        LOGGER.debug("Executing {} request to {} on node '{}'", method, url, nodeConfig.getNodeId());
 
         try (Response response = httpClient.newCall(request).execute()) {
             String responseBodyString = response.body() != null ? response.body().string() : null;
             LOGGER.trace("Response from {}: Status={}, Node='{}', Body Snippet={}",
-                    url, response.code(), nodeConfig.nodeId(),
+                    url, response.code(), nodeConfig.getNodeId(),
                     (responseBodyString != null ? responseBodyString.substring(0, Math.min(responseBodyString.length(), 200)) : "null"));
 
 
@@ -196,18 +198,18 @@ public class ProxmoxApiExecutor {
 
                 if (retryOnAuthFailure) {
                     LOGGER.warn("Authentication/Authorization error (Status: {}) for node '{}' at '{}'. CSRF related: {}. Invalidating session and retrying ONCE.",
-                            response.code(), nodeConfig.nodeId(), relativePath, csrfError);
-                    sessionManager.invalidateSession(nodeConfig.nodeId()); // Invalidate current session
+                            response.code(), nodeConfig.getNodeId(), relativePath, csrfError);
+                    sessionManager.invalidateSession(nodeConfig.getNodeId()); // Invalidate current session
                     return executeRequest(method, relativePath, queryParams, body, responseType, false); // Retry once, don't retry again
                 } else {
                     LOGGER.error("Authentication/Authorization error (Status: {}) on retry for node '{}' at '{}'. Giving up.",
-                            response.code(), nodeConfig.nodeId(), relativePath);
+                            response.code(), nodeConfig.getNodeId(), relativePath);
                     throw new ProxmoxAuthException("Authentication/Authorization failed after retry. Status: " + response.code(), response.code());
                 }
             }
 
             if (!response.isSuccessful()) {
-                throw new ProxmoxApiException("API call failed.", response.code(), responseBodyString, nodeConfig.nodeId(), relativePath);
+                throw new ProxmoxApiException("API call failed.", response.code(), responseBodyString, nodeConfig.getNodeId(), relativePath);
             }
 
             // Handle empty response body for certain successful responses (e.g., 204 No Content, or some PVE ops)
@@ -216,7 +218,7 @@ public class ProxmoxApiExecutor {
                     return new PveResponse<>(null, response.headers(), response.code());
                 } else if (!responseType.getType().equals(Void.class)) { // Expecting data but got none
                     LOGGER.warn("API call to {} on node '{}' succeeded with status {} but returned empty body, while expecting type {}.",
-                            relativePath, nodeConfig.nodeId(), response.code(), responseType.getType().getTypeName());
+                            relativePath, nodeConfig.getNodeId(), response.code(), responseType.getType().getTypeName());
                     // Depending on strictness, this could be an error or just return null data
                     return new PveResponse<>(null, response.headers(), response.code());
                 }
@@ -243,24 +245,24 @@ public class ProxmoxApiExecutor {
                 try {
                     data = OBJECT_MAPPER.convertValue(rootNode, responseType);
                 } catch (IllegalArgumentException e) { // If rootNode cannot be converted to T
-                    LOGGER.warn("Root node parsing failed for type {} at {}, response: {}", responseType.getType().getTypeName(), relativePath, responseBodyString.substring(0, Math.min(responseBodyString.length(), 500)));
+                    LOGGER.warn("Root node parsing failed for type {} at {}, response: {}", responseType.getType().getTypeName(), relativePath, Objects.requireNonNull(responseBodyString).substring(0, Math.min(responseBodyString.length(), 500)));
                     // Fallback or throw error. If dataNode was null and root is not convertible, data remains null.
                 }
             }
             // If data is still null and responseType is not Void, it means parsing failed or data was truly null
             if (data == null && !responseType.getType().equals(Void.class) && dataNode == null) {
                 LOGGER.warn("Parsed data is null for non-Void type {} at {}, PVE node '{}'. Response: {}",
-                        responseType.getType().getTypeName(), relativePath, nodeConfig.nodeId(),
+                        responseType.getType().getTypeName(), relativePath, nodeConfig.getNodeId(),
                         Objects.requireNonNull(responseBodyString).substring(0, Math.min(responseBodyString.length(), 500)));
             }
 
             return new PveResponse<>(data, response.headers(), response.code());
 
-        } catch (IOException e) { // Catches OkHttp and Jackson IOExceptions
+        } catch (Exception e) {
             if (e instanceof ProxmoxAuthException) throw (ProxmoxAuthException) e; // Re-throw auth if already specific
             if (e instanceof ProxmoxApiException) throw (ProxmoxApiException) e;   // Re-throw api if already specific
-            LOGGER.error("IOException during API call to '{}' on node '{}': {}", relativePath, nodeConfig.nodeId(), e.getMessage(), e);
-            throw new ProxmoxApiException("IOException during API call: " + e.getMessage(), e, nodeConfig.nodeId(), relativePath);
+            LOGGER.error("IOException during API call to '{}' on node '{}': {}", relativePath, nodeConfig.getNodeId(), e.getMessage(), e);
+            throw new ProxmoxApiException("IOException during API call: " + e.getMessage(), e, nodeConfig.getNodeId(), relativePath);
         }
     }
 

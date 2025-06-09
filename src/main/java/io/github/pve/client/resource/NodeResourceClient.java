@@ -26,7 +26,7 @@ public class NodeResourceClient extends BaseResourceClient {
      * @throws ProxmoxApiException API调用失败
      * @throws ProxmoxAuthException 认证失败
      */
-    public NodeStatus getNodeStatus(String pveNodeName) throws ProxmoxApiException, ProxmoxAuthException {
+    public NodeStatus getNodeStatus(String pveNodeName)   {
         String path = String.format("/nodes/%s/status", pveNodeName);
         PveResponse<NodeStatus> response = executor.get(path, null, new TypeReference<NodeStatus>() {});
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Node status data is null", response.getStatusCode(), null, pveNodeName, path));
@@ -39,7 +39,7 @@ public class NodeResourceClient extends BaseResourceClient {
      * @throws ProxmoxApiException API调用失败
      * @throws ProxmoxAuthException 认证失败
      */
-    public List<VirtualMachineSummary> listVirtualMachines(String pveNodeName) throws ProxmoxApiException, ProxmoxAuthException {
+    public List<VirtualMachineSummary> listVirtualMachines(String pveNodeName)   {
         String path = String.format("/nodes/%s/qemu", pveNodeName);
         PveResponse<List<VirtualMachineSummary>> response = executor.get(path, null, new TypeReference<List<VirtualMachineSummary>>() {});
         return response.getData().orElse(Collections.emptyList());
