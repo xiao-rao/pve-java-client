@@ -1,6 +1,7 @@
 package io.github.pve.client.model.pool.options;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -27,13 +28,6 @@ public class PoolUpdateOptions {
      */
     private String storage; // comma-separated list of storage IDs
 
-    /**
-     * A list of VMIDs to remove from the pool.
-     */
-    private String deleteVms; // comma-separated list of VM IDs to delete
-
-    /**
-     * A list of storage IDs to remove from the pool.
-     */
-    private String deleteStorage; // comma-separated list of storage IDs to delete
+    @JsonProperty("delete")
+    private Boolean delete; // Use true to remove members specified in 'storage' and 'vms'
 }

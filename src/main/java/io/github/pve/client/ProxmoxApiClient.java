@@ -11,6 +11,8 @@ import io.github.pve.client.config.AuthenticationConfig;
 import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.resource.*;
 import io.github.pve.client.resource.access.AccessResourceClient;
+import io.github.pve.client.resource.pools.PoolResourceClient;
+import io.github.pve.client.resource.storage.StorageResourceClient;
 import io.github.pve.client.session.InMemoryProxmoxSessionCache;
 import io.github.pve.client.session.ProxmoxSessionManager;
 import okhttp3.OkHttpClient;
