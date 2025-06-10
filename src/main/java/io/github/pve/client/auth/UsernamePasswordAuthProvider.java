@@ -32,7 +32,7 @@ public class UsernamePasswordAuthProvider implements AuthenticationProvider {
             throw new ProxmoxAuthException("UsernamePasswordAuthProvider cannot handle auth type: " + authConfig.getAuthType());
         }
 
-        String loginUrl = nodeConnectionConfig.apiUrl() + "/access/ticket";
+        String loginUrl = nodeConnectionConfig.getApiUrl() + "/access/ticket";
         LOGGER.debug("Attempting username/password login to {} for user {} @ realm {}",
                 loginUrl, authConfig.getUsername(), authConfig.getRealm());
 
@@ -56,7 +56,7 @@ public class UsernamePasswordAuthProvider implements AuthenticationProvider {
 
             if (!response.isSuccessful()) {
                 LOGGER.error("Login failed for user '{}' to PVE node '{}'. Status: {}, Response: {}",
-                        authConfig.getUsername(), nodeConnectionConfig.nodeId(), response.code(), responseBodyString);
+                        authConfig.getUsername(), nodeConnectionConfig.getNodeId(), response.code(), responseBodyString);
                 throw new ProxmoxAuthException("Login failed. Status: " + response.code() + ", Response: " + responseBodyString, response.code());
             }
 
@@ -65,7 +65,7 @@ public class UsernamePasswordAuthProvider implements AuthenticationProvider {
 
             if (dataNode == null || !dataNode.isObject()) {
                 LOGGER.error("Invalid login response structure from PVE node '{}': 'data' field missing or not an object. Response: {}",
-                        nodeConnectionConfig.nodeId(), responseBodyString);
+                        nodeConnectionConfig.getNodeId(), responseBodyString);
                 throw new ProxmoxAuthException("Invalid login response structure: 'data' field missing or not an object.");
             }
 
@@ -75,22 +75,22 @@ public class UsernamePasswordAuthProvider implements AuthenticationProvider {
 
             if (csrfToken == null || csrfToken.isEmpty()) {
                 LOGGER.error("CSRFPreventionToken not found in login response from PVE node '{}'. Response: {}",
-                        nodeConnectionConfig.nodeId(), responseBodyString);
+                        nodeConnectionConfig.getNodeId(), responseBodyString);
                 throw new ProxmoxAuthException("CSRFPreventionToken not found in login response.");
             }
             if (ticket == null || ticket.isEmpty()) {
                 LOGGER.warn("Ticket (PVEAuthCookie) not found in login response from PVE node '{}'. Session tracking might be impaired. Response: {}",
-                        nodeConnectionConfig.nodeId(), responseBodyString);
+                        nodeConnectionConfig.getNodeId(), responseBodyString);
                 // Depending on strictness, this could be an error.
             }
 
 
-            LOGGER.info("Successfully authenticated user '{}' with PVE node '{}'.", authenticatedUsername, nodeConnectionConfig.nodeId());
+            LOGGER.info("Successfully authenticated user '{}' with PVE node '{}'.", authenticatedUsername, nodeConnectionConfig.getNodeId());
             return new AuthenticationDetails(ticket, csrfToken, authenticatedUsername);
 
         } catch (IOException e) {
             LOGGER.error("IOException during login attempt for user '{}' to PVE node '{}': {}",
-                    authConfig.getUsername(), nodeConnectionConfig.nodeId(), e.getMessage(), e);
+                    authConfig.getUsername(), nodeConnectionConfig.getNodeId(), e.getMessage(), e);
             throw new ProxmoxAuthException("IOException during login: " + e.getMessage(), e);
         }
     }

@@ -26,7 +26,7 @@ public class UserCreationOrUpdateOptions {
 
     private Long expire; // 0 for disabled
 
-    private Integer enable; // 1 for enabled, 0 for disabled
+    private final Integer enable = 1; // 1 for enabled, 0 for disabled
 
     private String comment;
 

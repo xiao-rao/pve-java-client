@@ -59,7 +59,7 @@ public class ApiTokenAuthProvider implements AuthenticationProvider {
         // 为了获取 CSRF token 和一个 "ticket" (PVEAuthCookie) 以便统一会话管理，
         // 我们尝试像用户名/密码登录一样 POST 到 /access/ticket。
         // Proxmox API允许使用 Token ID 作为 username，Token Secret 作为 password。
-        String loginUrl = nodeConnectionConfig.apiUrl() + "/access/ticket";
+        String loginUrl = nodeConnectionConfig.getApiUrl() + "/access/ticket";
         String apiTokenId = authConfig.getUsername(); // This is user@realm!tokenId
         String apiTokenSecret = authConfig.getPassword(); // This is the UUID secret
 
@@ -89,7 +89,7 @@ public class ApiTokenAuthProvider implements AuthenticationProvider {
                 // API Token本身可能有效，但无法通过/access/ticket获取CSRF，这可能是个问题。
                 // 或者API Token无效。
                 LOGGER.error("API Token authentication via /access/ticket failed for token ID '{}' on PVE node '{}'. Status: {}, Response: {}",
-                        apiTokenId.split("!")[0] + "!***", nodeConnectionConfig.nodeId(), response.code(), responseBodyString);
+                        apiTokenId.split("!")[0] + "!***", nodeConnectionConfig.getNodeId(), response.code(), responseBodyString);
                 throw new ProxmoxAuthException(
                         String.format("API Token authentication via /access/ticket failed. Status: %d. This might indicate an invalid API token or a PVE configuration issue.", response.code()),
                         response.code()
@@ -101,7 +101,7 @@ public class ApiTokenAuthProvider implements AuthenticationProvider {
 
             if (dataNode == null || !dataNode.isObject()) {
                 LOGGER.error("Invalid response structure from /access/ticket using API token for PVE node '{}'. Response: {}",
-                        nodeConnectionConfig.nodeId(), responseBodyString);
+                        nodeConnectionConfig.getNodeId(), responseBodyString);
                 throw new ProxmoxAuthException("Invalid response structure from /access/ticket: 'data' field missing or not an object.");
             }
 
@@ -112,22 +112,22 @@ public class ApiTokenAuthProvider implements AuthenticationProvider {
 
             if (csrfToken == null || csrfToken.isEmpty()) {
                 LOGGER.error("CSRFPreventionToken not found in /access/ticket response using API Token for PVE node '{}'. Response: {}",
-                        nodeConnectionConfig.nodeId(), responseBodyString);
+                        nodeConnectionConfig.getNodeId(), responseBodyString);
                 throw new ProxmoxAuthException("CSRFPreventionToken not found in /access/ticket response when using API Token.");
             }
             // Ticket might still be useful for consistent session handling, even if API token is the primary auth.
             if (ticket == null || ticket.isEmpty()) {
                 LOGGER.warn("Ticket (PVEAuthCookie) not found in /access/ticket response using API Token for PVE node '{}'.",
-                        nodeConnectionConfig.nodeId());
+                        nodeConnectionConfig.getNodeId());
             }
 
             LOGGER.info("Successfully obtained session details (CSRF, ticket) using API Token ID '{}' with PVE node '{}'.",
-                    authenticatedUsername.split("!")[0] + "!***", nodeConnectionConfig.nodeId());
+                    authenticatedUsername.split("!")[0] + "!***", nodeConnectionConfig.getNodeId());
             return new AuthenticationDetails(ticket, csrfToken, authenticatedUsername);
 
         } catch (IOException e) {
             LOGGER.error("IOException during API Token authentication via /access/ticket for token ID '{}' on PVE node '{}': {}",
-                    apiTokenId.split("!")[0] + "!***", nodeConnectionConfig.nodeId(), e.getMessage(), e);
+                    apiTokenId.split("!")[0] + "!***", nodeConnectionConfig.getNodeId(), e.getMessage(), e);
             throw new ProxmoxAuthException("IOException during API Token authentication via /access/ticket: " + e.getMessage(), e);
         }
     }

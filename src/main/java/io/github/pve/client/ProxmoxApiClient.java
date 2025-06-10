@@ -9,10 +9,11 @@ import io.github.pve.client.auth.AuthenticationProvider;
 import io.github.pve.client.auth.UsernamePasswordAuthProvider;
 import io.github.pve.client.config.AuthenticationConfig;
 import io.github.pve.client.exception.ProxmoxAuthException;
-import io.github.pve.client.resource.*;
 import io.github.pve.client.resource.access.AccessResourceClient;
+import io.github.pve.client.resource.cluster.ClusterResourceClient;
 import io.github.pve.client.resource.pools.PoolResourceClient;
 import io.github.pve.client.resource.storage.StorageResourceClient;
+import io.github.pve.client.resource.version.VersionResourceClient;
 import io.github.pve.client.session.InMemoryProxmoxSessionCache;
 import io.github.pve.client.session.ProxmoxSessionManager;
 import okhttp3.OkHttpClient;
@@ -26,64 +27,48 @@ import org.slf4j.LoggerFactory;
 public class ProxmoxApiClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxmoxApiClient.class);
 
-    private final ProxmoxApiExecutor apiExecutor;
 
-    private final ClusterResourceClient clusterClient;
-    private final NodeResourceClient nodeClient;
-    private final VirtualMachineResourceClient vmClient;
-    private final StorageResourceClient storageClient;
-    private final NetworkResourceClient networkClient;
+    private final ProxmoxApiExecutor apiExecutor;
     private final AccessResourceClient accessClient;
+    private final ClusterResourceClient clusterClient;
     private final PoolResourceClient poolClient;
+    private final StorageResourceClient storageClient;
+    private final VersionResourceClient versionClient;
 
     ProxmoxApiClient(ProxmoxClientConfig config, OkHttpClient sharedOkHttpClientTemplate) {
-        AuthenticationProvider authProvider = config.authenticationConfig().getAuthType() == AuthenticationConfig.AuthType.API_TOKEN ?
-                new ApiTokenAuthProvider() : new UsernamePasswordAuthProvider();
-
+        AuthenticationProvider authProvider = config.getAuthenticationConfig().getAuthType() == AuthenticationConfig.AuthType.API_TOKEN
+                ? new ApiTokenAuthProvider() : new UsernamePasswordAuthProvider();
         InMemoryProxmoxSessionCache sessionCache = new InMemoryProxmoxSessionCache();
-        ProxmoxSessionManager sessionManager = new ProxmoxSessionManager(sessionCache, authProvider, config.cacheConfig());
-
+        ProxmoxSessionManager sessionManager = new ProxmoxSessionManager(sessionCache, authProvider, config.getCacheConfig());
         this.apiExecutor = new ProxmoxApiExecutor(config, sessionManager, sharedOkHttpClientTemplate);
 
-        this.clusterClient = new ClusterResourceClient(this.apiExecutor);
-        this.nodeClient = new NodeResourceClient(this.apiExecutor);
-        this.vmClient = new VirtualMachineResourceClient(this.apiExecutor);
-        this.storageClient = new StorageResourceClient(this.apiExecutor);
-        this.networkClient = new NetworkResourceClient(this.apiExecutor);
+        // Initialize all resource clients
         this.accessClient = new AccessResourceClient(this.apiExecutor);
+        this.clusterClient = new ClusterResourceClient(this.apiExecutor);
         this.poolClient = new PoolResourceClient(this.apiExecutor);
-
-        LOGGER.info("ProxmoxApiClient initialized for node '{}' with API URL '{}' and auth type '{}'.",
-                config.nodeConnectionConfig().nodeId(), config.nodeConnectionConfig().apiUrl(),
-                config.authenticationConfig().getAuthType());
-    }
-
-    public ClusterResourceClient cluster() {
-        return clusterClient;
-    }
-
-    public NodeResourceClient nodes() {
-        return nodeClient;
-    }
-
-    public VirtualMachineResourceClient virtualMachines() {
-        return vmClient;
-    }
-
-    public StorageResourceClient storage() {
-        return storageClient;
-    }
-
-    public NetworkResourceClient network() {
-        return networkClient;
+        this.storageClient = new StorageResourceClient(this.apiExecutor);
+        this.versionClient = new VersionResourceClient(this.apiExecutor);
+        // ...
     }
 
     public AccessResourceClient access() {
         return accessClient;
     }
 
+    public ClusterResourceClient cluster() {
+        return clusterClient;
+    }
+
     public PoolResourceClient pools() {
         return poolClient;
+    }
+
+    public StorageResourceClient storage() {
+        return storageClient;
+    }
+
+    public VersionResourceClient version() {
+        return versionClient;
     }
 
     public void connect() throws ProxmoxAuthException {

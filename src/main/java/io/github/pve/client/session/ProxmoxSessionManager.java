@@ -53,7 +53,7 @@ public class ProxmoxSessionManager {
                                           AuthenticationConfig authConfig,
                                           OkHttpClient httpClient,
                                           ObjectMapper objectMapper) throws ProxmoxAuthException {
-        String nodeId = nodeConnectionConfig.nodeId();
+        String nodeId = nodeConnectionConfig.getNodeId();
         Optional<ProxmoxSession> cachedSessionOpt = sessionCache.getSession(nodeId);
 
         if (cachedSessionOpt.isPresent()) {
