@@ -15,15 +15,19 @@ public class ProxmoxClientConfig {
     private final AuthenticationConfig authenticationConfig;
     private final HttpConfig httpConfig;
     private final CacheConfig cacheConfig;
+    private final ResilienceConfig resilienceConfig; // 新增韧性配置
+
 
     public ProxmoxClientConfig(NodeConnectionConfig nodeConnectionConfig,
                                AuthenticationConfig authenticationConfig,
                                HttpConfig httpConfig,
-                               CacheConfig cacheConfig) {
+                               CacheConfig cacheConfig,
+                               ResilienceConfig resilienceConfig) {
         this.nodeConnectionConfig = Objects.requireNonNull(nodeConnectionConfig, "NodeConnectionConfig cannot be null");
         this.authenticationConfig = Objects.requireNonNull(authenticationConfig, "AuthenticationConfig cannot be null");
         this.httpConfig = httpConfig == null ? new HttpConfig() : httpConfig;
         this.cacheConfig = cacheConfig == null ? new CacheConfig() : cacheConfig;
+        this.resilienceConfig = resilienceConfig == null ? ResilienceConfig.defaults() : resilienceConfig;
     }
 
     // Builder Pattern for easier construction
@@ -38,6 +42,7 @@ public class ProxmoxClientConfig {
         private boolean trustSelfSignedCerts = false;
         private HttpConfig httpConfig = new HttpConfig();
         private CacheConfig cacheConfig = new CacheConfig();
+        private ResilienceConfig resilienceConfig = ResilienceConfig.defaults();
 
 
         public Builder(String nodeId, String apiUrl, AuthenticationConfig authenticationConfig) {
@@ -48,6 +53,11 @@ public class ProxmoxClientConfig {
 
         public Builder trustSelfSignedCerts(boolean trust) {
             this.trustSelfSignedCerts = trust;
+            return this;
+        }
+
+        public Builder resilienceConfig(ResilienceConfig resilienceConfig) {
+            this.resilienceConfig = resilienceConfig;
             return this;
         }
 
@@ -64,7 +74,7 @@ public class ProxmoxClientConfig {
 
         public ProxmoxClientConfig build() {
             NodeConnectionConfig nodeConnConfig = new NodeConnectionConfig(nodeId, apiUrl, trustSelfSignedCerts);
-            return new ProxmoxClientConfig(nodeConnConfig, authenticationConfig, httpConfig, cacheConfig);
+            return new ProxmoxClientConfig(nodeConnConfig, authenticationConfig, httpConfig, cacheConfig,resilienceConfig);
         }
     }
 }

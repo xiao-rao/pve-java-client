@@ -46,6 +46,8 @@
         <slf4j.version>2.0.13</slf4j.version>
         <lombok.version>1.18.32</lombok.version>
         <junit.version>5.10.2</junit.version>
+        <resilience4j.version>2.2.0</resilience4j.version> <!-- 添加Resilience4j版本 -->
+        <vavr.version>0.10.4</vavr.version> <!-- 新增 Vavr 版本 -->
     </properties>
 
     <dependencies>
@@ -83,6 +85,17 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-all</artifactId>
+            <version>${resilience4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>${vavr.version}</version>
+        </dependency>
         <!-- Testing -->
 <!--        <dependency>-->
 <!--            <groupId>org.junit.jupiter</groupId>-->

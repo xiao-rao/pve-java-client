@@ -8,7 +8,6 @@ import io.github.pve.client.model.cluster.acme.AcmeAccount;
 import io.github.pve.client.model.cluster.acme.options.AcmeAccountCreationOrUpdateOptions;
 import io.github.pve.client.model.cluster.acme.AcmePlugin;
 import io.github.pve.client.model.cluster.acme.options.AcmePluginCreationOrUpdateOptions;
-import io.github.pve.client.resource.BaseResourceClient;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +15,14 @@ import java.util.Map;
 /**
  * 管理 ACME (Let's Encrypt) 功能 - /cluster/acme
  */
-public class AcmeResourceClient extends BaseResourceClient {
+public class AcmeResourceClient {
 
     private static final String BASE_PATH = "/cluster/acme";
 
+    private final ProxmoxApiExecutor executor;
+
     public AcmeResourceClient(ProxmoxApiExecutor executor) {
-        super(executor);
+        this.executor = executor;
     }
 
     // --- /cluster/acme/account ---

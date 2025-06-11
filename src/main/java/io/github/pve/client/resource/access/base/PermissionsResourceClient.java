@@ -5,7 +5,6 @@ import io.github.pve.client.exception.ProxmoxApiException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.Permissions;
-import io.github.pve.client.resource.BaseResourceClient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,11 +12,14 @@ import java.util.Map;
 /**
  * 查询权限 - /access/permissions
  */
-public class PermissionsResourceClient extends BaseResourceClient {
+public class PermissionsResourceClient {
+
+    private final ProxmoxApiExecutor executor;
 
     public PermissionsResourceClient(ProxmoxApiExecutor executor) {
-        super(executor);
+        this.executor = executor;
     }
+
 
     public Permissions get(String userId, String path, boolean checkAll)   {
         String apiPath = "/access/permissions";

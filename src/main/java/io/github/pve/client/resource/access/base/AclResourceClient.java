@@ -5,7 +5,6 @@ import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.Acl;
 import io.github.pve.client.model.access.options.AclUpdateOptions;
-import io.github.pve.client.resource.BaseResourceClient;
 
 import java.util.Collections;
 import java.util.List;
@@ -14,10 +13,12 @@ import java.util.Map;
 /**
  * 管理访问控制列表 (ACLs) - /access/acl
  */
-public class AclResourceClient extends BaseResourceClient {
+public class AclResourceClient {
+
+    private final ProxmoxApiExecutor executor;
 
     public AclResourceClient(ProxmoxApiExecutor executor) {
-        super(executor);
+        this.executor = executor;
     }
 
     public List<Acl> list() {

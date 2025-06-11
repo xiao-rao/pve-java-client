@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.options.OpenIdLoginOptions;
-import io.github.pve.client.resource.BaseResourceClient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +13,14 @@ import java.util.Map;
  * 注意: OIDC的管理在PVE中通常与 /access/domains 共享相同的模型和逻辑,
  * 但API路径不同。这里我们为了API的清晰性单独实现。
  */
-public class OpenIdResourceClient extends BaseResourceClient {
+public class OpenIdResourceClient {
+
+    private final ProxmoxApiExecutor executor;
 
     public OpenIdResourceClient(ProxmoxApiExecutor executor) {
-        super(executor);
+        this.executor = executor;
     }
+
 
 
     public Map<String, String> getAuthUrl(String realm, String redirectUri) throws Exception {

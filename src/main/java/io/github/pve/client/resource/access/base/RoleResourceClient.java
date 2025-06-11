@@ -5,7 +5,6 @@ import io.github.pve.client.exception.ProxmoxApiException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.Role;
-import io.github.pve.client.resource.BaseResourceClient;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -15,11 +14,14 @@ import java.util.Map;
 /**
  * 管理角色 (Roles) - /access/roles
  */
-public class RoleResourceClient extends BaseResourceClient {
+public class RoleResourceClient {
+
+    private final ProxmoxApiExecutor executor;
 
     public RoleResourceClient(ProxmoxApiExecutor executor) {
-        super(executor);
+        this.executor = executor;
     }
+
 
     public List<Role> list()   {
         PveResponse<List<Role>> response = executor.get("/access/roles", null, new TypeReference<>() {});

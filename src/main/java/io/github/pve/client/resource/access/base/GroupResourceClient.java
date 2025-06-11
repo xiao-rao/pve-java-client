@@ -6,7 +6,6 @@ import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.Group;
 import io.github.pve.client.model.access.options.GroupCreationOrUpdateOptions;
-import io.github.pve.client.resource.BaseResourceClient;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,38 +15,47 @@ import java.util.Map;
 /**
  * 管理用户组 (Groups) - /access/groups
  */
-public class GroupResourceClient extends BaseResourceClient {
+public class GroupResourceClient {
+
+    private final ProxmoxApiExecutor executor;
 
     public GroupResourceClient(ProxmoxApiExecutor executor) {
-        super(executor);
+        this.executor = executor;
     }
 
-    public List<Group> list()   {
-        PveResponse<List<Group>> response = executor.get("/access/groups", null, new TypeReference<>() {});
+    public List<Group> list() {
+        PveResponse<List<Group>> response = executor.get("/access/groups", null, new TypeReference<>() {
+        });
         return response.getData().orElse(Collections.emptyList());
     }
 
-    public void create(String groupId, GroupCreationOrUpdateOptions options)   {
+    public void create(String groupId, GroupCreationOrUpdateOptions options) {
         String path = "/access/groups";
-        Map<String, Object> params = options != null ? ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {}) : new HashMap<>();
+        Map<String, Object> params = options != null ? ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
+        }) : new HashMap<>();
         params.put("groupid", groupId);
-        executor.post(path, null, params, new TypeReference<Void>() {});
+        executor.post(path, null, params, new TypeReference<Void>() {
+        });
     }
 
-    public Group get(String groupId)   {
+    public Group get(String groupId) {
         String path = "/access/groups/" + groupId;
-        PveResponse<Group> response = executor.get(path, null, new TypeReference<>() {});
+        PveResponse<Group> response = executor.get(path, null, new TypeReference<>() {
+        });
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Get Group data is null", response.getStatusCode(), null, null, path));
     }
 
-    public void update(String groupId, GroupCreationOrUpdateOptions options)   {
+    public void update(String groupId, GroupCreationOrUpdateOptions options) {
         String path = "/access/groups/" + groupId;
-        Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {});
-        executor.put(path, null, params, new TypeReference<Void>() {});
+        Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
+        });
+        executor.put(path, null, params, new TypeReference<Void>() {
+        });
     }
 
-    public void delete(String groupId)   {
+    public void delete(String groupId) {
         String path = "/access/groups/" + groupId;
-        executor.delete(path, null, null, new TypeReference<Void>() {});
+        executor.delete(path, null, null, new TypeReference<Void>() {
+        });
     }
 }

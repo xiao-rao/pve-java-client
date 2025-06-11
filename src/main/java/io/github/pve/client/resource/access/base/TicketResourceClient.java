@@ -5,7 +5,6 @@ import io.github.pve.client.auth.AuthenticationDetails;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.options.TicketCreationOptions;
-import io.github.pve.client.resource.BaseResourceClient;
 
 
 import java.util.Map;
@@ -14,11 +13,14 @@ import java.util.Map;
  * 管理认证票据 (Tickets) - /access/ticket
  * 主要用于显式登录操作。
  */
-public class TicketResourceClient extends BaseResourceClient {
+public class TicketResourceClient {
+
+    private final ProxmoxApiExecutor executor;
 
     public TicketResourceClient(ProxmoxApiExecutor executor) {
-        super(executor);
+        this.executor = executor;
     }
+
 
     public AuthenticationDetails create(TicketCreationOptions options) throws Exception {
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {

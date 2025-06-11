@@ -6,7 +6,6 @@ import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.access.TfaChallenge;
 import io.github.pve.client.model.access.TfaStatus;
-import io.github.pve.client.resource.BaseResourceClient;
 
 
 import java.util.HashMap;
@@ -16,12 +15,15 @@ import java.util.Map;
 /**
  * 管理 PVE 用户的双因素认证 (/access/users/{userid}/tfa)
  */
-public class TfaResourceClient extends BaseResourceClient {
+public class TfaResourceClient {
     private String userId;
 
+    private final ProxmoxApiExecutor executor;
+
     public TfaResourceClient(ProxmoxApiExecutor executor) {
-        super(executor);
+        this.executor = executor;
     }
+
 
     void setUserId(String userId) {
         this.userId = userId;

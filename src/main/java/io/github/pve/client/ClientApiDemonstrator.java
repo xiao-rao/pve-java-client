@@ -32,11 +32,11 @@ public class ClientApiDemonstrator {
     // ===============================================================
     // =================== PVE 连接配置 (请在此处修改) ==================
     // ===============================================================
-    private static final String PVE_API_URL = "https://172.16.1.33:8006";
+    private static final String PVE_API_URL = "YOUR_PVE_HOST";
     private static final String PVE_NODE_ID = "pve-java-client-node"; // 客户端内部使用的ID,可任意
     private static final String PVE_REALM = "pam"; // 认证领域
     private static final String ADMIN_USER = "root";
-    private static final String ADMIN_PASSWORD = "Aq1231998@@"; // 您的管理员密码
+    private static final String ADMIN_PASSWORD = "password"; // 您的管理员密码
     private static final boolean TRUST_SELF_SIGNED_CERTS = true; // 如果使用自签名证书,设为true
     // ===============================================================
     // ========================== 配置结束 ===========================

@@ -12,22 +12,20 @@ import io.github.pve.client.config.AuthenticationConfig;
 import io.github.pve.client.config.NodeConnectionConfig;
 import io.github.pve.client.config.ProxmoxClientConfig;
 import io.github.pve.client.exception.ProxmoxAuthException;
+import io.github.pve.client.exception.ProxmoxException;
 import io.github.pve.client.session.ProxmoxSession;
 import io.github.pve.client.session.ProxmoxSessionManager;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.decorators.Decorators;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import okhttp3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import io.vavr.control.Try;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.io.IOException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * 负责执行对Proxmox VE API的HTTP请求。
@@ -42,85 +40,67 @@ public class ProxmoxApiExecutor {
     private final ProxmoxClientConfig clientConfig;
     private final ProxmoxSessionManager sessionManager;
     private final OkHttpClient httpClient;
+    private final ResilienceManager resilienceManager; // 新增韧性管理器
+
 
     public ProxmoxApiExecutor(ProxmoxClientConfig clientConfig,
                               ProxmoxSessionManager sessionManager,
-                              OkHttpClient sharedHttpClientTemplate) { // HttpClient模板
+                              OkHttpClient httpClient,
+                              ResilienceManager resilienceManager) {
         this.clientConfig = Objects.requireNonNull(clientConfig, "ProxmoxClientConfig cannot be null");
         this.sessionManager = Objects.requireNonNull(sessionManager, "ProxmoxSessionManager cannot be null");
-
-        // 根据配置定制OkHttpClient
-        OkHttpClient.Builder builder = sharedHttpClientTemplate.newBuilder() // 从模板克隆
-                .connectTimeout(clientConfig.getHttpConfig().getConnectTimeout())
-                .readTimeout(clientConfig.getHttpConfig().getReadTimeout())
-                .writeTimeout(clientConfig.getHttpConfig().getWriteTimeout());
-
-        if (clientConfig.getNodeConnectionConfig().isTrustSelfSignedCerts()) {
-            configureToTrustSelfSignedCerts(builder);
-        }
-        this.httpClient = builder.build();
+        this.httpClient = Objects.requireNonNull(httpClient, "OkHttpClient cannot be null");
+        this.resilienceManager = resilienceManager;
     }
 
-    private void configureToTrustSelfSignedCerts(OkHttpClient.Builder builder) {
-        try {
-            final TrustManager[] trustAllCerts = new TrustManager[]{
-                    new X509TrustManager() {
-                        @Override
-                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
+    public <T> PveResponse<T> get(String path, Map<String, String> qp, TypeReference<T> rt) {
+        return execute("GET", path, qp, null, rt);
+    }
 
-                        @Override
-                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
-                        }
+    public <T> PveResponse<T> post(String path, Map<String, String> qp, Object b, TypeReference<T> rt) {
+        return execute("POST", path, qp, b, rt);
+    }
 
-                        @Override
-                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                            return new java.security.cert.X509Certificate[]{};
-                        }
-                    }
-            };
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-            builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
-            builder.hostnameVerifier((hostname, session) -> true);
-            LOGGER.warn("OkHttpClient for node '{}' is configured to trust self-signed certificates. THIS IS INSECURE AND SHOULD ONLY BE USED IN DEVELOPMENT/TESTING ENVIRONMENTS.",
-                    clientConfig.getNodeConnectionConfig().getNodeId());
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            LOGGER.error("Failed to configure OkHttpClient to trust self-signed certificates for node '{}'", clientConfig.getNodeConnectionConfig().getNodeId(), e);
-            throw new RuntimeException("Failed to configure SSL for self-signed certificates", e);
-        }
+    public <T> PveResponse<T> put(String path, Map<String, String> qp, Object b, TypeReference<T> rt) {
+        return execute("PUT", path, qp, b, rt);
+    }
+
+    public <T> PveResponse<T> delete(String path, Map<String, String> qp, Object b, TypeReference<T> rt) {
+        return execute("DELETE", path, qp, b, rt);
     }
 
 
-    public <T> PveResponse<T> get(String path, Map<String, String> queryParams, TypeReference<T> responseType) {
-        return executeRequest("GET", path, queryParams, null, responseType, true);
-    }
+    private <T> PveResponse<T> execute(String method, String relativePath, Map<String, String> queryParams,
+                                       Object body, TypeReference<T> responseType) {
 
-    public <T> PveResponse<T> post(String path, Map<String, String> queryParams, Object body, TypeReference<T> responseType) {
-        return executeRequest("POST", path, queryParams, body, responseType, true);
-    }
+        // 1. 将实际的API调用逻辑封装成一个 Supplier
+        Supplier<PveResponse<T>> apiCallSupplier = () ->
+                executeRequest(method, relativePath, queryParams, body, responseType, true);
 
-    public <T> PveResponse<T> put(String path, Map<String, String> queryParams, Object body, TypeReference<T> responseType) {
-        return executeRequest("PUT", path, queryParams, body, responseType, true);
-    }
+        // 2. 使用Resilience4j的Decorators来包裹这个Supplier
+        Supplier<PveResponse<T>> resilientApiCall = Decorators.ofSupplier(apiCallSupplier)
+                .withRetry(resilienceManager.getRetry())
+                .withCircuitBreaker(resilienceManager.getCircuitBreaker())
+                .withRateLimiter(resilienceManager.getRateLimiter())
+                .decorate();
 
-    public <T> PveResponse<T> delete(String path, Map<String, String> queryParams, Object body, TypeReference<T> responseType) {
-        return executeRequest("DELETE", path, queryParams, body, responseType, true);
+        // 3. 执行被包裹的调用，并处理可能由Resilience4j抛出的异常
+        return Try.ofSupplier(resilientApiCall)
+                .getOrElseThrow(this::mapResilienceException);
     }
 
     private RequestBody createRequestBody(Object body, String apiEndpoint) {
         if (body == null) {
             return FormBody.create(new byte[0]); // Empty body for some PVE POST/PUT
-        }else if (body instanceof Map) { // Form parameters
+        } else if (body instanceof Map) { // Form parameters
             @SuppressWarnings("unchecked")
             Map<String, Object> params = (Map<String, Object>) body;
             FormBody.Builder formBuilder = new FormBody.Builder();
             params.forEach((key, value) -> formBuilder.add(key, String.valueOf(value)));
             return formBuilder.build();
-        }else {
+        } else {
             try {
-              return RequestBody.create(OBJECT_MAPPER.writeValueAsString(body), MediaType.parse("application/json; charset=utf-f"));
+                return RequestBody.create(OBJECT_MAPPER.writeValueAsString(body), MediaType.parse("application/json; charset=utf-f"));
             } catch (JsonProcessingException e) {
                 throw new ProxmoxApiException("Failed to serialize request body to JSON", e, clientConfig.getNodeConnectionConfig().getNodeId(), apiEndpoint);
             }
@@ -264,6 +244,22 @@ public class ProxmoxApiExecutor {
             LOGGER.error("IOException during API call to '{}' on node '{}': {}", relativePath, nodeConfig.getNodeId(), e.getMessage(), e);
             throw new ProxmoxApiException("IOException during API call: " + e.getMessage(), e, nodeConfig.getNodeId(), relativePath);
         }
+    }
+
+    // 辅助方法，用于将Resilience4j的异常转换为我们自己的客户端异常
+    private ProxmoxException mapResilienceException(Throwable throwable) {
+        if (throwable instanceof CallNotPermittedException) {
+            return new ProxmoxApiException("CircuitBreaker is open; call not permitted.", 429, throwable.getMessage(),
+                    clientConfig.getNodeConnectionConfig().getNodeId(), "N/A");
+        }
+        if (throwable instanceof RequestNotPermitted) {
+            return new ProxmoxApiException("Rate limit exceeded; call not permitted.", 429, throwable.getMessage(),
+                    clientConfig.getNodeConnectionConfig().getNodeId(), "N/A");
+        }
+        if (throwable instanceof ProxmoxException) {
+            return (ProxmoxException) throwable;
+        }
+        return new ProxmoxException("An unexpected error occurred within the resilience layer.", throwable);
     }
 
     public static ObjectMapper getObjectMapper() {
