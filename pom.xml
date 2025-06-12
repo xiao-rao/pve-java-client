@@ -48,6 +48,8 @@
         <junit.version>5.10.2</junit.version>
         <resilience4j.version>2.2.0</resilience4j.version> <!-- 添加Resilience4j版本 -->
         <vavr.version>0.10.4</vavr.version> <!-- 新增 Vavr 版本 -->
+        <validation.api.version>3.0.2</validation.api.version>
+        <hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
     </properties>
 
     <dependencies>
@@ -95,6 +97,19 @@
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>${vavr.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>${validation.api.version}</version>
+        </dependency>
+
+        <!-- Hibernate Validator 实现 -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator.version}</version>
         </dependency>
         <!-- Testing -->
 <!--        <dependency>-->

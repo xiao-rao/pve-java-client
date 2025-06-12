@@ -2,16 +2,22 @@ package io.github.pve.client.model.access.options;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.github.pve.client.model.Validatable;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder(toBuilder = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AuthDomainCreationOrUpdateOptions {
+public class AuthDomainCreationOrUpdateOptions implements Validatable {
+
+    @NotBlank
+    private String realm;
+    @NotBlank
+    private String type;
     // Common properties
     private String comment;
-    private String type;
     @JsonProperty("default")
     private Integer isDefault;
     private String tfa;

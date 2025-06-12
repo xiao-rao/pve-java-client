@@ -2,6 +2,7 @@ package io.github.pve.client.model.access.options;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +14,10 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserCreationOrUpdateOptions {
     // Note: userid is part of the path, not the body, for create/update.
+
+    @NotBlank
+    @JsonProperty("userid")
+    private String userId;
 
     private String password; // Only for creation
 

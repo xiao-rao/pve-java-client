@@ -5,7 +5,8 @@ import io.github.pve.client.exception.ProxmoxApiException;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import io.github.pve.client.model.storage.StorageSummary;
-import io.github.pve.client.model.storage.options.StorageCreationOrUpdateOptions;
+import io.github.pve.client.model.storage.options.StorageCreateOptions;
+import io.github.pve.client.model.storage.options.StorageUpdateOptions;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,12 +49,12 @@ public class StorageResourceClient {
         return list(null, null, null);
     }
 
-    public void create(String storageId, String type, StorageCreationOrUpdateOptions options) {
-        Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
-        });
-        params.put("storage", storageId);
-        params.put("type", type); // 'type' is a required parameter for creation
-        executor.post("/storage", null, params, new TypeReference<Void>() {
+    /**
+     * 创建存储（POST /storage）。
+     * @param options 创建参数，storage/type为必填
+     */
+    public void create(StorageCreateOptions options) {
+        executor.post("/storage", null, options, new TypeReference<Void>() {
         });
     }
 
@@ -64,10 +65,13 @@ public class StorageResourceClient {
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Get Storage data is null", response.getStatusCode(), null, null, path));
     }
 
-    public void update(String storageId, StorageCreationOrUpdateOptions options) {
-        Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
-        });
-        executor.put("/storage/" + storageId, null, params, new TypeReference<Void>() {
+    /**
+     * 更新存储（PUT /storage/{storage}）。
+     * @param storageId 存储ID
+     * @param options 更新参数（所有参数可选）
+     */
+    public void update(String storageId, StorageUpdateOptions options) {
+        executor.put("/storage/" + storageId, null, options, new TypeReference<Void>() {
         });
     }
 

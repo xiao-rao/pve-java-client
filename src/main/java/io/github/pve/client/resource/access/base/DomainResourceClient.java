@@ -29,6 +29,11 @@ public class DomainResourceClient {
         return response.getData().orElse(Collections.emptyList());
     }
 
+    public void create(AuthDomainCreationOrUpdateOptions options) {
+        executor.post("/access/domains", null, options, new TypeReference<Void>() {
+        });
+    }
+
 
     public AuthDomain get(String realm) {
         String path = "/access/domains/" + realm;
@@ -37,11 +42,9 @@ public class DomainResourceClient {
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Get AuthDomain data is null", response.getStatusCode(), null, null, path));
     }
 
-    public void update(String realm, AuthDomainCreationOrUpdateOptions options)   {
-        String path = "/access/domains/" + realm;
-        Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
-        });
-        executor.put(path, null, params, new TypeReference<Void>() {
+    public void update( AuthDomainCreationOrUpdateOptions options)   {
+        String path = "/access/domains/";
+        executor.put(path, null, options, new TypeReference<Void>() {
         });
     }
 
@@ -51,13 +54,6 @@ public class DomainResourceClient {
         });
     }
 
-    public void create(String realm, AuthDomainCreationOrUpdateOptions options) {
-        Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
-        });
-        params.put("realm", realm);
-        executor.post("/access/domains", null, params, new TypeReference<Void>() {
-        });
-    }
 
 
     public String sync(String realm, AuthDomainCreationOrUpdateOptions options) throws Exception {

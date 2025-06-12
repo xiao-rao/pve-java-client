@@ -15,6 +15,7 @@ import io.github.pve.client.exception.ProxmoxAuthException;
 import io.github.pve.client.exception.ProxmoxException;
 import io.github.pve.client.session.ProxmoxSession;
 import io.github.pve.client.session.ProxmoxSessionManager;
+import io.github.pve.client.util.ValidationUtils;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.decorators.Decorators;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
@@ -92,19 +93,28 @@ public class ProxmoxApiExecutor {
     private RequestBody createRequestBody(Object body, String apiEndpoint) {
         if (body == null) {
             return FormBody.create(new byte[0]); // Empty body for some PVE POST/PUT
-        } else if (body instanceof Map) { // Form parameters
-            @SuppressWarnings("unchecked")
-            Map<String, Object> params = (Map<String, Object>) body;
-            FormBody.Builder formBuilder = new FormBody.Builder();
-            params.forEach((key, value) -> formBuilder.add(key, String.valueOf(value)));
-            return formBuilder.build();
-        } else {
-            try {
-                return RequestBody.create(OBJECT_MAPPER.writeValueAsString(body), MediaType.parse("application/json; charset=utf-f"));
-            } catch (JsonProcessingException e) {
-                throw new ProxmoxApiException("Failed to serialize request body to JSON", e, clientConfig.getNodeConnectionConfig().getNodeId(), apiEndpoint);
-            }
         }
+        ValidationUtils.validate(body);
+        try {
+            Map<String, Object> params;
+            if (body instanceof Map) {
+                params = (Map<String, Object>) body;
+            } else {
+                params = ProxmoxApiExecutor.getObjectMapper().convertValue(body, new TypeReference<Map<String, Object>>() {});
+            }
+
+            FormBody.Builder formBuilder = new FormBody.Builder();
+            params.forEach((key, value) -> {
+                if (value != null) {
+                    formBuilder.add(key, String.valueOf(value));
+                }
+            });
+            return formBuilder.build();
+        } catch (Exception e) {
+            throw new ProxmoxApiException("Failed to serialize request body to form parameters.", e,
+                    clientConfig.getNodeConnectionConfig().getNodeId(), apiEndpoint);
+        }
+
     }
 
 

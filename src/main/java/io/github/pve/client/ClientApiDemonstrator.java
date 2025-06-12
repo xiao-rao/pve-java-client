@@ -161,11 +161,12 @@ public class ClientApiDemonstrator {
             System.out.println("\n--- [用户管理演示] ---");
             System.out.println("尝试创建新用户: " + testUserId);
             UserCreationOrUpdateOptions userOptions = UserCreationOrUpdateOptions.builder()
+                    .userId(testUserId)
 //                    .password("TestPassword123!")
                     .email("test@example.com")
                     .comment("由Java客户端创建的测试用户")
                     .build();
-            apiClient.access().users().create(testUserId, userOptions);
+            apiClient.access().users().create(userOptions);
             System.out.println("  -> 用户创建成功！");
             User createdUser = apiClient.access().users().get(testUserId);
             System.out.println("  -> 获取到用户信息: " + createdUser);

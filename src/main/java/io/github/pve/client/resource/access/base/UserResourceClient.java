@@ -31,12 +31,9 @@ public class UserResourceClient {
         return response.getData().orElse(Collections.emptyList());
     }
 
-    public void create(String userId, UserCreationOrUpdateOptions options) {
+    public void create(UserCreationOrUpdateOptions options) {
         String path = "/access/users";
-        Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
-        });
-        params.put("userid", userId);
-        executor.post(path, null, params, new TypeReference<Void>() {
+        executor.post(path, null, options, new TypeReference<Void>() {
         });
     }
 
@@ -48,8 +45,8 @@ public class UserResourceClient {
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Get User data is null", response.getStatusCode(), null, null, path));
     }
 
-    public void update(String userId, UserCreationOrUpdateOptions options) {
-        String path = "/access/users/" + userId;
+    public void update(UserCreationOrUpdateOptions options) {
+        String path = "/access/users/" + options.getUserId();
         Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
         });
         executor.put(path, null, params, new TypeReference<Void>() {
@@ -70,11 +67,9 @@ public class UserResourceClient {
         return response.getData().orElse(Collections.emptyList());
     }
 
-    public ApiTokenSecret createToken(String userId, String tokenId, ApiTokenCreationOptions options) {
-        String path = "/access/users/" + userId + "/token/" + tokenId;
-        Map<String, Object> params = options != null ? ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
-        }) : Collections.emptyMap();
-        PveResponse<ApiTokenSecret> response = executor.post(path, null, params, new TypeReference<>() {
+    public ApiTokenSecret createToken(ApiTokenCreationOptions options) {
+        String path = "/access/users/" + options.getUserId() + "/token/" + options.getTokenId();
+        PveResponse<ApiTokenSecret> response = executor.post(path, null, options, new TypeReference<>() {
         });
         return response.getData().orElseThrow(() -> new ProxmoxApiException("API token secret not returned", response.getStatusCode(), null, null, path));
     }
@@ -86,11 +81,9 @@ public class UserResourceClient {
         return response.getData().orElseThrow(() -> new ProxmoxApiException("Get API Token data is null", response.getStatusCode(), null, null, path));
     }
 
-    public void updateToken(String userId, String tokenId, ApiTokenCreationOptions options) {
-        String path = "/access/users/" + userId + "/token/" + tokenId;
-        Map<String, Object> params = ProxmoxApiExecutor.getObjectMapper().convertValue(options, new TypeReference<>() {
-        });
-        executor.put(path, null, params, new TypeReference<Void>() {
+    public void updateToken(ApiTokenCreationOptions options) {
+        String path = "/access/users/" + options.getUserId() + "/token/" + options.getTokenId();
+        executor.put(path, null, options, new TypeReference<Void>() {
         });
     }
 
@@ -103,9 +96,13 @@ public class UserResourceClient {
     // --- /access/users/{userid}/tfa ---
     public TfaStatus getTfa(String userId, Boolean multiple) {
         String path = "/access/users/" + userId + "/tfa";
+        if (multiple != null) {
+            path = multiple ? path + "?multiple=1" : path + "?multiple=0";
+        }
         PveResponse<TfaStatus> response = executor.get(path, null, new TypeReference<>() {
         });
-        return response.getData().orElseThrow(() -> new ProxmoxApiException("Get TFA status data is null", response.getStatusCode(), null, null, path));
+        String finalPath = path;
+        return response.getData().orElseThrow(() -> new ProxmoxApiException("Get TFA status data is null", response.getStatusCode(), null, null, finalPath));
     }
 
     // --- /access/users/{userid}/unlock-tfa ---
