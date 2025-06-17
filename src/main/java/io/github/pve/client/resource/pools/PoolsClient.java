@@ -1,0 +1,98 @@
+package io.github.pve.client.resource.pools;
+
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import io.github.pve.client.http.ProxmoxApiExecutor;
+import io.github.pve.client.http.PveResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.pools.*;
+
+/**
+ * Client for /pools
+ * BY '@xiao-rao'
+ */
+public class PoolsClient {
+
+    protected final ProxmoxApiExecutor executor;
+    protected final String basePath;
+
+    public PoolsClient(ProxmoxApiExecutor executor) {
+        this.executor = executor;
+        this.basePath = "/pools";
+    }
+
+    /**
+     * Delete pool.
+     */
+    public void deletePool(String poolid) {
+        Map<String, Object> options = new HashMap<>();
+        if (poolid != null) {
+            options.put("poolid", poolid);
+        }
+        executor.delete(this.basePath, options);
+    }
+
+    /**
+     * List pools or get pool configuration.
+     */
+    public List<Object> index(String poolid, String type) {
+        Map<String, Object> queryParams = new HashMap<>();
+        if (poolid != null) {
+            queryParams.put("poolid", poolid);
+        }
+        if (type != null) {
+            queryParams.put("type", type);
+        }
+        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        return response.getData().orElse(null);
+    }
+
+    /**
+     * Create new pool.
+     */
+    public void createPool(String comment, String poolid) {
+        Map<String, Object> options = new HashMap<>();
+        if (comment != null) {
+            options.put("comment", comment);
+        }
+        if (poolid != null) {
+            options.put("poolid", poolid);
+        }
+        executor.post(this.basePath, options);
+    }
+
+    /**
+     * Update pool.
+     */
+    public void updatePool(UpdatePoolRequest request) {
+        executor.put(this.basePath, request);
+    }
+
+    /**
+     * Delete pool (deprecated, no support for nested pools, use 'DELETE /pools/?poolid={poolid}').
+     */
+    public void deletePoolDeprecated(String poolid) {
+        executor.delete(this.basePath + "/" + poolid);
+    }
+
+    /**
+     * Get pool configuration (deprecated, no support for nested pools, use 'GET /pools/?poolid={poolid}').
+     */
+    public void readPool(String poolid, String type) {
+        String path = this.basePath + "/" + poolid;
+        Map<String, Object> queryParams = new HashMap<>();
+        if (type != null) {
+            queryParams.put("type", type);
+        }
+        executor.get(path, queryParams);
+    }
+
+    /**
+     * Update pool data (deprecated, no support for nested pools - use 'PUT /pools/?poolid={poolid}' instead).
+     */
+    public void updatePoolDeprecated(UpdatePoolDeprecatedRequest request) {
+        executor.put(this.basePath + "/" + request.getPoolid(), request);
+    }
+}

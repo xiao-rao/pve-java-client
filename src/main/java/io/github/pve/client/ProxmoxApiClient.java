@@ -1,21 +1,21 @@
 package io.github.pve.client;
 
-
-import io.github.pve.client.config.ProxmoxClientConfig;
-import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.auth.ApiTokenAuthProvider;
 import io.github.pve.client.auth.AuthenticationProvider;
 import io.github.pve.client.auth.UsernamePasswordAuthProvider;
 import io.github.pve.client.config.AuthenticationConfig;
+import io.github.pve.client.config.ProxmoxClientConfig;
+import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.ResilienceManager;
-import io.github.pve.client.resource.access.AccessResourceClient;
-import io.github.pve.client.resource.cluster.ClusterResourceClient;
-import io.github.pve.client.resource.pools.PoolResourceClient;
-import io.github.pve.client.resource.storage.StorageResourceClient;
-import io.github.pve.client.resource.version.VersionResourceClient;
 import io.github.pve.client.session.InMemoryProxmoxSessionCache;
 import io.github.pve.client.session.ProxmoxSessionManager;
 import io.github.pve.client.util.Lazy;
+import io.github.pve.client.resource.cluster.ClusterClient;
+import io.github.pve.client.resource.nodes.NodesClient;
+import io.github.pve.client.resource.storage.StorageClient;
+import io.github.pve.client.resource.access.AccessClient;
+import io.github.pve.client.resource.pools.PoolsClient;
+import io.github.pve.client.resource.version.VersionClient;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
@@ -25,29 +25,25 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import java.io.Closeable;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
-
 /**
- * Proxmox API客户端，聚合了对不同资源的访问。
- * 此类实现了 Closeable 接口，必须在使用完毕后调用 close() 方法以释放HTTP连接资源。
- * 推荐使用 try-with-resources 语法来自动管理其生命周期。
+ *
+ * BY '@xiao-rao'
  */
-public class ProxmoxApiClient implements Closeable {
+public class ProxmoxApiClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxmoxApiClient.class);
-
     private final OkHttpClient httpClient; // 客户端持有的唯一OkHttpClient实例
-    private final ProxmoxApiExecutor apiExecutor;
 
-    // Resource-specific clients
-    private final Lazy<AccessResourceClient> accessClient;
-    private final Lazy<ClusterResourceClient> clusterClient;
-    private final Lazy<PoolResourceClient> poolClient;
-    private final Lazy<StorageResourceClient> storageClient;
-    private final Lazy<VersionResourceClient> versionClient;
-    // ... 其他客户端字段
+    private final ProxmoxApiExecutor executor;
+
+    private final Lazy<ClusterClient> clusterClient;
+    private final Lazy<NodesClient> nodesClient;
+    private final Lazy<StorageClient> storageClient;
+    private final Lazy<AccessClient> accessClient;
+    private final Lazy<PoolsClient> poolsClient;
+    private final Lazy<VersionClient> versionClient;
 
     ProxmoxApiClient(ProxmoxClientConfig config) {
         // --- 1. 创建和配置唯一的OkHttpClient实例 ---
@@ -76,54 +72,56 @@ public class ProxmoxApiClient implements Closeable {
         ResilienceManager resilienceManager = new ResilienceManager(config.getResilienceConfig());
 
         // --- 3. 创建API执行器，并传入已配置好的httpClient ---
-         this.apiExecutor = new ProxmoxApiExecutor(config, sessionManager, this.httpClient, resilienceManager);
-
-        this.accessClient = new Lazy<>(() -> new AccessResourceClient(this.apiExecutor));
-        this.clusterClient = new Lazy<>(() -> new ClusterResourceClient(this.apiExecutor));
-        this.poolClient = new Lazy<>(() -> new PoolResourceClient(this.apiExecutor));
-        this.storageClient = new Lazy<>(() -> new StorageResourceClient(this.apiExecutor));
-        this.versionClient = new Lazy<>(() -> new VersionResourceClient(this.apiExecutor));
+        this.executor = new ProxmoxApiExecutor(config, sessionManager, this.httpClient, resilienceManager);
+        this.clusterClient = new Lazy<>(() -> new ClusterClient(this.executor));
+        this.nodesClient = new Lazy<>(() -> new NodesClient(this.executor));
+        this.storageClient = new Lazy<>(() -> new StorageClient(this.executor));
+        this.accessClient = new Lazy<>(() -> new AccessClient(this.executor));
+        this.poolsClient = new Lazy<>(() -> new PoolsClient(this.executor));
+        this.versionClient = new Lazy<>(() -> new VersionClient(this.executor));
         LOGGER.info("ProxmoxApiClient initialized for node '{}' with API URL '{}'.",
                 config.getNodeConnectionConfig().getNodeId(),
                 config.getNodeConnectionConfig().getApiUrl());
     }
 
-    // --- Public accessors for resource clients ---
-    public AccessResourceClient access() {
-        return accessClient.get();
-    }
-
-    public ClusterResourceClient cluster() {
-        return clusterClient.get();
-    }
-
-    public PoolResourceClient pools() {
-        return poolClient.get();
-    }
-
-    public StorageResourceClient storage() {
-        return storageClient.get();
-    }
-
-    public VersionResourceClient version() {
-        return versionClient.get();
-    }
-
     /**
-     * 关闭客户端并释放所有HTTP连接资源。
-     * 调用此方法后，客户端实例将不可再用。
+     * Client for all operations related to cluster.
      */
-    @Override
-    public void close() {
-        LOGGER.info("Closing ProxmoxApiClient and shutting down HTTP client resources...");
-        if (this.httpClient != null) {
-            this.httpClient.dispatcher().executorService().shutdown();
-            this.httpClient.connectionPool().evictAll();
-        }
-        LOGGER.info("ProxmoxApiClient closed.");
+    public ClusterClient cluster() {
+        return this.clusterClient.get();
+    }
+    /**
+     * Client for all operations related to nodes.
+     */
+    public NodesClient nodes() {
+        return this.nodesClient.get();
+    }
+    /**
+     * Client for all operations related to storage.
+     */
+    public StorageClient storage() {
+        return this.storageClient.get();
+    }
+    /**
+     * Client for all operations related to access.
+     */
+    public AccessClient access() {
+        return this.accessClient.get();
+    }
+    /**
+     * Client for all operations related to pools.
+     */
+    public PoolsClient pools() {
+        return this.poolsClient.get();
+    }
+    /**
+     * Client for all operations related to version.
+     */
+    public VersionClient version() {
+        return this.versionClient.get();
     }
 
-    // --- Helper method for SSL ---
+
     private void configureToTrustSelfSignedCerts(OkHttpClient.Builder builder, String nodeId) {
         try {
             final TrustManager[] trustAllCerts = new TrustManager[]{
@@ -153,4 +151,3 @@ public class ProxmoxApiClient implements Closeable {
         }
     }
 }
-

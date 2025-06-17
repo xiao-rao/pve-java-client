@@ -1,7 +1,7 @@
 package io.github.pve.client.util;
 
 import io.github.pve.client.exception.PveClientValidationException;
-import io.github.pve.client.model.Validatable;
+//import io.github.pve.client.model.Validatable;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -26,10 +26,9 @@ public class ValidationUtils {
      */
     public static <T> void validate(T object) {
         // 只有实现了 Validatable 接口的对象才会被校验。
-        if (!(object instanceof Validatable)) {
-            return;
-        }
-
+//        if (!(object instanceof Validatable)) {
+//            return;
+//        }
         Set<ConstraintViolation<T>> violations = validator.validate(object);
         if (!violations.isEmpty()) {
             StringBuilder sb = new StringBuilder("参数校验失败: ");

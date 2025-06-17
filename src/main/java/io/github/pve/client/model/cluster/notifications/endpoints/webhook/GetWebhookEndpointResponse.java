@@ -1,0 +1,89 @@
+package io.github.pve.client.model.cluster.notifications.endpoints.webhook;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Data;
+import java.util.List;
+
+/**
+ * Return a specific webhook endpoint
+ * BY '@xiao-rao'
+ */
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class GetWebhookEndpointResponse {
+
+    /**
+     * HTTP body, base64 encoded
+     * Type: string
+     * Optional: True
+     */
+    @JsonProperty("body")
+    private String body;
+
+    /**
+     * Comment
+     * Type: string
+     * Optional: True
+     */
+    @JsonProperty("comment")
+    private String comment;
+
+    /**
+     * Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.
+     * Type: string
+     * Optional: True
+     */
+    @JsonProperty("digest")
+    private String digest;
+
+    /**
+     * Disable this target
+     * Type: boolean
+     * Optional: True
+     */
+    @JsonProperty("disable")
+    private Boolean disable;
+
+    /**
+     * HTTP headers to set. These have to be formatted as a property string in the format name=<name>,value=<base64 of value>
+     * Type: array
+     * Optional: True
+     */
+    @JsonProperty("header")
+    private List<String> header;
+
+    /**
+     * HTTP method
+     * Type: string
+     * Optional: True
+     */
+    @JsonProperty("method")
+    private String method;
+
+    /**
+     * The name of the endpoint.
+     * Type: string
+     * Optional: True
+     */
+    @JsonProperty("name")
+    private String name;
+
+    /**
+     * Secrets to set. These have to be formatted as a property string in the format name=<name>,value=<base64 of value>
+     * Type: array
+     * Optional: True
+     */
+    @JsonProperty("secret")
+    private List<String> secret;
+
+    /**
+     * Server URL
+     * Type: string
+     * Optional: True
+     */
+    @JsonProperty("url")
+    private String url;
+
+
+}

@@ -1,0 +1,69 @@
+package io.github.pve.client.resource.cluster.sdn.vnets.firewall.rules;
+
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import io.github.pve.client.http.ProxmoxApiExecutor;
+import io.github.pve.client.http.PveResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.cluster.sdn.vnets.firewall.rules.*;
+
+/**
+ * Client for /cluster/sdn/vnets/{vnet}/firewall/rules
+ * BY '@xiao-rao'
+ */
+public class RulesClient {
+
+    protected final ProxmoxApiExecutor executor;
+    protected final String basePath;
+    protected final String vnet;
+
+    public RulesClient(ProxmoxApiExecutor executor, String vnet) {
+        this.executor = executor;
+        this.vnet = vnet;
+        this.basePath = "/cluster/sdn/vnets/{vnet}/firewall/rules".replace("{" + "vnet" + "}", vnet);
+    }
+
+    /**
+     * List rules.
+     */
+    public List<Object> getRules() {
+        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        return response.getData().orElse(null);
+    }
+
+    /**
+     * Create new rule.
+     */
+    public void createRule(CreateRuleRequest request) {
+        executor.post(this.basePath, request);
+    }
+
+    /**
+     * Delete rule.
+     */
+    public void deleteRule(String pos, String digest) {
+        String path = this.basePath + "/" + pos;
+        Map<String, Object> options = new HashMap<>();
+        if (digest != null) {
+            options.put("digest", digest);
+        }
+        executor.delete(path, options);
+    }
+
+    /**
+     * Get single rule data.
+     */
+    public GetRuleResponse getRule(String pos) {
+        PveResponse<GetRuleResponse> response = executor.get(this.basePath + "/" + pos, null, new TypeReference<>() {});
+        return response.getData().orElse(null);
+    }
+
+    /**
+     * Modify rule data.
+     */
+    public void updateRule(UpdateRuleRequest request) {
+        executor.put(this.basePath + "/" + request.getPos(), request);
+    }
+}

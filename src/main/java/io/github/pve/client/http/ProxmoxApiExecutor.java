@@ -1,7 +1,5 @@
 package io.github.pve.client.http;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -24,13 +22,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.vavr.control.Try;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * 负责执行对Proxmox VE API的HTTP请求。
  * 此类现在依赖于ProxmoxSessionManager来获取和管理会话。
+ *
+ * 优化特性：
+ * - 请求性能监控
+ * - 内存优化的响应处理
+ * - 智能重试机制
+ * - 增强的错误处理
  */
 public class ProxmoxApiExecutor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxmoxApiExecutor.class);
@@ -38,10 +47,15 @@ public class ProxmoxApiExecutor {
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .registerModule(new JavaTimeModule());
 
+    // 性能监控计数器
+    private static final AtomicLong REQUEST_COUNTER = new AtomicLong(0);
+    private static final AtomicLong SUCCESS_COUNTER = new AtomicLong(0);
+    private static final AtomicLong FAILURE_COUNTER = new AtomicLong(0);
+
     private final ProxmoxClientConfig clientConfig;
     private final ProxmoxSessionManager sessionManager;
     private final OkHttpClient httpClient;
-    private final ResilienceManager resilienceManager; // 新增韧性管理器
+    private final ResilienceManager resilienceManager;
 
 
     public ProxmoxApiExecutor(ProxmoxClientConfig clientConfig,
@@ -54,25 +68,137 @@ public class ProxmoxApiExecutor {
         this.resilienceManager = resilienceManager;
     }
 
-    public <T> PveResponse<T> get(String path, Map<String, String> qp, TypeReference<T> rt) {
+    /**
+     * 获取请求统计信息
+     */
+    public static Map<String, Long> getStatistics() {
+        Map<String, Long> stats = new HashMap<>();
+        stats.put("totalRequests", REQUEST_COUNTER.get());
+        stats.put("successfulRequests", SUCCESS_COUNTER.get());
+        stats.put("failedRequests", FAILURE_COUNTER.get());
+        return stats;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(1);
+    }
+    // get methods - 添加便利方法
+    public <T> PveResponse<T> get(String path, TypeReference<T> rt) {
+        return execute("GET", path, null, null, rt);
+    }
+
+    public <T> PveResponse<T> get(String path, Map<String, Object> qp, TypeReference<T> rt) {
         return execute("GET", path, qp, null, rt);
     }
 
-    public <T> PveResponse<T> post(String path, Map<String, String> qp, Object b, TypeReference<T> rt) {
+    // 新增：支持 void 返回的 GET 方法
+    public void get(String path, Map<String, Object> qp) {
+        execute("GET", path, qp, null, new TypeReference<Void>() {});
+    }
+
+    public void get(String path) {
+        execute("GET", path, null, null, new TypeReference<Void>() {});
+    }
+
+    // post
+    public <T> PveResponse<T> post(String path, Map<String, Object> qp, TypeReference<T> rt) {
+        return execute("POST", path, qp, null, rt);
+    }
+
+    public <T> PveResponse<T> post(String path, Object b, TypeReference<T> rt) {
+        return execute("POST", path, null, b, rt);
+    }
+
+    public <T> PveResponse<T> post(String path, Map<String, Object> qp, Object b, TypeReference<T> rt) {
         return execute("POST", path, qp, b, rt);
     }
 
-    public <T> PveResponse<T> put(String path, Map<String, String> qp, Object b, TypeReference<T> rt) {
+    // post void methods (不需要返回值)
+    public void post(String path, Map<String, Object> qp) {
+        execute("POST", path, qp, null, new TypeReference<Void>() {});
+    }
+
+    public void post(String path, Object b) {
+        execute("POST", path, null, b, new TypeReference<Void>() {});
+    }
+
+    public void post(String path, Map<String, Object> qp, Object b) {
+        execute("POST", path, qp, b, new TypeReference<Void>() {});
+    }
+
+    // 便利方法：只有path参数的post
+    public void post(String path) {
+        execute("POST", path, null, null, new TypeReference<Void>() {});
+    }
+
+    // put
+    public <T> PveResponse<T> put(String path, Map<String, Object> qp, TypeReference<T> rt) {
+        return execute("PUT", path, qp, null, rt);
+    }
+
+    public <T> PveResponse<T> put(String path, Object b, TypeReference<T> rt) {
+        return execute("PUT", path, null, b, rt);
+    }
+
+    public <T> PveResponse<T> put(String path, Map<String, Object> qp, Object b, TypeReference<T> rt) {
         return execute("PUT", path, qp, b, rt);
     }
 
-    public <T> PveResponse<T> delete(String path, Map<String, String> qp, Object b, TypeReference<T> rt) {
+    // put void methods (不需要返回值)
+    public void put(String path, Map<String, Object> qp) {
+        execute("PUT", path, qp, null, new TypeReference<Void>() {});
+    }
+
+    public void put(String path, Object b) {
+        execute("PUT", path, null, b, new TypeReference<Void>() {});
+    }
+
+    public void put(String path, Map<String, Object> qp, Object b) {
+        execute("PUT", path, qp, b, new TypeReference<Void>() {});
+    }
+
+    // 便利方法：只有path参数的put
+    public void put(String path) {
+        execute("PUT", path, null, null, new TypeReference<Void>() {});
+    }
+
+    // delete
+    public <T> PveResponse<T> delete(String path, Map<String, Object> qp, TypeReference<T> rt) {
+        return execute("DELETE", path, qp, null, rt);
+    }
+
+    public <T> PveResponse<T> delete(String path, Object b, TypeReference<T> rt) {
+        return execute("DELETE", path, null, b, rt);
+    }
+
+    public <T> PveResponse<T> delete(String path, Map<String, Object> qp, Object b, TypeReference<T> rt) {
         return execute("DELETE", path, qp, b, rt);
     }
 
+    // delete void methods (不需要返回值)
+    public void delete(String path, Map<String, Object> qp) {
+        execute("DELETE", path, qp, null, new TypeReference<Void>() {});
+    }
 
-    private <T> PveResponse<T> execute(String method, String relativePath, Map<String, String> queryParams,
+    public void delete(String path, Object b) {
+        execute("DELETE", path, null, b, new TypeReference<Void>() {});
+    }
+
+    public void delete(String path, Map<String, Object> qp, Object b) {
+        execute("DELETE", path, qp, b, new TypeReference<Void>() {});
+    }
+
+    // 便利方法：只有path参数的delete
+    public void delete(String path) {
+        execute("DELETE", path, null, null, new TypeReference<Void>() {});
+    }
+
+    private <T> PveResponse<T> execute(String method, String relativePath, Map<String, Object> queryParams,
                                        Object body, TypeReference<T> responseType) {
+
+        // 性能监控
+        REQUEST_COUNTER.incrementAndGet();
+        Instant startTime = Instant.now();
 
         // 1. 将实际的API调用逻辑封装成一个 Supplier
         Supplier<PveResponse<T>> apiCallSupplier = () ->
@@ -86,39 +212,92 @@ public class ProxmoxApiExecutor {
                 .decorate();
 
         // 3. 执行被包裹的调用，并处理可能由Resilience4j抛出的异常
-        return Try.ofSupplier(resilientApiCall)
-                .getOrElseThrow(this::mapResilienceException);
-    }
-
-    private RequestBody createRequestBody(Object body, String apiEndpoint) {
-        if (body == null) {
-            return FormBody.create(new byte[0]); // Empty body for some PVE POST/PUT
-        }
-        ValidationUtils.validate(body);
         try {
-            Map<String, Object> params;
-            if (body instanceof Map) {
-                params = (Map<String, Object>) body;
-            } else {
-                params = ProxmoxApiExecutor.getObjectMapper().convertValue(body, new TypeReference<Map<String, Object>>() {});
+            PveResponse<T> result = Try.ofSupplier(resilientApiCall)
+                    .getOrElseThrow(this::mapResilienceException);
+
+            // 记录成功统计
+            SUCCESS_COUNTER.incrementAndGet();
+
+            // 记录性能指标
+            Duration duration = Duration.between(startTime, Instant.now());
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("API call completed successfully in {}ms: {} {}",
+                        duration.toMillis(), method, relativePath);
             }
 
-            FormBody.Builder formBuilder = new FormBody.Builder();
-            params.forEach((key, value) -> {
-                if (value != null) {
-                    formBuilder.add(key, String.valueOf(value));
-                }
-            });
-            return formBuilder.build();
+            return result;
         } catch (Exception e) {
-            throw new ProxmoxApiException("Failed to serialize request body to form parameters.", e,
-                    clientConfig.getNodeConnectionConfig().getNodeId(), apiEndpoint);
-        }
+            // 记录失败统计
+            FAILURE_COUNTER.incrementAndGet();
 
+            Duration duration = Duration.between(startTime, Instant.now());
+            LOGGER.warn("API call failed after {}ms: {} {} - {}",
+                    duration.toMillis(), method, relativePath, e.getMessage());
+
+            throw e;
+        }
     }
 
+    /**
+     * 优化的请求体创建方法 - 减少内存分配
+     */
+    private String createRequestBody(Object body) throws JsonProcessingException {
+        if (body == null) {
+            return null;
+        }
 
-    private <T> PveResponse<T> executeRequest(String method, String relativePath, Map<String, String> queryParams,
+        // 验证参数
+        ValidationUtils.validate(body);
+
+        if (body instanceof String) {
+            return (String) body;
+        }
+
+        // 将对象转换为Map，同时处理数组参数
+        Map<String, Object> result = OBJECT_MAPPER.convertValue(body, new TypeReference<Map<String, Object>>() {});
+
+        // 预估结果Map大小以减少重新分配
+        Map<String, Object> flattenedResult = new HashMap<>(result.size() * 2);
+
+        result.forEach((key, value) -> {
+            if (value instanceof Map) {
+                try {
+                    @SuppressWarnings("unchecked")
+                    Map<?, ?> mapValue = (Map<?, ?>) value;
+
+                    // 检查是否所有键都是Integer（数组参数的特征）
+                    boolean isArrayParam = !mapValue.isEmpty() &&
+                            mapValue.keySet().stream().allMatch(k -> k instanceof Integer);
+
+                    if (isArrayParam) {
+                        // 展开数组参数: parallel -> {0: "value1", 1: "value2"}
+                        // 变成 parallel0: "value1", parallel1: "value2"
+                        @SuppressWarnings("unchecked")
+                        Map<Integer, String> indexedMap = (Map<Integer, String>) mapValue;
+                        indexedMap.forEach((index, val) -> {
+                            if (val != null) {
+                                flattenedResult.put(key + index, val);
+                            }
+                        });
+                    } else {
+                        flattenedResult.put(key, value);
+                    }
+                } catch (ClassCastException e) {
+                    flattenedResult.put(key, value);
+                }
+            } else if (value instanceof Boolean) {
+                // 将Boolean值转换为PVE期望的数字格式
+                flattenedResult.put(key, ((Boolean) value) ? "1" : "0");
+            } else if (value != null) {
+                flattenedResult.put(key, value);
+            }
+        });
+
+        return OBJECT_MAPPER.writeValueAsString(flattenedResult);
+    }
+
+    private <T> PveResponse<T> executeRequest(String method, String relativePath, Map<String, Object> queryParams,
                                               Object body, TypeReference<T> responseType, boolean retryOnAuthFailure) {
         NodeConnectionConfig nodeConfig = clientConfig.getNodeConnectionConfig();
         AuthenticationConfig authConfig = clientConfig.getAuthenticationConfig();
@@ -126,7 +305,18 @@ public class ProxmoxApiExecutor {
 
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(fullPath)).newBuilder();
         if (queryParams != null) {
-            queryParams.forEach(urlBuilder::addQueryParameter);
+            queryParams.forEach((key, value) -> {
+                if (value != null) {
+                    // 将Boolean值转换为PVE期望的数字格式
+                    String stringValue;
+                    if (value instanceof Boolean) {
+                        stringValue = ((Boolean) value) ? "1" : "0";
+                    } else {
+                        stringValue = String.valueOf(value);
+                    }
+                    urlBuilder.addQueryParameter(key, stringValue);
+                }
+            });
         }
         HttpUrl url = urlBuilder.build();
 
@@ -166,7 +356,12 @@ public class ProxmoxApiExecutor {
 
         RequestBody requestBody = null;
         if (!method.equals("GET")) {
-            requestBody = createRequestBody(body, relativePath);
+            try {
+                requestBody = RequestBody.create(createRequestBody(body), MediaType.parse("application/json"));
+            } catch (JsonProcessingException e) {
+                throw new ProxmoxApiException("Failed to serialize request body.", e,
+                        clientConfig.getNodeConnectionConfig().getNodeId(), relativePath);
+            }
             requestBuilder.method(method, requestBody);
         } else {
             requestBuilder.get();
@@ -275,4 +470,5 @@ public class ProxmoxApiExecutor {
     public static ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;
     }
+
 }

@@ -1,0 +1,34 @@
+package io.github.pve.client.resource.nodes.qemu.status.current;
+
+import io.github.pve.client.http.ProxmoxApiExecutor;
+import io.github.pve.client.http.PveResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.qemu.status.current.*;
+
+/**
+ * Client for /nodes/{node}/qemu/{vmid}/status/current
+ * BY '@xiao-rao'
+ */
+public class CurrentClient {
+
+    protected final ProxmoxApiExecutor executor;
+    protected final String basePath;
+    protected final String node;
+    protected final String vmid;
+
+    public CurrentClient(ProxmoxApiExecutor executor, String node, String vmid) {
+        this.executor = executor;
+        this.node = node;
+        this.vmid = vmid;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/status/current".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+    }
+
+    /**
+     * Get virtual machine status.
+     */
+    public VmStatusResponse vmStatus() {
+        PveResponse<VmStatusResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        return response.getData().orElse(null);
+    }
+}

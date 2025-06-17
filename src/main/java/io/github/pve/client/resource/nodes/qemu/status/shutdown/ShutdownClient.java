@@ -1,0 +1,34 @@
+package io.github.pve.client.resource.nodes.qemu.status.shutdown;
+
+import io.github.pve.client.http.ProxmoxApiExecutor;
+import io.github.pve.client.http.PveResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.qemu.status.shutdown.*;
+
+/**
+ * Client for /nodes/{node}/qemu/{vmid}/status/shutdown
+ * BY '@xiao-rao'
+ */
+public class ShutdownClient {
+
+    protected final ProxmoxApiExecutor executor;
+    protected final String basePath;
+    protected final String node;
+    protected final String vmid;
+
+    public ShutdownClient(ProxmoxApiExecutor executor, String node, String vmid) {
+        this.executor = executor;
+        this.node = node;
+        this.vmid = vmid;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/status/shutdown".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+    }
+
+    /**
+     * Shutdown virtual machine. This is similar to pressing the power button on a physical machine. This will send an ACPI event for the guest OS, which should then proceed to a clean shutdown.
+     */
+    public String vmShutdown(VmShutdownRequest request) {
+        PveResponse<String> response = executor.post(this.basePath, request, new TypeReference<>() {});
+        return response.getData().orElse(null);
+    }
+}
