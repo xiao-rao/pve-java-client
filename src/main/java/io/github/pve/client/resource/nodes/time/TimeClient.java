@@ -5,6 +5,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.time.*;
 
 /**
  * Client for /nodes/{node}/time
@@ -25,8 +27,8 @@ public class TimeClient {
     /**
      * Read server time and time zone settings.
      */
-    public Object time() {
-        PveResponse<Object> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public TimeResponse time() {
+        PveResponse<TimeResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

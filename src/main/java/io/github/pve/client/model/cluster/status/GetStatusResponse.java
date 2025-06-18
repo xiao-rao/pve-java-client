@@ -58,7 +58,7 @@ public class GetStatusResponse {
      * Optional: True
      */
     @JsonProperty("nodeid")
-    private Integer nodeid;
+    private Integer nodeId;
 
     /**
      * [cluster] Nodes count, including offline nodes.

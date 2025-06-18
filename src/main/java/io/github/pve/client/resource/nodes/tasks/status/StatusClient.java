@@ -15,20 +15,20 @@ public class StatusClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String upid;
+    protected final String upId;
 
-    public StatusClient(ProxmoxApiExecutor executor, String node, String upid) {
+    public StatusClient(ProxmoxApiExecutor executor, String node, String upId) {
         this.executor = executor;
         this.node = node;
-        this.upid = upid;
-        this.basePath = "/nodes/{node}/tasks/{upid}/status".replace("{" + "node" + "}", node).replace("{" + "upid" + "}", upid);
+        this.upId = upId;
+        this.basePath = "/nodes/{node}/tasks/{upid}/status".replace("{" + "node" + "}", node).replace("{" + "upid" + "}", upId);
     }
 
     /**
      * Read task status.
      */
     public ReadTaskStatusResponse readTaskStatus() {
-        PveResponse<ReadTaskStatusResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<ReadTaskStatusResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

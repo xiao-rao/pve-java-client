@@ -47,7 +47,7 @@ public class UpdateTfaEntryRequest {
      * Optional: True
      */
     @JsonProperty("userid")
-    private String userid;
+    private String userId;
 
     /**
      * Path parameter: id

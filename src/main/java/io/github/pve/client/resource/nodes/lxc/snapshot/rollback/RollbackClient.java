@@ -15,15 +15,15 @@ public class RollbackClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
     protected final String snapname;
 
-    public RollbackClient(ProxmoxApiExecutor executor, String node, String vmid, String snapname) {
+    public RollbackClient(ProxmoxApiExecutor executor, String node, String vmId, String snapname) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
+        this.vmId = vmId;
         this.snapname = snapname;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/snapshot/{snapname}/rollback".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid).replace("{" + "snapname" + "}", snapname);
+        this.basePath = "/nodes/{node}/lxc/{vmid}/snapshot/{snapname}/rollback".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId).replace("{" + "snapname" + "}", snapname);
     }
 
     /**

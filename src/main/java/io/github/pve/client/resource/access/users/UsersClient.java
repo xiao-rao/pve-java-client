@@ -29,7 +29,7 @@ public class UsersClient {
     /**
      * User index.
      */
-    public IndexResponse index(Boolean enabled, Boolean full) {
+    public List<AccessUsersIndexResponse> index(Boolean enabled, Boolean full) {
         Map<String, Object> queryParams = new HashMap<>();
         if (enabled != null) {
             queryParams.put("enabled", enabled);
@@ -37,7 +37,7 @@ public class UsersClient {
         if (full != null) {
             queryParams.put("full", full);
         }
-        PveResponse<IndexResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<AccessUsersIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -51,15 +51,15 @@ public class UsersClient {
     /**
      * Delete user.
      */
-    public void deleteUser(String userid) {
-        executor.delete(this.basePath + "/" + userid);
+    public void deleteUser(String userId) {
+        executor.delete(this.basePath + "/" + userId);
     }
 
     /**
      * Get user configuration.
      */
-    public ReadUserResponse readUser(String userid) {
-        PveResponse<ReadUserResponse> response = executor.get(this.basePath + "/" + userid, null, new TypeReference<>() {});
+    public ReadUserResponse readUser(String userId) {
+        PveResponse<ReadUserResponse> response = executor.get(this.basePath + "/" + userId, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -67,30 +67,30 @@ public class UsersClient {
      * Update user configuration.
      */
     public void updateUser(UpdateUserRequest request) {
-        executor.put(this.basePath + "/" + request.getUserid(), request);
+        executor.put(this.basePath + "/" + request.getUserId(), request);
     }
 
     /**
-     * Client for the specific `userid` resource.
-     * @param userid The path parameter `userid`.
+     * Client for the specific `userId` resource.
+     * @param userId The path parameter `userId`.
      */
-    public TfaClient tfa(String userid) {
-        return new TfaClient(this.executor, userid);
+    public TfaClient tfa(String userId) {
+        return new TfaClient(this.executor, userId);
     }
 
     /**
-     * Client for the specific `userid` resource.
-     * @param userid The path parameter `userid`.
+     * Client for the specific `userId` resource.
+     * @param userId The path parameter `userId`.
      */
-    public UnlockTfaClient unlockTfa(String userid) {
-        return new UnlockTfaClient(this.executor, userid);
+    public UnlockTfaClient unlockTfa(String userId) {
+        return new UnlockTfaClient(this.executor, userId);
     }
 
     /**
-     * Client for the specific `userid` resource.
-     * @param userid The path parameter `userid`.
+     * Client for the specific `userId` resource.
+     * @param userId The path parameter `userId`.
      */
-    public TokenClient token(String userid) {
-        return new TokenClient(this.executor, userid);
+    public TokenClient token(String userId) {
+        return new TokenClient(this.executor, userId);
     }
 }

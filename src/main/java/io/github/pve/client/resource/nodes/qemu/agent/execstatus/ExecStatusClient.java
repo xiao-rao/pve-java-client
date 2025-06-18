@@ -15,20 +15,20 @@ public class ExecStatusClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public ExecStatusClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public ExecStatusClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/exec-status".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/exec-status".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Gets the status of the given pid started by the guest-agent
      */
-    public ExecStatusResponse execStatus(String pid) {
-        PveResponse<ExecStatusResponse> response = executor.get(this.basePath + "/" + pid, null, new TypeReference<>() {});
+    public ExecStatusResponse execStatus(String pId) {
+        PveResponse<ExecStatusResponse> response = executor.get(this.basePath + "/" + pId, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

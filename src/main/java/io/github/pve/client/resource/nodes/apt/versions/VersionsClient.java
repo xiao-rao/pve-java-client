@@ -25,7 +25,7 @@ public class VersionsClient {
      * Get package information for important Proxmox packages.
      */
     public List<Object> versions() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

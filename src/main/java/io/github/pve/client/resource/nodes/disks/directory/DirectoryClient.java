@@ -28,8 +28,8 @@ public class DirectoryClient {
     /**
      * PVE Managed Directory storages.
      */
-    public IndexResponse index() {
-        PveResponse<IndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<DisksDirectoryIndexResponse> index() {
+        PveResponse<List<DisksDirectoryIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -44,7 +44,7 @@ public class DirectoryClient {
     /**
      * Unmounts the storage and removes the mount unit.
      */
-    public void delete(String name, Boolean cleanupConfig, Boolean cleanupDisks) {
+    public String delete(String name, Boolean cleanupConfig, Boolean cleanupDisks) {
         String path = this.basePath + "/" + name;
         Map<String, Object> options = new HashMap<>();
         if (cleanupConfig != null) {
@@ -53,6 +53,7 @@ public class DirectoryClient {
         if (cleanupDisks != null) {
             options.put("cleanup-disks", cleanupDisks);
         }
-        executor.delete(path, options);
+        PveResponse<String> response = executor.delete(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

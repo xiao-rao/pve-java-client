@@ -5,6 +5,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.cluster.metrics.export.*;
 
 /**
  * Client for /cluster/metrics/export
@@ -23,7 +25,7 @@ public class ExportClient {
     /**
      * Retrieve metrics of the cluster.
      */
-    public Object export(Boolean history, Boolean localOnly, Integer startTime) {
+    public ExportResponse export(Boolean history, Boolean localOnly, Integer startTime) {
         Map<String, Object> queryParams = new HashMap<>();
         if (history != null) {
             queryParams.put("history", history);
@@ -34,7 +36,7 @@ public class ExportClient {
         if (startTime != null) {
             queryParams.put("start-time", startTime);
         }
-        PveResponse<Object> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<ExportResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

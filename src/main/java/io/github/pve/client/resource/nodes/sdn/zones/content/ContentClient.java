@@ -4,6 +4,8 @@ import java.util.List;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.sdn.zones.content.*;
 
 /**
  * Client for /nodes/{node}/sdn/zones/{zone}/content
@@ -26,8 +28,8 @@ public class ContentClient {
     /**
      * List zone content.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ZonesContentIndexResponse> index() {
+        PveResponse<List<ZonesContentIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

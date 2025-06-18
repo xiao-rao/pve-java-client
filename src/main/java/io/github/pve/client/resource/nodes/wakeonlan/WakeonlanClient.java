@@ -24,7 +24,7 @@ public class WakeonlanClient {
      * Try to wake a node via 'wake on LAN' network packet.
      */
     public String wakeonlan() {
-        PveResponse<String> response = executor.post(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

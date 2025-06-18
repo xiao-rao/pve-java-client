@@ -27,7 +27,7 @@ public class MappingClient {
      * List resource types.
      */
     public List<Map<String, Object>> index() {
-        PveResponse<List<Map<String, Object>>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Map<String, Object>>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

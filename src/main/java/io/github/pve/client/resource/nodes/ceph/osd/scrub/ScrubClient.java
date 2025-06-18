@@ -15,13 +15,13 @@ public class ScrubClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String osdid;
+    protected final String osdId;
 
-    public ScrubClient(ProxmoxApiExecutor executor, String node, String osdid) {
+    public ScrubClient(ProxmoxApiExecutor executor, String node, String osdId) {
         this.executor = executor;
         this.node = node;
-        this.osdid = osdid;
-        this.basePath = "/nodes/{node}/ceph/osd/{osdid}/scrub".replace("{" + "node" + "}", node).replace("{" + "osdid" + "}", osdid);
+        this.osdId = osdId;
+        this.basePath = "/nodes/{node}/ceph/osd/{osdid}/scrub".replace("{" + "node" + "}", node).replace("{" + "osdid" + "}", osdId);
     }
 
     /**

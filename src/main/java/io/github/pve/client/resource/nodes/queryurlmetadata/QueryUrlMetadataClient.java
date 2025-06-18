@@ -5,6 +5,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.queryurlmetadata.*;
 
 /**
  * Client for /nodes/{node}/query-url-metadata
@@ -25,7 +27,7 @@ public class QueryUrlMetadataClient {
     /**
      * Query metadata of an URL: file size, file name and mime type.
      */
-    public Object queryUrlMetadata(String url, Boolean verifyCertificates) {
+    public QueryUrlMetadataResponse queryUrlMetadata(String url, Boolean verifyCertificates) {
         Map<String, Object> queryParams = new HashMap<>();
         if (url != null) {
             queryParams.put("url", url);
@@ -33,7 +35,7 @@ public class QueryUrlMetadataClient {
         if (verifyCertificates != null) {
             queryParams.put("verify-certificates", verifyCertificates);
         }
-        PveResponse<Object> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<QueryUrlMetadataResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

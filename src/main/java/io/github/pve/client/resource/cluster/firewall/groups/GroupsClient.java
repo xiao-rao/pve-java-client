@@ -26,8 +26,8 @@ public class GroupsClient {
     /**
      * List security groups.
      */
-    public List<Object> listSecurityGroups() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ListSecurityGroupsResponse> listSecurityGroups() {
+        PveResponse<List<ListSecurityGroupsResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -48,8 +48,9 @@ public class GroupsClient {
     /**
      * List rules.
      */
-    public void getRules(String group) {
-        executor.get(this.basePath + "/" + group);
+    public List<GetRulesResponse> getRules(String group) {
+        PveResponse<List<GetRulesResponse>> response = executor.get(this.basePath + "/" + group, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
@@ -76,7 +77,7 @@ public class GroupsClient {
      * Get single rule data.
      */
     public GetRuleResponse getRule(String pos, String group) {
-        PveResponse<GetRuleResponse> response = executor.get(this.basePath + "/" + group + "/" + pos, null, new TypeReference<>() {});
+        PveResponse<GetRuleResponse> response = executor.get(this.basePath + "/" + group + "/" + pos, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

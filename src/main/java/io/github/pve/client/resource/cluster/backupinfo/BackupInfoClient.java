@@ -5,6 +5,8 @@ import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.resource.cluster.backupinfo.notbackedup.NotBackedUpClient;
+// Import models if needed
+import io.github.pve.client.model.cluster.backupinfo.*;
 
 /**
  * Client for /cluster/backup-info
@@ -23,8 +25,8 @@ public class BackupInfoClient {
     /**
      * Index for backup info related endpoints
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ClusterBackupinfoIndexResponse> index() {
+        PveResponse<List<ClusterBackupinfoIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

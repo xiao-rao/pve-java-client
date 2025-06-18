@@ -99,7 +99,7 @@ public class UpdateUserRequest {
      * Optional: True
      */
     @JsonProperty("userid")
-    private String userid;
+    private String userId;
 
 
 }

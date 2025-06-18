@@ -27,8 +27,8 @@ public class LvmClient {
     /**
      * List LVM Volume Groups
      */
-    public Object index() {
-        PveResponse<Object> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public DisksLvmIndexResponse index() {
+        PveResponse<DisksLvmIndexResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -43,7 +43,7 @@ public class LvmClient {
     /**
      * Remove an LVM Volume Group.
      */
-    public void delete(String name, Boolean cleanupConfig, Boolean cleanupDisks) {
+    public String delete(String name, Boolean cleanupConfig, Boolean cleanupDisks) {
         String path = this.basePath + "/" + name;
         Map<String, Object> options = new HashMap<>();
         if (cleanupConfig != null) {
@@ -52,6 +52,7 @@ public class LvmClient {
         if (cleanupDisks != null) {
             options.put("cleanup-disks", cleanupDisks);
         }
-        executor.delete(path, options);
+        PveResponse<String> response = executor.delete(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

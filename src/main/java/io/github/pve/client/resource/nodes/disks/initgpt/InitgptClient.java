@@ -25,8 +25,8 @@ public class InitgptClient {
     /**
      * Initialize Disk with GPT
      */
-    public String initgpt(String uuid, String disk) {
-        String path = this.basePath + "/" + uuid;
+    public String initgpt(String uuId, String disk) {
+        String path = this.basePath + "/" + uuId;
         Map<String, Object> options = new HashMap<>();
         if (disk != null) {
             options.put("disk", disk);

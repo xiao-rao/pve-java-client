@@ -26,12 +26,12 @@ public class DnsClient {
     /**
      * SDN dns index.
      */
-    public List<Object> index(String type) {
+    public List<SdnDnsIndexResponse> index(String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<SdnDnsIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -52,8 +52,9 @@ public class DnsClient {
     /**
      * Read sdn dns configuration.
      */
-    public void read(String dns) {
-        executor.get(this.basePath + "/" + dns);
+    public Map<String, Object> read(String dns) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + dns, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

@@ -26,12 +26,12 @@ public class DirClient {
     /**
      * List directory mapping
      */
-    public IndexResponse index(String checkNode) {
+    public List<MappingDirIndexResponse> index(String checkNode) {
         Map<String, Object> queryParams = new HashMap<>();
         if (checkNode != null) {
             queryParams.put("check-node", checkNode);
         }
-        PveResponse<IndexResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<MappingDirIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -52,8 +52,9 @@ public class DirClient {
     /**
      * Get directory mapping.
      */
-    public void get(String id) {
-        executor.get(this.basePath + "/" + id);
+    public Map<String, Object> get(String id) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

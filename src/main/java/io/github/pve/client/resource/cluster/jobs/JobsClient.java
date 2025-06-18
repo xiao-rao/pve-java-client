@@ -6,6 +6,8 @@ import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.resource.cluster.jobs.realmsync.RealmSyncClient;
 import io.github.pve.client.resource.cluster.jobs.scheduleanalyze.ScheduleAnalyzeClient;
+// Import models if needed
+import io.github.pve.client.model.cluster.jobs.*;
 
 /**
  * Client for /cluster/jobs
@@ -24,8 +26,8 @@ public class JobsClient {
     /**
      * Index for jobs related endpoints.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ClusterJobsIndexResponse> index() {
+        PveResponse<List<ClusterJobsIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

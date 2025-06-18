@@ -26,12 +26,12 @@ public class PluginsClient {
     /**
      * ACME plugin index.
      */
-    public List<Object> index(String type) {
+    public List<AcmePluginsIndexResponse> index(String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<AcmePluginsIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -52,8 +52,9 @@ public class PluginsClient {
     /**
      * Get ACME plugin configuration.
      */
-    public void getPluginConfig(String id) {
-        executor.get(this.basePath + "/" + id);
+    public Map<String, Object> getPluginConfig(String id) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

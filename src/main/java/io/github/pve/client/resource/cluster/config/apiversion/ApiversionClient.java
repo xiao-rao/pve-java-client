@@ -22,7 +22,7 @@ public class ApiversionClient {
      * Return the version of the cluster join API available on this node.
      */
     public Integer joinApiVersion() {
-        PveResponse<Integer> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<Integer> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

@@ -34,7 +34,7 @@ public class ReadAclResponse {
      * Optional: True
      */
     @JsonProperty("roleid")
-    private String roleid;
+    private String roleId;
 
     /**
      * 
@@ -50,7 +50,7 @@ public class ReadAclResponse {
      * Optional: True
      */
     @JsonProperty("ugid")
-    private String ugid;
+    private String ugId;
 
 
 }

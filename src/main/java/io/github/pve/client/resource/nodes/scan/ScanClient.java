@@ -12,6 +12,8 @@ import io.github.pve.client.resource.nodes.scan.iscsi.IscsiClient;
 import io.github.pve.client.resource.nodes.scan.lvm.LvmClient;
 import io.github.pve.client.resource.nodes.scan.lvmthin.LvmthinClient;
 import io.github.pve.client.resource.nodes.scan.zfs.ZfsClient;
+// Import models if needed
+import io.github.pve.client.model.nodes.scan.*;
 
 /**
  * Client for /nodes/{node}/scan
@@ -32,8 +34,8 @@ public class ScanClient {
     /**
      * Index of available scan methods
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<NodesScanIndexResponse> index() {
+        PveResponse<List<NodesScanIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

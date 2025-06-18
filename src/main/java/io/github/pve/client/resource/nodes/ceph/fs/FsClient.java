@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.ceph.fs.*;
 
 /**
  * Client for /nodes/{node}/ceph/fs
@@ -26,15 +28,15 @@ public class FsClient {
     /**
      * Directory index.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<CephFsIndexResponse> index() {
+        PveResponse<List<CephFsIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Create a Ceph filesystem
      */
-    public void createfs(String name, Boolean addStorage, Integer pgNum) {
+    public String createfs(String name, Boolean addStorage, Integer pgNum) {
         String path = this.basePath + "/" + name;
         Map<String, Object> options = new HashMap<>();
         if (addStorage != null) {
@@ -43,6 +45,7 @@ public class FsClient {
         if (pgNum != null) {
             options.put("pg_num", pgNum);
         }
-        executor.post(path, options);
+        PveResponse<String> response = executor.post(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

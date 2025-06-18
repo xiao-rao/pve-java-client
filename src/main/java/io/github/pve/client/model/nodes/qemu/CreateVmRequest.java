@@ -727,7 +727,7 @@ public class CreateVmRequest {
      * Optional: True
      */
     @JsonProperty("vmgenid")
-    private String vmgenid;
+    private String vmgenId;
 
     /**
      * Path parameter: vmid
@@ -735,7 +735,7 @@ public class CreateVmRequest {
      * Optional: True
      */
     @JsonProperty("vmid")
-    private String vmid;
+    private String vmId;
 
 
     

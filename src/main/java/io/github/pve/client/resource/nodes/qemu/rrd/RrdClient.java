@@ -5,6 +5,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.qemu.rrd.*;
 
 /**
  * Client for /nodes/{node}/qemu/{vmid}/rrd
@@ -15,19 +17,19 @@ public class RrdClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public RrdClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public RrdClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/rrd".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/rrd".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Read VM RRD statistics (returns PNG)
      */
-    public Object rrd(String cf, String ds, String timeframe) {
+    public RrdResponse rrd(String cf, String ds, String timeframe) {
         Map<String, Object> queryParams = new HashMap<>();
         if (cf != null) {
             queryParams.put("cf", cf);
@@ -38,7 +40,7 @@ public class RrdClient {
         if (timeframe != null) {
             queryParams.put("timeframe", timeframe);
         }
-        PveResponse<Object> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<RrdResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

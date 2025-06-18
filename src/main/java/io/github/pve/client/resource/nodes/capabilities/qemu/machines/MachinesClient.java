@@ -26,8 +26,8 @@ public class MachinesClient {
     /**
      * Get available QEMU/KVM machine types.
      */
-    public TypesResponse types() {
-        PveResponse<TypesResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<TypesResponse> types() {
+        PveResponse<List<TypesResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

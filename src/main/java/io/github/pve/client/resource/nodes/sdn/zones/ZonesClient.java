@@ -5,6 +5,8 @@ import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.resource.nodes.sdn.zones.content.ContentClient;
+// Import models if needed
+import io.github.pve.client.model.nodes.sdn.zones.*;
 
 /**
  * Client for /nodes/{node}/sdn/zones
@@ -25,16 +27,17 @@ public class ZonesClient {
     /**
      * Get status for all zones.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<SdnZonesIndexResponse> index() {
+        PveResponse<List<SdnZonesIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * 
      */
-    public void diridx(String zone) {
-        executor.get(this.basePath + "/" + zone);
+    public List<DiridxResponse> diridx(String zone) {
+        PveResponse<List<DiridxResponse>> response = executor.get(this.basePath + "/" + zone, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

@@ -20,20 +20,20 @@ public class FirewallClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public FirewallClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public FirewallClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/firewall".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/lxc/{vmid}/firewall".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Directory index.
      */
     public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -41,41 +41,41 @@ public class FirewallClient {
      * Returns a client for the sub-resource: `rules`
      */
     public RulesClient rules() {
-        return new RulesClient(this.executor, this.node, this.vmid);
+        return new RulesClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `aliases`
      */
     public AliasesClient aliases() {
-        return new AliasesClient(this.executor, this.node, this.vmid);
+        return new AliasesClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `ipset`
      */
     public IpsetClient ipset() {
-        return new IpsetClient(this.executor, this.node, this.vmid);
+        return new IpsetClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `options`
      */
     public OptionsClient options() {
-        return new OptionsClient(this.executor, this.node, this.vmid);
+        return new OptionsClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `log`
      */
     public LogClient log() {
-        return new LogClient(this.executor, this.node, this.vmid);
+        return new LogClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `refs`
      */
     public RefsClient refs() {
-        return new RefsClient(this.executor, this.node, this.vmid);
+        return new RefsClient(this.executor, this.node, this.vmId);
     }
 }

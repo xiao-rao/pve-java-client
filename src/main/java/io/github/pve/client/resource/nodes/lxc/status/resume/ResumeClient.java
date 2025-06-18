@@ -13,20 +13,20 @@ public class ResumeClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public ResumeClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public ResumeClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/status/resume".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/lxc/{vmid}/status/resume".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Resume the container.
      */
     public String vmResume() {
-        PveResponse<String> response = executor.post(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

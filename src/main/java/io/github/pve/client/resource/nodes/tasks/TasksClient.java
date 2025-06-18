@@ -30,8 +30,8 @@ public class TasksClient {
     /**
      * Read task list for one node (finished tasks).
      */
-    public NodeTasksResponse nodeTasks(String vmid, Boolean errors, Integer limit, Integer since, String source, Integer start, String statusfilter, String typefilter, Integer until, String userfilter) {
-        String path = this.basePath + "/" + vmid;
+    public List<NodeTasksResponse> nodeTasks(String vmId, Boolean errors, Integer limit, Integer since, String source, Integer start, String statusfilter, String typefilter, Integer until, String userfilter) {
+        String path = this.basePath + "/" + vmId;
         Map<String, Object> queryParams = new HashMap<>();
         if (errors != null) {
             queryParams.put("errors", errors);
@@ -60,37 +60,38 @@ public class TasksClient {
         if (userfilter != null) {
             queryParams.put("userfilter", userfilter);
         }
-        PveResponse<NodeTasksResponse> response = executor.get(path, queryParams, new TypeReference<>() {});
+        PveResponse<List<NodeTasksResponse>> response = executor.get(path, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Stop a task.
      */
-    public void stopTask(String upid) {
-        executor.delete(this.basePath + "/" + upid);
+    public void stopTask(String upId) {
+        executor.delete(this.basePath + "/" + upId);
     }
 
     /**
      * 
      */
-    public void upidIndex(String upid) {
-        executor.get(this.basePath + "/" + upid);
+    public List<Object> upIdIndex(String upId) {
+        PveResponse<List<Object>> response = executor.get(this.basePath + "/" + upId, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
-     * Client for the specific `upid` resource.
-     * @param upid The path parameter `upid`.
+     * Client for the specific `upId` resource.
+     * @param upId The path parameter `upId`.
      */
-    public LogClient log(String upid) {
-        return new LogClient(this.executor, this.node, upid);
+    public LogClient log(String upId) {
+        return new LogClient(this.executor, this.node, upId);
     }
 
     /**
-     * Client for the specific `upid` resource.
-     * @param upid The path parameter `upid`.
+     * Client for the specific `upId` resource.
+     * @param upId The path parameter `upId`.
      */
-    public StatusClient status(String upid) {
-        return new StatusClient(this.executor, this.node, upid);
+    public StatusClient status(String upId) {
+        return new StatusClient(this.executor, this.node, upId);
     }
 }

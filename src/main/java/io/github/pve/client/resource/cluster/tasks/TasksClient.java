@@ -4,6 +4,8 @@ import java.util.List;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.cluster.tasks.*;
 
 /**
  * Client for /cluster/tasks
@@ -22,8 +24,8 @@ public class TasksClient {
     /**
      * List recent tasks (cluster wide).
      */
-    public List<Object> tasks() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<TasksResponse> tasks() {
+        PveResponse<List<TasksResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

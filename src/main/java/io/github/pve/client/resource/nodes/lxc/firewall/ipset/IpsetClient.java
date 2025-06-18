@@ -18,20 +18,20 @@ public class IpsetClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public IpsetClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public IpsetClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/firewall/ipset".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/lxc/{vmid}/firewall/ipset".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * List IPSets
      */
-    public List<Object> ipsetIndex() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<IpsetIndexResponse> ipsetIndex() {
+        PveResponse<List<IpsetIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -57,8 +57,8 @@ public class IpsetClient {
     /**
      * List IPSet content
      */
-    public GetIpsetResponse getIpset(String name) {
-        PveResponse<GetIpsetResponse> response = executor.get(this.basePath + "/" + name, null, new TypeReference<>() {});
+    public List<GetIpsetResponse> getIpset(String name) {
+        PveResponse<List<GetIpsetResponse>> response = executor.get(this.basePath + "/" + name, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -85,8 +85,9 @@ public class IpsetClient {
     /**
      * Read IP or Network settings from IPSet.
      */
-    public void readIp(String cidr, String name) {
-        executor.get(this.basePath + "/" + name + "/" + cidr);
+    public Map<String, Object> readIp(String cidr, String name) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + name + "/" + cidr, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

@@ -295,7 +295,7 @@ public class VzdumpRequest {
      * Optional: True
      */
     @JsonProperty("vmid")
-    private String vmid;
+    private String vmId;
 
 
 }

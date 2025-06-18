@@ -71,7 +71,7 @@ public class AddTfaEntryRequest {
      * Optional: True
      */
     @JsonProperty("userid")
-    private String userid;
+    private String userId;
 
 
 }

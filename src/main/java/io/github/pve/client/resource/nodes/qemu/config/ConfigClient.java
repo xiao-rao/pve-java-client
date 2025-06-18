@@ -17,13 +17,13 @@ public class ConfigClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public ConfigClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public ConfigClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/config".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/config".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
@@ -45,7 +45,7 @@ public class ConfigClient {
      * Set virtual machine options (asynchronous API).
      */
     public String updateVmAsync(UpdateVmAsyncRequest request) {
-        PveResponse<String> response = executor.post(this.basePath + "/" + request.getVmgenid(), request, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath + "/" + request.getVmgenId(), request, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -53,6 +53,6 @@ public class ConfigClient {
      * Set virtual machine options (synchronous API) - You should consider using the POST method instead for any actions involving hotplug or storage allocation.
      */
     public void updateVm(UpdateVmRequest request) {
-        executor.put(this.basePath + "/" + request.getVmgenid(), request);
+        executor.put(this.basePath + "/" + request.getVmgenId(), request);
     }
 }

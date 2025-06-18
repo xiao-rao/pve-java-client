@@ -30,7 +30,7 @@ public class ListClient {
     /**
      * List files and directories for single file restore under the given path.
      */
-    public ListResponse list(String filepath, String volume) {
+    public List<ListResponse> list(String filepath, String volume) {
         Map<String, Object> queryParams = new HashMap<>();
         if (filepath != null) {
             queryParams.put("filepath", filepath);
@@ -38,7 +38,7 @@ public class ListClient {
         if (volume != null) {
             queryParams.put("volume", volume);
         }
-        PveResponse<ListResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<ListResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

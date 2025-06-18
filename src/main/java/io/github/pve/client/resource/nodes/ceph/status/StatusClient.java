@@ -25,7 +25,7 @@ public class StatusClient {
      * Get ceph status.
      */
     public Map<String, Object> status() {
-        PveResponse<Map<String, Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

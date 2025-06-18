@@ -4,6 +4,8 @@ import java.util.List;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.ceph.rules.*;
 
 /**
  * Client for /nodes/{node}/ceph/rules
@@ -24,8 +26,8 @@ public class RulesClient {
     /**
      * List ceph rules.
      */
-    public List<Object> rules() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<RulesResponse> rules() {
+        PveResponse<List<RulesResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

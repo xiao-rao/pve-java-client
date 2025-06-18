@@ -58,7 +58,7 @@ public class VnetsClient {
     /**
      * Read sdn vnet configuration.
      */
-    public void read(String vnet, Boolean pending, Boolean running) {
+    public Map<String, Object> read(String vnet, Boolean pending, Boolean running) {
         String path = this.basePath + "/" + vnet;
         Map<String, Object> queryParams = new HashMap<>();
         if (pending != null) {
@@ -67,7 +67,8 @@ public class VnetsClient {
         if (running != null) {
             queryParams.put("running", running);
         }
-        executor.get(path, queryParams);
+        PveResponse<Map<String, Object>> response = executor.get(path, queryParams, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

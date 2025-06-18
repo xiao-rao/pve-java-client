@@ -26,8 +26,8 @@ public class RulesClient {
     /**
      * List rules.
      */
-    public List<Object> getRules() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetRulesResponse> getRules() {
+        PveResponse<List<GetRulesResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -54,7 +54,7 @@ public class RulesClient {
      * Get single rule data.
      */
     public GetRuleResponse getRule(String pos) {
-        PveResponse<GetRuleResponse> response = executor.get(this.basePath + "/" + pos, null, new TypeReference<>() {});
+        PveResponse<GetRuleResponse> response = executor.get(this.basePath + "/" + pos, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

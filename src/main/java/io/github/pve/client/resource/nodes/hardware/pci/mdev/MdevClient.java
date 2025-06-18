@@ -28,8 +28,8 @@ public class MdevClient {
     /**
      * List mediated device types for given PCI device.
      */
-    public MdevscanResponse mdevscan() {
-        PveResponse<MdevscanResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<MdevscanResponse> mdevscan() {
+        PveResponse<List<MdevscanResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

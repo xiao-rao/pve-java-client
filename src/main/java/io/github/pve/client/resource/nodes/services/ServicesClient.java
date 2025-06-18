@@ -9,6 +9,8 @@ import io.github.pve.client.resource.nodes.services.start.StartClient;
 import io.github.pve.client.resource.nodes.services.stop.StopClient;
 import io.github.pve.client.resource.nodes.services.restart.RestartClient;
 import io.github.pve.client.resource.nodes.services.reload.ReloadClient;
+// Import models if needed
+import io.github.pve.client.model.nodes.services.*;
 
 /**
  * Client for /nodes/{node}/services
@@ -30,15 +32,16 @@ public class ServicesClient {
      * Service list.
      */
     public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Directory index
      */
-    public void srvcmdidx(String service) {
-        executor.get(this.basePath + "/" + service);
+    public List<SrvcmdidxResponse> srvcmdidx(String service) {
+        PveResponse<List<SrvcmdidxResponse>> response = executor.get(this.basePath + "/" + service, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

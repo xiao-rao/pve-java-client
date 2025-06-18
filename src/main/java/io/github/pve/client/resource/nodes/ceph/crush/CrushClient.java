@@ -24,7 +24,7 @@ public class CrushClient {
      * Get OSD crush map
      */
     public String crush() {
-        PveResponse<String> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

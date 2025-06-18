@@ -28,27 +28,29 @@ public class MdsClient {
     /**
      * MDS directory index.
      */
-    public IndexResponse index() {
-        PveResponse<IndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<CephMdsIndexResponse> index() {
+        PveResponse<List<CephMdsIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Destroy Ceph Metadata Server
      */
-    public void destroymds(String name) {
-        executor.delete(this.basePath + "/" + name);
+    public String destroymds(String name) {
+        PveResponse<String> response = executor.delete(this.basePath + "/" + name, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Create Ceph Metadata Server (MDS)
      */
-    public void createmds(String name, Boolean hotstandby) {
+    public String createmds(String name, Boolean hotstandby) {
         String path = this.basePath + "/" + name;
         Map<String, Object> options = new HashMap<>();
         if (hotstandby != null) {
             options.put("hotstandby", hotstandby);
         }
-        executor.post(path, options);
+        PveResponse<String> response = executor.post(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

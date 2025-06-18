@@ -30,8 +30,8 @@ public class PrunebackupsClient {
     /**
      * Prune backups. Only those using the standard naming scheme are considered.
      */
-    public String delete(String vmid, String pruneBackups, String type) {
-        String path = this.basePath + "/" + vmid;
+    public String delete(String vmId, String pruneBackups, String type) {
+        String path = this.basePath + "/" + vmId;
         Map<String, Object> options = new HashMap<>();
         if (pruneBackups != null) {
             options.put("prune-backups", pruneBackups);
@@ -46,8 +46,8 @@ public class PrunebackupsClient {
     /**
      * Get prune information for backups. NOTE: this is only a preview and might not be what a subsequent prune call does if backups are removed/added in the meantime.
      */
-    public DryrunResponse dryrun(String vmid, String pruneBackups, String type) {
-        String path = this.basePath + "/" + vmid;
+    public List<DryrunResponse> dryrun(String vmId, String pruneBackups, String type) {
+        String path = this.basePath + "/" + vmId;
         Map<String, Object> queryParams = new HashMap<>();
         if (pruneBackups != null) {
             queryParams.put("prune-backups", pruneBackups);
@@ -55,7 +55,7 @@ public class PrunebackupsClient {
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<DryrunResponse> response = executor.get(path, queryParams, new TypeReference<>() {});
+        PveResponse<List<DryrunResponse>> response = executor.get(path, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

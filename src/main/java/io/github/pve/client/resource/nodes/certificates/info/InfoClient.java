@@ -26,8 +26,8 @@ public class InfoClient {
     /**
      * Get information about node's certificates.
      */
-    public InfoResponse info() {
-        PveResponse<InfoResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<InfoResponse> info() {
+        PveResponse<List<InfoResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

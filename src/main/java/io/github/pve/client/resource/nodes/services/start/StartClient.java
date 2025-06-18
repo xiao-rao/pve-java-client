@@ -26,7 +26,7 @@ public class StartClient {
      * Start service.
      */
     public String serviceStart() {
-        PveResponse<String> response = executor.post(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.replication.log.*;
 
 /**
  * Client for /nodes/{node}/replication/{id}/log
@@ -28,7 +30,7 @@ public class LogClient {
     /**
      * Read replication job log.
      */
-    public List<Object> readJobLog(Integer limit, Integer start) {
+    public List<ReadJobLogResponse> readJobLog(Integer limit, Integer start) {
         Map<String, Object> queryParams = new HashMap<>();
         if (limit != null) {
             queryParams.put("limit", limit);
@@ -36,7 +38,7 @@ public class LogClient {
         if (start != null) {
             queryParams.put("start", start);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<ReadJobLogResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

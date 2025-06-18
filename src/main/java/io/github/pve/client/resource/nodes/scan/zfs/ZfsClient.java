@@ -4,6 +4,8 @@ import java.util.List;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.scan.zfs.*;
 
 /**
  * Client for /nodes/{node}/scan/zfs
@@ -24,8 +26,8 @@ public class ZfsClient {
     /**
      * Scan zfs pool list on local node.
      */
-    public List<Object> zfsscan() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ZfsscanResponse> zfsscan() {
+        PveResponse<List<ZfsscanResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

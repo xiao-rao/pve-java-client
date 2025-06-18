@@ -101,7 +101,7 @@ public class CreateUserRequest {
      */
     @Size(max=64, message="Parameter 'userid' length must not exceed 64")
     @JsonProperty("userid")
-    private String userid;
+    private String userId;
 
 
 }

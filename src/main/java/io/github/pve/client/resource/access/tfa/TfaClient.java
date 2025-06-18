@@ -26,31 +26,32 @@ public class TfaClient {
     /**
      * List TFA configurations of users.
      */
-    public ListTfaResponse listTfa() {
-        PveResponse<ListTfaResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ListTfaResponse> listTfa() {
+        PveResponse<List<ListTfaResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * List TFA configurations of users.
      */
-    public ListUserTfaResponse listUserTfa(String userid) {
-        PveResponse<ListUserTfaResponse> response = executor.get(this.basePath + "/" + userid, null, new TypeReference<>() {});
+    public List<ListUserTfaResponse> listUserTfa(String userId) {
+        PveResponse<List<ListUserTfaResponse>> response = executor.get(this.basePath + "/" + userId, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Add a TFA entry for a user.
      */
-    public void addTfaEntry(AddTfaEntryRequest request) {
-        executor.post(this.basePath + "/" + request.getUserid(), request);
+    public AddTfaEntryResponse addTfaEntry(AddTfaEntryRequest request) {
+        PveResponse<AddTfaEntryResponse> response = executor.post(this.basePath + "/" + request.getUserId(), request, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Delete a TFA entry by ID.
      */
-    public void deleteTfa(String id, String userid, String password) {
-        String path = this.basePath + "/" + userid;
+    public void deleteTfa(String id, String userId, String password) {
+        String path = this.basePath + "/" + userId;
         path = path + "/" + id;
         Map<String, Object> options = new HashMap<>();
         if (password != null) {
@@ -62,8 +63,8 @@ public class TfaClient {
     /**
      * Fetch a requested TFA entry if present.
      */
-    public GetTfaEntryResponse getTfaEntry(String id, String userid) {
-        PveResponse<GetTfaEntryResponse> response = executor.get(this.basePath + "/" + userid + "/" + id, null, new TypeReference<>() {});
+    public GetTfaEntryResponse getTfaEntry(String id, String userId) {
+        PveResponse<GetTfaEntryResponse> response = executor.get(this.basePath + "/" + userId + "/" + id, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -71,6 +72,6 @@ public class TfaClient {
      * Add a TFA entry for a user.
      */
     public void updateTfaEntry(UpdateTfaEntryRequest request) {
-        executor.put(this.basePath + "/" + request.getUserid() + "/" + request.getId(), request);
+        executor.put(this.basePath + "/" + request.getUserId() + "/" + request.getId(), request);
     }
 }

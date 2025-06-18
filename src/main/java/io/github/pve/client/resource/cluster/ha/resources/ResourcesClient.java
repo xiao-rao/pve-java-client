@@ -28,12 +28,12 @@ public class ResourcesClient {
     /**
      * List HA resources.
      */
-    public List<Object> index(String type) {
+    public List<HaResourcesIndexResponse> index(String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<HaResourcesIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -47,15 +47,15 @@ public class ResourcesClient {
     /**
      * Delete resource configuration.
      */
-    public void delete(String sid) {
-        executor.delete(this.basePath + "/" + sid);
+    public void delete(String sId) {
+        executor.delete(this.basePath + "/" + sId);
     }
 
     /**
      * Read resource configuration.
      */
-    public ReadResponse read(String sid) {
-        PveResponse<ReadResponse> response = executor.get(this.basePath + "/" + sid, null, new TypeReference<>() {});
+    public ReadResponse read(String sId) {
+        PveResponse<ReadResponse> response = executor.get(this.basePath + "/" + sId, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -63,22 +63,22 @@ public class ResourcesClient {
      * Update resource configuration.
      */
     public void update(UpdateRequest request) {
-        executor.put(this.basePath + "/" + request.getSid(), request);
+        executor.put(this.basePath + "/" + request.getSId(), request);
     }
 
     /**
-     * Client for the specific `sid` resource.
-     * @param sid The path parameter `sid`.
+     * Client for the specific `sId` resource.
+     * @param sId The path parameter `sId`.
      */
-    public MigrateClient migrate(String sid) {
-        return new MigrateClient(this.executor, sid);
+    public MigrateClient migrate(String sId) {
+        return new MigrateClient(this.executor, sId);
     }
 
     /**
-     * Client for the specific `sid` resource.
-     * @param sid The path parameter `sid`.
+     * Client for the specific `sId` resource.
+     * @param sId The path parameter `sId`.
      */
-    public RelocateClient relocate(String sid) {
-        return new RelocateClient(this.executor, sid);
+    public RelocateClient relocate(String sId) {
+        return new RelocateClient(this.executor, sId);
     }
 }

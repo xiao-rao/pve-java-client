@@ -4,6 +4,8 @@ import java.util.List;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.cluster.backupinfo.notbackedup.*;
 
 /**
  * Client for /cluster/backup-info/not-backed-up
@@ -22,8 +24,8 @@ public class NotBackedUpClient {
     /**
      * Shows all guests which are not covered by any backup job.
      */
-    public List<Object> getGuestsNotInBackup() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetGuestsNotInBackupResponse> getGuestsNotInBackup() {
+        PveResponse<List<GetGuestsNotInBackupResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

@@ -50,7 +50,7 @@ public class OsdvolumeResponse {
      * Optional: True
      */
     @JsonProperty("lv_uuid")
-    private String lvUuid;
+    private String lvUuId;
 
     /**
      * Name of the volume group (VG).

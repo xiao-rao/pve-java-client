@@ -42,7 +42,7 @@ public class DryrunResponse {
      * Optional: True
      */
     @JsonProperty("vmid")
-    private Integer vmid;
+    private Integer vmId;
 
     /**
      * Backup volume ID.
@@ -50,7 +50,7 @@ public class DryrunResponse {
      * Optional: True
      */
     @JsonProperty("volid")
-    private String volid;
+    private String volId;
 
 
 }

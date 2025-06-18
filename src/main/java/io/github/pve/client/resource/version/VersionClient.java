@@ -24,7 +24,7 @@ public class VersionClient {
      * API version details, including some parts of the global datacenter config.
      */
     public VersionResponse version() {
-        PveResponse<VersionResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<VersionResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

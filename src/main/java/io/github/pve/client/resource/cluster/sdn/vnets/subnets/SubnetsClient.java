@@ -57,7 +57,7 @@ public class SubnetsClient {
     /**
      * Read sdn subnet configuration.
      */
-    public void read(String subnet, Boolean pending, Boolean running) {
+    public Map<String, Object> read(String subnet, Boolean pending, Boolean running) {
         String path = this.basePath + "/" + subnet;
         Map<String, Object> queryParams = new HashMap<>();
         if (pending != null) {
@@ -66,7 +66,8 @@ public class SubnetsClient {
         if (running != null) {
             queryParams.put("running", running);
         }
-        executor.get(path, queryParams);
+        PveResponse<Map<String, Object>> response = executor.get(path, queryParams, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

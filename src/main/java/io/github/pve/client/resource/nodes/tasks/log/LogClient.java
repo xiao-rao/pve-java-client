@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.tasks.log.*;
 
 /**
  * Client for /nodes/{node}/tasks/{upid}/log
@@ -16,19 +18,19 @@ public class LogClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String upid;
+    protected final String upId;
 
-    public LogClient(ProxmoxApiExecutor executor, String node, String upid) {
+    public LogClient(ProxmoxApiExecutor executor, String node, String upId) {
         this.executor = executor;
         this.node = node;
-        this.upid = upid;
-        this.basePath = "/nodes/{node}/tasks/{upid}/log".replace("{" + "node" + "}", node).replace("{" + "upid" + "}", upid);
+        this.upId = upId;
+        this.basePath = "/nodes/{node}/tasks/{upid}/log".replace("{" + "node" + "}", node).replace("{" + "upid" + "}", upId);
     }
 
     /**
      * Read task log.
      */
-    public List<Object> readTaskLog(Boolean download, Integer limit, Integer start) {
+    public List<ReadTaskLogResponse> readTaskLog(Boolean download, Integer limit, Integer start) {
         Map<String, Object> queryParams = new HashMap<>();
         if (download != null) {
             queryParams.put("download", download);
@@ -39,7 +41,7 @@ public class LogClient {
         if (start != null) {
             queryParams.put("start", start);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<ReadTaskLogResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

@@ -46,7 +46,7 @@ public class RegisterAccountRequest {
      * Optional: True
      */
     @JsonProperty("eab-kid")
-    private String eabKid;
+    private String eabKId;
 
     /**
      * ACME account config file name.

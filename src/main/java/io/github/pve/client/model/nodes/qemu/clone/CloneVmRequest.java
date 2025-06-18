@@ -86,7 +86,7 @@ public class CloneVmRequest {
      * Optional: True
      */
     @JsonProperty("newid")
-    private String newid;
+    private String newId;
 
     /**
      * Path parameter: storage

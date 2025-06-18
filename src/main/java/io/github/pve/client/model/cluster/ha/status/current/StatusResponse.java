@@ -74,7 +74,7 @@ public class StatusResponse {
      * Optional: True
      */
     @JsonProperty("sid")
-    private String sid;
+    private String sId;
 
     /**
      * For type 'service'. Verbose service state.

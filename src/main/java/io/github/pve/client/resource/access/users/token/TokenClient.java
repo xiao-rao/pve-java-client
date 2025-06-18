@@ -15,47 +15,50 @@ public class TokenClient {
 
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
-    protected final String userid;
+    protected final String userId;
 
-    public TokenClient(ProxmoxApiExecutor executor, String userid) {
+    public TokenClient(ProxmoxApiExecutor executor, String userId) {
         this.executor = executor;
-        this.userid = userid;
-        this.basePath = "/access/users/{userid}/token".replace("{" + "userid" + "}", userid);
+        this.userId = userId;
+        this.basePath = "/access/users/{userid}/token".replace("{" + "userid" + "}", userId);
     }
 
     /**
      * Get user API tokens.
      */
-    public TokenIndexResponse tokenIndex() {
-        PveResponse<TokenIndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<TokenIndexResponse> tokenIndex() {
+        PveResponse<List<TokenIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Remove API token for a specific user.
      */
-    public void removeToken(String tokenid) {
-        executor.delete(this.basePath + "/" + tokenid);
+    public void removeToken(String tokenId) {
+        executor.delete(this.basePath + "/" + tokenId);
     }
 
     /**
      * Get specific API token information.
      */
-    public void readToken(String tokenid) {
-        executor.get(this.basePath + "/" + tokenid);
+    public ReadTokenResponse readToken(String tokenId) {
+        PveResponse<ReadTokenResponse> response = executor.get(this.basePath + "/" + tokenId, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Generate a new API token for a specific user. NOTE: returns API token value, which needs to be stored as it cannot be retrieved afterwards!
      */
-    public void generateToken(GenerateTokenRequest request) {
-        executor.post(this.basePath + "/" + request.getTokenid(), request);
+    public GenerateTokenResponse generateToken(GenerateTokenRequest request) {
+        PveResponse<GenerateTokenResponse> response = executor.post(this.basePath + "/" + request.getTokenId(), request, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Update API token for a specific user.
      */
-    public void updateTokenInfo(UpdateTokenInfoRequest request) {
-        executor.put(this.basePath + "/" + request.getTokenid(), request);
+    public UpdateTokenInfoResponse updateTokenInfo(UpdateTokenInfoRequest request) {
+        PveResponse<UpdateTokenInfoResponse> response = executor.put(this.basePath + "/" + request.getTokenId(), request, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

@@ -59,7 +59,7 @@ public class JoinRequest {
      * Optional: True
      */
     @JsonProperty("nodeid")
-    private Integer nodeid;
+    private Integer nodeId;
 
     /**
      * Superuser (root) password of peer node.

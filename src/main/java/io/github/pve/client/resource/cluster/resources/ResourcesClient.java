@@ -26,12 +26,12 @@ public class ResourcesClient {
     /**
      * Resources index (cluster wide).
      */
-    public ResourcesResponse resources(String type) {
+    public List<ResourcesResponse> resources(String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<ResourcesResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<ResourcesResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

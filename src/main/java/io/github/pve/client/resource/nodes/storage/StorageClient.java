@@ -37,7 +37,7 @@ public class StorageClient {
     /**
      * Get status for all datastores.
      */
-    public IndexResponse index(String storage, String content, Boolean enabled, Boolean format, String target) {
+    public List<NodesStorageIndexResponse> index(String storage, String content, Boolean enabled, Boolean format, String target) {
         String path = this.basePath + "/" + storage;
         Map<String, Object> queryParams = new HashMap<>();
         if (content != null) {
@@ -52,15 +52,16 @@ public class StorageClient {
         if (target != null) {
             queryParams.put("target", target);
         }
-        PveResponse<IndexResponse> response = executor.get(path, queryParams, new TypeReference<>() {});
+        PveResponse<List<NodesStorageIndexResponse>> response = executor.get(path, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * 
      */
-    public void diridx(String storage) {
-        executor.get(this.basePath + "/" + storage);
+    public List<DiridxResponse> diridx(String storage) {
+        PveResponse<List<DiridxResponse>> response = executor.get(this.basePath + "/" + storage, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

@@ -26,7 +26,7 @@ public class CertificateClient {
      * Revoke existing certificate from CA.
      */
     public String revokeCertificate() {
-        PveResponse<String> response = executor.delete(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.delete(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

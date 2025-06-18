@@ -3,6 +3,8 @@ package io.github.pve.client.resource.nodes.version;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.version.*;
 
 /**
  * Client for /nodes/{node}/version
@@ -23,8 +25,8 @@ public class VersionClient {
     /**
      * API version details
      */
-    public Object version() {
-        PveResponse<Object> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public VersionResponse version() {
+        PveResponse<VersionResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

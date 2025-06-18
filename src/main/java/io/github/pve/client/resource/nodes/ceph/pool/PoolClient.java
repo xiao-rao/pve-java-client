@@ -29,8 +29,8 @@ public class PoolClient {
     /**
      * List all pools and their settings (which are settable by the POST/PUT endpoints).
      */
-    public LspoolsResponse lspools() {
-        PveResponse<LspoolsResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<LspoolsResponse> lspools() {
+        PveResponse<List<LspoolsResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -45,7 +45,7 @@ public class PoolClient {
     /**
      * Destroy pool
      */
-    public void destroypool(String name, Boolean force, Boolean removeEcprofile, Boolean removeStorages) {
+    public String destroypool(String name, Boolean force, Boolean removeEcprofile, Boolean removeStorages) {
         String path = this.basePath + "/" + name;
         Map<String, Object> options = new HashMap<>();
         if (force != null) {
@@ -57,21 +57,24 @@ public class PoolClient {
         if (removeStorages != null) {
             options.put("remove_storages", removeStorages);
         }
-        executor.delete(path, options);
+        PveResponse<String> response = executor.delete(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Pool index.
      */
-    public void poolindex(String name) {
-        executor.get(this.basePath + "/" + name);
+    public List<Object> poolindex(String name) {
+        PveResponse<List<Object>> response = executor.get(this.basePath + "/" + name, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Change POOL settings
      */
-    public void setpool(SetpoolRequest request) {
-        executor.put(this.basePath + "/" + request.getName(), request);
+    public String setpool(SetpoolRequest request) {
+        PveResponse<String> response = executor.put(this.basePath + "/" + request.getName(), request, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

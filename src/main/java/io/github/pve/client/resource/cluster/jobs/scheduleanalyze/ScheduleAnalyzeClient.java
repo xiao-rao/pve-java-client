@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.cluster.jobs.scheduleanalyze.*;
 
 /**
  * Client for /cluster/jobs/schedule-analyze
@@ -24,7 +26,7 @@ public class ScheduleAnalyzeClient {
     /**
      * Returns a list of future schedule runtimes.
      */
-    public List<Object> scheduleAnalyze(Integer iterations, String schedule, Integer starttime) {
+    public List<ScheduleAnalyzeResponse> scheduleAnalyze(Integer iterations, String schedule, Integer starttime) {
         Map<String, Object> queryParams = new HashMap<>();
         if (iterations != null) {
             queryParams.put("iterations", iterations);
@@ -35,7 +37,7 @@ public class ScheduleAnalyzeClient {
         if (starttime != null) {
             queryParams.put("starttime", starttime);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<ScheduleAnalyzeResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

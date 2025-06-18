@@ -15,20 +15,20 @@ public class RemoteMigrateClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public RemoteMigrateClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public RemoteMigrateClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/remote_migrate".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/lxc/{vmid}/remote_migrate".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Migrate the container to another cluster. Creates a new migration task. EXPERIMENTAL feature!
      */
     public String remoteMigrateVm(RemoteMigrateVmRequest request) {
-        PveResponse<String> response = executor.post(this.basePath + "/" + request.getTargetVmid(), request, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath + "/" + request.getTargetVmId(), request, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

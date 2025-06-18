@@ -14,20 +14,20 @@ public class PingClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public PingClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public PingClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/ping".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/ping".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Execute ping.
      */
     public Map<String, Object> ping() {
-        PveResponse<Map<String, Object>> response = executor.post(this.basePath, null, new TypeReference<>() {});
+        PveResponse<Map<String, Object>> response = executor.post(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

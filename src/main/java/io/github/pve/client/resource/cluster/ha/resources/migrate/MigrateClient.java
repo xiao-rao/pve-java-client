@@ -12,12 +12,12 @@ public class MigrateClient {
 
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
-    protected final String sid;
+    protected final String sId;
 
-    public MigrateClient(ProxmoxApiExecutor executor, String sid) {
+    public MigrateClient(ProxmoxApiExecutor executor, String sId) {
         this.executor = executor;
-        this.sid = sid;
-        this.basePath = "/cluster/ha/resources/{sid}/migrate".replace("{" + "sid" + "}", sid);
+        this.sId = sId;
+        this.basePath = "/cluster/ha/resources/{sid}/migrate".replace("{" + "sid" + "}", sId);
     }
 
     /**

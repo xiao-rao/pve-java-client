@@ -58,7 +58,7 @@ public class ReadResponse {
      * Optional: True
      */
     @JsonProperty("sid")
-    private String sid;
+    private String sId;
 
     /**
      * Requested resource state.

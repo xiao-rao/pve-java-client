@@ -6,6 +6,8 @@ import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.resource.nodes.hardware.pci.PciClient;
 import io.github.pve.client.resource.nodes.hardware.usb.UsbClient;
+// Import models if needed
+import io.github.pve.client.model.nodes.hardware.*;
 
 /**
  * Client for /nodes/{node}/hardware
@@ -26,8 +28,8 @@ public class HardwareClient {
     /**
      * Index of hardware types
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<NodesHardwareIndexResponse> index() {
+        PveResponse<List<NodesHardwareIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

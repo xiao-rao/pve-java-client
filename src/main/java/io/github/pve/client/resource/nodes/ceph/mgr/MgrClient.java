@@ -26,22 +26,24 @@ public class MgrClient {
     /**
      * MGR directory index.
      */
-    public IndexResponse index() {
-        PveResponse<IndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<CephMgrIndexResponse> index() {
+        PveResponse<List<CephMgrIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Destroy Ceph Manager.
      */
-    public void destroymgr(String id) {
-        executor.delete(this.basePath + "/" + id);
+    public String destroymgr(String id) {
+        PveResponse<String> response = executor.delete(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Create Ceph Manager
      */
-    public void createmgr(String id) {
-        executor.post(this.basePath + "/" + id);
+    public String createmgr(String id) {
+        PveResponse<String> response = executor.post(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

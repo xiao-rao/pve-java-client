@@ -24,8 +24,8 @@ public class StatusClient {
     /**
      * Get cluster status information.
      */
-    public GetStatusResponse getStatus() {
-        PveResponse<GetStatusResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetStatusResponse> getStatus() {
+        PveResponse<List<GetStatusResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

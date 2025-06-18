@@ -695,7 +695,7 @@ public class UpdateVmRequest {
      * Optional: True
      */
     @JsonProperty("vmgenid")
-    private String vmgenid;
+    private String vmgenId;
 
 
     

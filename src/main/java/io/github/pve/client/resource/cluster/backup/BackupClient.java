@@ -26,8 +26,8 @@ public class BackupClient {
     /**
      * List vzdump backup schedule.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ClusterBackupIndexResponse> index() {
+        PveResponse<List<ClusterBackupIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -48,8 +48,9 @@ public class BackupClient {
     /**
      * Read vzdump backup job definition.
      */
-    public void readJob(String id) {
-        executor.get(this.basePath + "/" + id);
+    public Map<String, Object> readJob(String id) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

@@ -26,12 +26,12 @@ public class PciClient {
     /**
      * List PCI Hardware Mapping
      */
-    public IndexResponse index(String checkNode) {
+    public List<MappingPciIndexResponse> index(String checkNode) {
         Map<String, Object> queryParams = new HashMap<>();
         if (checkNode != null) {
             queryParams.put("check-node", checkNode);
         }
-        PveResponse<IndexResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<MappingPciIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -52,8 +52,9 @@ public class PciClient {
     /**
      * Get PCI Mapping.
      */
-    public void get(String id) {
-        executor.get(this.basePath + "/" + id);
+    public Map<String, Object> get(String id) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

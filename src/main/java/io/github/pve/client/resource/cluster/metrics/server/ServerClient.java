@@ -25,8 +25,8 @@ public class ServerClient {
     /**
      * List configured metric servers.
      */
-    public ServerIndexResponse serverIndex() {
-        PveResponse<ServerIndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ServerIndexResponse> serverIndex() {
+        PveResponse<List<ServerIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -40,8 +40,9 @@ public class ServerClient {
     /**
      * Read metric server configuration.
      */
-    public void read(String id) {
-        executor.get(this.basePath + "/" + id);
+    public Map<String, Object> read(String id) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

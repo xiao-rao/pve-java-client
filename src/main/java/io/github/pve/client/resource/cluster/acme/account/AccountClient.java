@@ -27,7 +27,7 @@ public class AccountClient {
      * ACMEAccount index.
      */
     public List<Object> accountIndex() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -42,27 +42,29 @@ public class AccountClient {
     /**
      * Deactivate existing ACME account at CA.
      */
-    public void deactivateAccount(String name) {
-        executor.delete(this.basePath + "/" + name);
+    public String deactivateAccount(String name) {
+        PveResponse<String> response = executor.delete(this.basePath + "/" + name, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Return existing ACME account information.
      */
     public GetAccountResponse getAccount(String name) {
-        PveResponse<GetAccountResponse> response = executor.get(this.basePath + "/" + name, null, new TypeReference<>() {});
+        PveResponse<GetAccountResponse> response = executor.get(this.basePath + "/" + name, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Update existing ACME account information with CA. Note: not specifying any new account information triggers a refresh.
      */
-    public void updateAccount(String name, String contact) {
+    public String updateAccount(String name, String contact) {
         String path = this.basePath + "/" + name;
         Map<String, Object> options = new HashMap<>();
         if (contact != null) {
             options.put("contact", contact);
         }
-        executor.put(path, options);
+        PveResponse<String> response = executor.put(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

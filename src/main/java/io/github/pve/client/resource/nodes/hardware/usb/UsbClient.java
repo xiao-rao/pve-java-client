@@ -26,8 +26,8 @@ public class UsbClient {
     /**
      * List local USB devices.
      */
-    public UsbscanResponse usbscan() {
-        PveResponse<UsbscanResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<UsbscanResponse> usbscan() {
+        PveResponse<List<UsbscanResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

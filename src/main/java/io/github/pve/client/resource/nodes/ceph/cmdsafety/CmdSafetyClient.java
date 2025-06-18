@@ -5,6 +5,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.ceph.cmdsafety.*;
 
 /**
  * Client for /nodes/{node}/ceph/cmd-safety
@@ -25,7 +27,7 @@ public class CmdSafetyClient {
     /**
      * Heuristical check if it is safe to perform an action.
      */
-    public Object cmdSafety(String id, String action, String service) {
+    public CmdSafetyResponse cmdSafety(String id, String action, String service) {
         String path = this.basePath + "/" + id;
         Map<String, Object> queryParams = new HashMap<>();
         if (action != null) {
@@ -34,7 +36,7 @@ public class CmdSafetyClient {
         if (service != null) {
             queryParams.put("service", service);
         }
-        PveResponse<Object> response = executor.get(path, queryParams, new TypeReference<>() {});
+        PveResponse<CmdSafetyResponse> response = executor.get(path, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

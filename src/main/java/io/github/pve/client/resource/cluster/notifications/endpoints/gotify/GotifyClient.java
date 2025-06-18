@@ -24,8 +24,8 @@ public class GotifyClient {
     /**
      * Returns a list of all gotify endpoints
      */
-    public GetGotifyEndpointsResponse getGotifyEndpoints() {
-        PveResponse<GetGotifyEndpointsResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetGotifyEndpointsResponse> getGotifyEndpoints() {
+        PveResponse<List<GetGotifyEndpointsResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -47,7 +47,7 @@ public class GotifyClient {
      * Return a specific gotify endpoint
      */
     public GetGotifyEndpointResponse getGotifyEndpoint(String name) {
-        PveResponse<GetGotifyEndpointResponse> response = executor.get(this.basePath + "/" + name, null, new TypeReference<>() {});
+        PveResponse<GetGotifyEndpointResponse> response = executor.get(this.basePath + "/" + name, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

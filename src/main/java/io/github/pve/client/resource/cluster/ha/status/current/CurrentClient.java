@@ -24,8 +24,8 @@ public class CurrentClient {
     /**
      * Get HA manger status.
      */
-    public StatusResponse status() {
-        PveResponse<StatusResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<StatusResponse> status() {
+        PveResponse<List<StatusResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

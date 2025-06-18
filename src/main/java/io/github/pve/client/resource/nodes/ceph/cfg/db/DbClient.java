@@ -26,8 +26,8 @@ public class DbClient {
     /**
      * Get the Ceph configuration database.
      */
-    public DbResponse db() {
-        PveResponse<DbResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<DbResponse> db() {
+        PveResponse<List<DbResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

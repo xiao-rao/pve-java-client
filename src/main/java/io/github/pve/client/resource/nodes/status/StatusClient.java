@@ -28,7 +28,7 @@ public class StatusClient {
      * Read node status
      */
     public StatusResponse status() {
-        PveResponse<StatusResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<StatusResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

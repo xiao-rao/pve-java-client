@@ -42,7 +42,7 @@ public class CreateRequest {
      * Optional: True
      */
     @JsonProperty("nodeid")
-    private Integer nodeid;
+    private Integer nodeId;
 
     /**
      * Number of votes for this node.

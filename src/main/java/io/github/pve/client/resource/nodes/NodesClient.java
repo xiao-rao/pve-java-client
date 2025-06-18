@@ -66,16 +66,17 @@ public class NodesClient {
     /**
      * Cluster node index.
      */
-    public IndexResponse index() {
-        PveResponse<IndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<NodesIndexResponse> index() {
+        PveResponse<List<NodesIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Node index.
      */
-    public void indexById(String node) {
-        executor.get(this.basePath + "/" + node);
+    public List<Object> indexById(String node) {
+        PveResponse<List<Object>> response = executor.get(this.basePath + "/" + node, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

@@ -27,7 +27,7 @@ public class ReplicationClient {
      * List replication jobs.
      */
     public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -56,8 +56,9 @@ public class ReplicationClient {
     /**
      * Read replication job configuration.
      */
-    public void read(String id) {
-        executor.get(this.basePath + "/" + id);
+    public Map<String, Object> read(String id) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

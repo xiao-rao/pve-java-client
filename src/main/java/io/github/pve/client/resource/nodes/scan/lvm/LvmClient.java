@@ -4,6 +4,8 @@ import java.util.List;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.scan.lvm.*;
 
 /**
  * Client for /nodes/{node}/scan/lvm
@@ -24,8 +26,8 @@ public class LvmClient {
     /**
      * List local LVM volume groups.
      */
-    public List<Object> lvmscan() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<LvmscanResponse> lvmscan() {
+        PveResponse<List<LvmscanResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

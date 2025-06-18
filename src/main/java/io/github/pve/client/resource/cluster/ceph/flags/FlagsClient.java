@@ -26,8 +26,8 @@ public class FlagsClient {
     /**
      * get the status of all ceph flags
      */
-    public List<Object> getAllFlags() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetAllFlagsResponse> getAllFlags() {
+        PveResponse<List<GetAllFlagsResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -42,8 +42,9 @@ public class FlagsClient {
     /**
      * Get the status of a specific ceph flag.
      */
-    public void getFlag(String flag) {
-        executor.get(this.basePath + "/" + flag);
+    public Boolean getFlag(String flag) {
+        PveResponse<Boolean> response = executor.get(this.basePath + "/" + flag, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

@@ -26,20 +26,20 @@ public class StorageClient {
     /**
      * Storage index.
      */
-    public List<Object> index(String type) {
+    public List<StorageIndexResponse> index(String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<StorageIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Create a new storage.
      */
-    public Object create(CreateRequest request) {
-        PveResponse<Object> response = executor.post(this.basePath, request, new TypeReference<>() {});
+    public CreateResponse create(CreateRequest request) {
+        PveResponse<CreateResponse> response = executor.post(this.basePath, request, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -53,14 +53,16 @@ public class StorageClient {
     /**
      * Read storage configuration.
      */
-    public void read(String storage) {
-        executor.get(this.basePath + "/" + storage);
+    public Map<String, Object> read(String storage) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + storage, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Update storage configuration.
      */
-    public void update(UpdateRequest request) {
-        executor.put(this.basePath + "/" + request.getStorage(), request);
+    public UpdateResponse update(UpdateRequest request) {
+        PveResponse<UpdateResponse> response = executor.put(this.basePath + "/" + request.getStorage(), request, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

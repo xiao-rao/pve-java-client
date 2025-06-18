@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.scan.iscsi.*;
 
 /**
  * Client for /nodes/{node}/scan/iscsi
@@ -26,12 +28,12 @@ public class IscsiClient {
     /**
      * Scan remote iSCSI server.
      */
-    public List<Object> iscsiscan(String portal) {
+    public List<IscsiscanResponse> iscsiscan(String portal) {
         Map<String, Object> queryParams = new HashMap<>();
         if (portal != null) {
             queryParams.put("portal", portal);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<IscsiscanResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

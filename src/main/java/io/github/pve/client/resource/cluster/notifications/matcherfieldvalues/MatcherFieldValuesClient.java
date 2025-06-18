@@ -4,6 +4,8 @@ import java.util.List;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.cluster.notifications.matcherfieldvalues.*;
 
 /**
  * Client for /cluster/notifications/matcher-field-values
@@ -22,8 +24,8 @@ public class MatcherFieldValuesClient {
     /**
      * Returns known notification metadata fields and their known values
      */
-    public List<Object> getMatcherFieldValues() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetMatcherFieldValuesResponse> getMatcherFieldValues() {
+        PveResponse<List<GetMatcherFieldValuesResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

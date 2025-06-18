@@ -52,6 +52,6 @@ public class IpsClient {
      * Update IP Mapping in a VNet
      */
     public void ipupdate(IpupdateRequest request) {
-        executor.put(this.basePath + "/" + request.getVmid(), request);
+        executor.put(this.basePath + "/" + request.getVmId(), request);
     }
 }

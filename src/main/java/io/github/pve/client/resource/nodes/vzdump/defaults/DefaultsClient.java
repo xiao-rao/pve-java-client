@@ -26,7 +26,7 @@ public class DefaultsClient {
      * Get the currently configured vzdump defaults.
      */
     public DefaultsResponse defaults(String storage) {
-        PveResponse<DefaultsResponse> response = executor.get(this.basePath + "/" + storage, null, new TypeReference<>() {});
+        PveResponse<DefaultsResponse> response = executor.get(this.basePath + "/" + storage, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

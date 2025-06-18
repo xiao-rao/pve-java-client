@@ -27,12 +27,12 @@ public class IpamsClient {
     /**
      * SDN ipams index.
      */
-    public List<Object> index(String type) {
+    public List<SdnIpamsIndexResponse> index(String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<SdnIpamsIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -53,8 +53,9 @@ public class IpamsClient {
     /**
      * Read sdn ipam configuration.
      */
-    public void read(String ipam) {
-        executor.get(this.basePath + "/" + ipam);
+    public Map<String, Object> read(String ipam) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + ipam, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

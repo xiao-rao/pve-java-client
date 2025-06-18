@@ -28,7 +28,7 @@ public class RepositoriesClient {
      * Get APT repository information.
      */
     public RepositoriesResponse repositories() {
-        PveResponse<RepositoriesResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<RepositoriesResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

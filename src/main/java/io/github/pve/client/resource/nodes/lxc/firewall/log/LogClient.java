@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.lxc.firewall.log.*;
 
 /**
  * Client for /nodes/{node}/lxc/{vmid}/firewall/log
@@ -16,19 +18,19 @@ public class LogClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public LogClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public LogClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/firewall/log".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/lxc/{vmid}/firewall/log".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Read firewall log
      */
-    public List<Object> log(Integer limit, Integer since, Integer start, Integer until) {
+    public List<LogResponse> log(Integer limit, Integer since, Integer start, Integer until) {
         Map<String, Object> queryParams = new HashMap<>();
         if (limit != null) {
             queryParams.put("limit", limit);
@@ -42,7 +44,7 @@ public class LogClient {
         if (until != null) {
             queryParams.put("until", until);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<LogResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

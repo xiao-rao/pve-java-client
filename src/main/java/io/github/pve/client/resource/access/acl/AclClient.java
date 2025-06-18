@@ -24,8 +24,8 @@ public class AclClient {
     /**
      * Get Access Control List (ACLs).
      */
-    public ReadAclResponse readAcl() {
-        PveResponse<ReadAclResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ReadAclResponse> readAcl() {
+        PveResponse<List<ReadAclResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

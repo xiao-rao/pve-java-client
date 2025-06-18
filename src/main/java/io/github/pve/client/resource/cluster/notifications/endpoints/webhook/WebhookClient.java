@@ -24,8 +24,8 @@ public class WebhookClient {
     /**
      * Returns a list of all webhook endpoints
      */
-    public GetWebhookEndpointsResponse getWebhookEndpoints() {
-        PveResponse<GetWebhookEndpointsResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetWebhookEndpointsResponse> getWebhookEndpoints() {
+        PveResponse<List<GetWebhookEndpointsResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -47,7 +47,7 @@ public class WebhookClient {
      * Return a specific webhook endpoint
      */
     public GetWebhookEndpointResponse getWebhookEndpoint(String name) {
-        PveResponse<GetWebhookEndpointResponse> response = executor.get(this.basePath + "/" + name, null, new TypeReference<>() {});
+        PveResponse<GetWebhookEndpointResponse> response = executor.get(this.basePath + "/" + name, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

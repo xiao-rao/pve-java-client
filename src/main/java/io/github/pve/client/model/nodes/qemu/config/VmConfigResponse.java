@@ -638,7 +638,7 @@ public class VmConfigResponse {
      * Optional: True
      */
     @JsonProperty("vmgenid")
-    private String vmgenid;
+    private String vmgenId;
 
     /**
      * Default storage for VM state volumes/files.

@@ -34,7 +34,7 @@ public class VersionResponse {
      * Optional: True
      */
     @JsonProperty("repoid")
-    private String repoid;
+    private String repoId;
 
     /**
      * The full pve-manager package version of this node.

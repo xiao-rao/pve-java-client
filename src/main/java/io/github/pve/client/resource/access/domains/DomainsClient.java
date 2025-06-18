@@ -25,8 +25,8 @@ public class DomainsClient {
     /**
      * Authentication domain index.
      */
-    public IndexResponse index() {
-        PveResponse<IndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<AccessDomainsIndexResponse> index() {
+        PveResponse<List<AccessDomainsIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

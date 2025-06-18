@@ -17,20 +17,20 @@ public class CloudinitClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public CloudinitClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public CloudinitClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/cloudinit".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/cloudinit".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Get the cloudinit configuration with both current and pending values.
      */
-    public CloudinitPendingResponse cloudinitPending() {
-        PveResponse<CloudinitPendingResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<CloudinitPendingResponse> cloudinitPending() {
+        PveResponse<List<CloudinitPendingResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -45,6 +45,6 @@ public class CloudinitClient {
      * Returns a client for the sub-resource: `dump`
      */
     public DumpClient dump() {
-        return new DumpClient(this.executor, this.node, this.vmid);
+        return new DumpClient(this.executor, this.node, this.vmId);
     }
 }

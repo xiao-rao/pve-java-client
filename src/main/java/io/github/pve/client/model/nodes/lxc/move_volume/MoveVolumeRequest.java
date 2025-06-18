@@ -79,7 +79,7 @@ public class MoveVolumeRequest {
      * Optional: True
      */
     @JsonProperty("target-vmid")
-    private String targetVmid;
+    private String targetVmId;
 
 
 }

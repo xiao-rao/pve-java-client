@@ -20,20 +20,20 @@ public class SnapshotClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public SnapshotClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public SnapshotClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/snapshot".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/lxc/{vmid}/snapshot".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * List all snapshots.
      */
-    public ListResponse list() {
-        PveResponse<ListResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ListResponse> list() {
+        PveResponse<List<ListResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -55,20 +55,22 @@ public class SnapshotClient {
     /**
      * Delete a LXC snapshot.
      */
-    public void delsnapshot(String snapname, Boolean force) {
+    public String delsnapshot(String snapname, Boolean force) {
         String path = this.basePath + "/" + snapname;
         Map<String, Object> options = new HashMap<>();
         if (force != null) {
             options.put("force", force);
         }
-        executor.delete(path, options);
+        PveResponse<String> response = executor.delete(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * 
      */
-    public void snapshotCmdIdx(String snapname) {
-        executor.get(this.basePath + "/" + snapname);
+    public List<Object> snapshotCmdIdx(String snapname) {
+        PveResponse<List<Object>> response = executor.get(this.basePath + "/" + snapname, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
@@ -76,7 +78,7 @@ public class SnapshotClient {
      * @param snapname The path parameter `snapname`.
      */
     public RollbackClient rollback(String snapname) {
-        return new RollbackClient(this.executor, this.node, this.vmid, snapname);
+        return new RollbackClient(this.executor, this.node, this.vmId, snapname);
     }
 
     /**
@@ -84,6 +86,6 @@ public class SnapshotClient {
      * @param snapname The path parameter `snapname`.
      */
     public ConfigClient config(String snapname) {
-        return new ConfigClient(this.executor, this.node, this.vmid, snapname);
+        return new ConfigClient(this.executor, this.node, this.vmId, snapname);
     }
 }

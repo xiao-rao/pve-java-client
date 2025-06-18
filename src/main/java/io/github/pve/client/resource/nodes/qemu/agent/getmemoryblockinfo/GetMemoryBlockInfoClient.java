@@ -14,20 +14,20 @@ public class GetMemoryBlockInfoClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public GetMemoryBlockInfoClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public GetMemoryBlockInfoClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/get-memory-block-info".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/get-memory-block-info".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Execute get-memory-block-info.
      */
     public Map<String, Object> getMemoryBlockInfo() {
-        PveResponse<Map<String, Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

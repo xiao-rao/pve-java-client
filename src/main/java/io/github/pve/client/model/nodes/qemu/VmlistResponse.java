@@ -106,7 +106,7 @@ public class VmlistResponse {
      * Optional: True
      */
     @JsonProperty("pid")
-    private Integer pid;
+    private Integer pId;
 
     /**
      * VM run state from the 'query-status' QMP monitor command.
@@ -178,7 +178,7 @@ public class VmlistResponse {
      * Optional: True
      */
     @JsonProperty("vmid")
-    private Integer vmid;
+    private Integer vmId;
 
 
 }

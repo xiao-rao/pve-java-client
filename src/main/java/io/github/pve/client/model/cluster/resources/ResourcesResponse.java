@@ -226,7 +226,7 @@ public class ResourcesResponse {
      * Optional: True
      */
     @JsonProperty("vmid")
-    private Integer vmid;
+    private Integer vmId;
 
 
 }

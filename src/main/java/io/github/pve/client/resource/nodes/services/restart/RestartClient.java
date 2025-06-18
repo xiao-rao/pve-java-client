@@ -26,7 +26,7 @@ public class RestartClient {
      * Hard restart service. Use reload if you want to reduce interruptions.
      */
     public String serviceRestart() {
-        PveResponse<String> response = executor.post(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

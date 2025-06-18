@@ -26,7 +26,7 @@ public class ScheduleNowClient {
      * Schedule replication job to start as soon as possible.
      */
     public String scheduleNow() {
-        PveResponse<String> response = executor.post(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

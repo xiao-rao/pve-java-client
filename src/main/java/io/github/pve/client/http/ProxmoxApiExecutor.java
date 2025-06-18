@@ -79,9 +79,6 @@ public class ProxmoxApiExecutor {
         return stats;
     }
 
-    public static void main(String[] args) {
-        System.out.println(1);
-    }
     // get methods - 添加便利方法
     public <T> PveResponse<T> get(String path, TypeReference<T> rt) {
         return execute("GET", path, null, null, rt);
@@ -103,6 +100,10 @@ public class ProxmoxApiExecutor {
     // post
     public <T> PveResponse<T> post(String path, Map<String, Object> qp, TypeReference<T> rt) {
         return execute("POST", path, qp, null, rt);
+    }
+
+    public <T> PveResponse<T> post(String path, TypeReference<T> rt) {
+        return execute("POST", path, null, null, rt);
     }
 
     public <T> PveResponse<T> post(String path, Object b, TypeReference<T> rt) {
@@ -140,6 +141,11 @@ public class ProxmoxApiExecutor {
         return execute("PUT", path, null, b, rt);
     }
 
+    public <T> PveResponse<T> put(String path, TypeReference<T> rt) {
+        return execute("PUT", path, null, null, rt);
+    }
+
+
     public <T> PveResponse<T> put(String path, Map<String, Object> qp, Object b, TypeReference<T> rt) {
         return execute("PUT", path, qp, b, rt);
     }
@@ -169,6 +175,10 @@ public class ProxmoxApiExecutor {
 
     public <T> PveResponse<T> delete(String path, Object b, TypeReference<T> rt) {
         return execute("DELETE", path, null, b, rt);
+    }
+
+    public <T> PveResponse<T> delete(String path,  TypeReference<T> rt) {
+        return execute("DELETE", path, null, null, rt);
     }
 
     public <T> PveResponse<T> delete(String path, Map<String, Object> qp, Object b, TypeReference<T> rt) {

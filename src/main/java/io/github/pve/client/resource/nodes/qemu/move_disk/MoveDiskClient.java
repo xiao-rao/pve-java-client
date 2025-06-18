@@ -15,20 +15,20 @@ public class MoveDiskClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public MoveDiskClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public MoveDiskClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/move_disk".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/move_disk".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Move volume to different storage or to a different VM.
      */
     public String moveVmDisk(MoveVmDiskRequest request) {
-        PveResponse<String> response = executor.post(this.basePath + "/" + request.getStorage() + "/" + request.getTargetVmid(), request, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath + "/" + request.getStorage() + "/" + request.getTargetVmId(), request, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

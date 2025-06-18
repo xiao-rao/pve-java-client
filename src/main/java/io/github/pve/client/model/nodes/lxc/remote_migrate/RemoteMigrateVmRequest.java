@@ -86,7 +86,7 @@ public class RemoteMigrateVmRequest {
      * Optional: True
      */
     @JsonProperty("target-vmid")
-    private String targetVmid;
+    private String targetVmId;
 
 
 }

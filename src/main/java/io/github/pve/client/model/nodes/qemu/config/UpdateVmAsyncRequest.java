@@ -711,7 +711,7 @@ public class UpdateVmAsyncRequest {
      * Optional: True
      */
     @JsonProperty("vmgenid")
-    private String vmgenid;
+    private String vmgenId;
 
 
     

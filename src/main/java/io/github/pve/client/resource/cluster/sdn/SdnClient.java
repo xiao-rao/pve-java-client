@@ -9,6 +9,8 @@ import io.github.pve.client.resource.cluster.sdn.zones.ZonesClient;
 import io.github.pve.client.resource.cluster.sdn.controllers.ControllersClient;
 import io.github.pve.client.resource.cluster.sdn.ipams.IpamsClient;
 import io.github.pve.client.resource.cluster.sdn.dns.DnsClient;
+// Import models if needed
+import io.github.pve.client.model.cluster.sdn.*;
 
 /**
  * Client for /cluster/sdn
@@ -27,8 +29,8 @@ public class SdnClient {
     /**
      * Directory index.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ClusterSdnIndexResponse> index() {
+        PveResponse<List<ClusterSdnIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -36,7 +38,7 @@ public class SdnClient {
      * Apply sdn controller changes && reload.
      */
     public String reload() {
-        PveResponse<String> response = executor.put(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.put(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

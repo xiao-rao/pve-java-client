@@ -66,7 +66,7 @@ public class UsbscanResponse {
      * Optional: True
      */
     @JsonProperty("prodid")
-    private String prodid;
+    private String prodId;
 
     /**
      * 
@@ -106,7 +106,7 @@ public class UsbscanResponse {
      * Optional: True
      */
     @JsonProperty("vendid")
-    private String vendid;
+    private String vendId;
 
 
 }

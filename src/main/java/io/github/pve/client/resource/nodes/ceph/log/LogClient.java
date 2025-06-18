@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.ceph.log.*;
 
 /**
  * Client for /nodes/{node}/ceph/log
@@ -26,7 +28,7 @@ public class LogClient {
     /**
      * Read ceph log
      */
-    public List<Object> log(Integer limit, Integer start) {
+    public List<LogResponse> log(Integer limit, Integer start) {
         Map<String, Object> queryParams = new HashMap<>();
         if (limit != null) {
             queryParams.put("limit", limit);
@@ -34,7 +36,7 @@ public class LogClient {
         if (start != null) {
             queryParams.put("start", start);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<LogResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

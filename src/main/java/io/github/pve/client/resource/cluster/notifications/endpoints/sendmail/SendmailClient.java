@@ -24,8 +24,8 @@ public class SendmailClient {
     /**
      * Returns a list of all sendmail endpoints
      */
-    public GetSendmailEndpointsResponse getSendmailEndpoints() {
-        PveResponse<GetSendmailEndpointsResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetSendmailEndpointsResponse> getSendmailEndpoints() {
+        PveResponse<List<GetSendmailEndpointsResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -47,7 +47,7 @@ public class SendmailClient {
      * Return a specific sendmail endpoint
      */
     public GetSendmailEndpointResponse getSendmailEndpoint(String name) {
-        PveResponse<GetSendmailEndpointResponse> response = executor.get(this.basePath + "/" + name, null, new TypeReference<>() {});
+        PveResponse<GetSendmailEndpointResponse> response = executor.get(this.basePath + "/" + name, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

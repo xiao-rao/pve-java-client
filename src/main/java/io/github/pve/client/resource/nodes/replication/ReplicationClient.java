@@ -9,6 +9,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.resource.nodes.replication.status.StatusClient;
 import io.github.pve.client.resource.nodes.replication.log.LogClient;
 import io.github.pve.client.resource.nodes.replication.schedule_now.ScheduleNowClient;
+// Import models if needed
+import io.github.pve.client.model.nodes.replication.*;
 
 /**
  * Client for /nodes/{node}/replication
@@ -29,20 +31,21 @@ public class ReplicationClient {
     /**
      * List status of all replication jobs on this node.
      */
-    public List<Object> status(Integer guest) {
+    public List<StatusResponse> status(Integer guest) {
         Map<String, Object> queryParams = new HashMap<>();
         if (guest != null) {
             queryParams.put("guest", guest);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<StatusResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Directory index.
      */
-    public void index(String id) {
-        executor.get(this.basePath + "/" + id);
+    public List<Object> index(String id) {
+        PveResponse<List<Object>> response = executor.get(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

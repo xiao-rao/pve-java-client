@@ -29,7 +29,7 @@ public class PciClient {
     /**
      * List local PCI devices.
      */
-    public PciScanResponse pciScan(String pciClassBlacklist, Boolean verbose) {
+    public List<PciScanResponse> pciScan(String pciClassBlacklist, Boolean verbose) {
         Map<String, Object> queryParams = new HashMap<>();
         if (pciClassBlacklist != null) {
             queryParams.put("pci-class-blacklist", pciClassBlacklist);
@@ -37,15 +37,16 @@ public class PciClient {
         if (verbose != null) {
             queryParams.put("verbose", verbose);
         }
-        PveResponse<PciScanResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<PciScanResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Index of available pci methods
      */
-    public void pciIndex(String pciIdOrMapping) {
-        executor.get(this.basePath + "/" + pciIdOrMapping);
+    public List<PciIndexResponse> pciIndex(String pciIdOrMapping) {
+        PveResponse<List<PciIndexResponse>> response = executor.get(this.basePath + "/" + pciIdOrMapping, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

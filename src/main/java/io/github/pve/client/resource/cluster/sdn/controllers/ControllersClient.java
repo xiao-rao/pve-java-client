@@ -26,7 +26,7 @@ public class ControllersClient {
     /**
      * SDN controllers index.
      */
-    public IndexResponse index(Boolean pending, Boolean running, String type) {
+    public List<SdnControllersIndexResponse> index(Boolean pending, Boolean running, String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (pending != null) {
             queryParams.put("pending", pending);
@@ -37,7 +37,7 @@ public class ControllersClient {
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<IndexResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<SdnControllersIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -58,7 +58,7 @@ public class ControllersClient {
     /**
      * Read sdn controller configuration.
      */
-    public void read(String controller, Boolean pending, Boolean running) {
+    public Map<String, Object> read(String controller, Boolean pending, Boolean running) {
         String path = this.basePath + "/" + controller;
         Map<String, Object> queryParams = new HashMap<>();
         if (pending != null) {
@@ -67,7 +67,8 @@ public class ControllersClient {
         if (running != null) {
             queryParams.put("running", running);
         }
-        executor.get(path, queryParams);
+        PveResponse<Map<String, Object>> response = executor.get(path, queryParams, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

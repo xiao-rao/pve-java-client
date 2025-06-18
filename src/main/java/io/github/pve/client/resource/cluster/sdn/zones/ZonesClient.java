@@ -26,7 +26,7 @@ public class ZonesClient {
     /**
      * SDN zones index.
      */
-    public IndexResponse index(Boolean pending, Boolean running, String type) {
+    public List<SdnZonesIndexResponse> index(Boolean pending, Boolean running, String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (pending != null) {
             queryParams.put("pending", pending);
@@ -37,7 +37,7 @@ public class ZonesClient {
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<IndexResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<SdnZonesIndexResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -58,7 +58,7 @@ public class ZonesClient {
     /**
      * Read sdn zone configuration.
      */
-    public void read(String zone, Boolean pending, Boolean running) {
+    public Map<String, Object> read(String zone, Boolean pending, Boolean running) {
         String path = this.basePath + "/" + zone;
         Map<String, Object> queryParams = new HashMap<>();
         if (pending != null) {
@@ -67,7 +67,8 @@ public class ZonesClient {
         if (running != null) {
             queryParams.put("running", running);
         }
-        executor.get(path, queryParams);
+        PveResponse<Map<String, Object>> response = executor.get(path, queryParams, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.vncwebsocket.*;
 
 /**
  * Client for /nodes/{node}/vncwebsocket
@@ -25,7 +27,7 @@ public class VncwebsocketClient {
     /**
      * Opens a websocket for VNC traffic.
      */
-    public Object vncwebsocket(Integer port, String vncticket) {
+    public VncwebsocketResponse vncwebsocket(Integer port, String vncticket) {
         Map<String, Object> queryParams = new HashMap<>();
         if (port != null) {
             queryParams.put("port", port);
@@ -33,7 +35,7 @@ public class VncwebsocketClient {
         if (vncticket != null) {
             queryParams.put("vncticket", vncticket);
         }
-        PveResponse<Object> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<VncwebsocketResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

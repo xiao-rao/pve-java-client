@@ -59,7 +59,7 @@ public class ListResponse {
      * Optional: True
      */
     @JsonProperty("osdid")
-    private Integer osdid;
+    private Integer osdId;
 
     /**
      * 
@@ -67,7 +67,7 @@ public class ListResponse {
      * Optional: True
      */
     @JsonProperty("osdid-list")
-    private List<Integer> osdidList;
+    private List<Integer> osdIdList;
 
     /**
      * For partitions only. The device path of the disk the partition resides on.

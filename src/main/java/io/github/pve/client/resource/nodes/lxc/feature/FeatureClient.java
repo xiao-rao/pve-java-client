@@ -5,6 +5,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.lxc.feature.*;
 
 /**
  * Client for /nodes/{node}/lxc/{vmid}/feature
@@ -15,19 +17,19 @@ public class FeatureClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public FeatureClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public FeatureClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/feature".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/lxc/{vmid}/feature".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Check if feature for virtual machine is available.
      */
-    public Object vmFeature(String feature, String snapname) {
+    public VmFeatureResponse vmFeature(String feature, String snapname) {
         Map<String, Object> queryParams = new HashMap<>();
         if (feature != null) {
             queryParams.put("feature", feature);
@@ -35,7 +37,7 @@ public class FeatureClient {
         if (snapname != null) {
             queryParams.put("snapname", snapname);
         }
-        PveResponse<Object> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<VmFeatureResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

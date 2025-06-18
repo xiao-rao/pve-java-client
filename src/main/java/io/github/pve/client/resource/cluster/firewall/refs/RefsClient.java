@@ -26,12 +26,12 @@ public class RefsClient {
     /**
      * Lists possible IPSet/Alias reference which are allowed in source/dest properties.
      */
-    public RefsResponse refs(String type) {
+    public List<RefsResponse> refs(String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<RefsResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<RefsResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

@@ -4,6 +4,8 @@ import java.util.List;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.cluster.acme.directories.*;
 
 /**
  * Client for /cluster/acme/directories
@@ -22,8 +24,8 @@ public class DirectoriesClient {
     /**
      * Get named known ACME directory endpoints.
      */
-    public List<Object> getDirectories() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetDirectoriesResponse> getDirectories() {
+        PveResponse<List<GetDirectoriesResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

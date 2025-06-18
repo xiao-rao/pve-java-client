@@ -24,8 +24,8 @@ public class ChallengeSchemaClient {
     /**
      * Get schema of ACME challenge types.
      */
-    public ChallengeschemaResponse challengeschema() {
-        PveResponse<ChallengeschemaResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ChallengeschemaResponse> challengeschema() {
+        PveResponse<List<ChallengeschemaResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

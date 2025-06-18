@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.scan.cifs.*;
 
 /**
  * Client for /nodes/{node}/scan/cifs
@@ -26,7 +28,7 @@ public class CifsClient {
     /**
      * Scan remote CIFS server.
      */
-    public List<Object> cifsscan(String domain, String password, String server, String username) {
+    public List<CifsscanResponse> cifsscan(String domain, String password, String server, String username) {
         Map<String, Object> queryParams = new HashMap<>();
         if (domain != null) {
             queryParams.put("domain", domain);
@@ -40,7 +42,7 @@ public class CifsClient {
         if (username != null) {
             queryParams.put("username", username);
         }
-        PveResponse<List<Object>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<CifsscanResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

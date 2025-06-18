@@ -26,7 +26,7 @@ public class DnsClient {
      * Read DNS settings.
      */
     public DnsResponse dns() {
-        PveResponse<DnsResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<DnsResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

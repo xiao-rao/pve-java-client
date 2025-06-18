@@ -26,7 +26,7 @@ public class OptionsClient {
      * Get host firewall options.
      */
     public GetOptionsResponse getOptions() {
-        PveResponse<GetOptionsResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<GetOptionsResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -34,6 +34,6 @@ public class OptionsClient {
      * Set Firewall options.
      */
     public void setOptions(SetOptionsRequest request) {
-        executor.put(this.basePath + "/" + request.getNfConntrackAllowInvalid(), request);
+        executor.put(this.basePath + "/" + request.getNfConntrackAllowInvalId(), request);
     }
 }

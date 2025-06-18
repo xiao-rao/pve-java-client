@@ -28,8 +28,8 @@ public class ZfsClient {
     /**
      * List Zpools.
      */
-    public IndexResponse index() {
-        PveResponse<IndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<DisksZfsIndexResponse> index() {
+        PveResponse<List<DisksZfsIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -44,7 +44,7 @@ public class ZfsClient {
     /**
      * Destroy a ZFS pool.
      */
-    public void delete(String name, Boolean cleanupConfig, Boolean cleanupDisks) {
+    public String delete(String name, Boolean cleanupConfig, Boolean cleanupDisks) {
         String path = this.basePath + "/" + name;
         Map<String, Object> options = new HashMap<>();
         if (cleanupConfig != null) {
@@ -53,14 +53,15 @@ public class ZfsClient {
         if (cleanupDisks != null) {
             options.put("cleanup-disks", cleanupDisks);
         }
-        executor.delete(path, options);
+        PveResponse<String> response = executor.delete(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Get details about a zpool.
      */
     public DetailResponse detail(String name) {
-        PveResponse<DetailResponse> response = executor.get(this.basePath + "/" + name, null, new TypeReference<>() {});
+        PveResponse<DetailResponse> response = executor.get(this.basePath + "/" + name, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

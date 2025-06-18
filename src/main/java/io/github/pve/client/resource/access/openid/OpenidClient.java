@@ -6,6 +6,8 @@ import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.resource.access.openid.authurl.AuthUrlClient;
 import io.github.pve.client.resource.access.openid.login.LoginClient;
+// Import models if needed
+import io.github.pve.client.model.access.openid.*;
 
 /**
  * Client for /access/openid
@@ -24,8 +26,8 @@ public class OpenidClient {
     /**
      * Directory index.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<AccessOpenidIndexResponse> index() {
+        PveResponse<List<AccessOpenidIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

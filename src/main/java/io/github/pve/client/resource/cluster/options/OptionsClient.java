@@ -25,7 +25,7 @@ public class OptionsClient {
      * Get datacenter options. Without 'Sys.Audit' on '/' not all options are returned.
      */
     public Map<String, Object> getOptions() {
-        PveResponse<Map<String, Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

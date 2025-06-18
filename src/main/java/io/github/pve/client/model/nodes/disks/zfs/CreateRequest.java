@@ -52,7 +52,7 @@ public class CreateRequest {
      * Optional: True
      */
     @JsonProperty("draid-config")
-    private String draidConfig;
+    private String draIdConfig;
 
     /**
      * The storage identifier.

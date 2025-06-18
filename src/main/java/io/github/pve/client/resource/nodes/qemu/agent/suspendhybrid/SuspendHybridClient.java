@@ -14,20 +14,20 @@ public class SuspendHybridClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public SuspendHybridClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public SuspendHybridClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/suspend-hybrid".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/suspend-hybrid".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Execute suspend-hybrid.
      */
-    public Map<String, Object> suspendHybrid() {
-        PveResponse<Map<String, Object>> response = executor.post(this.basePath, null, new TypeReference<>() {});
+    public Map<String, Object> suspendHybrId() {
+        PveResponse<Map<String, Object>> response = executor.post(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

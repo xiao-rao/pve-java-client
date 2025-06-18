@@ -25,7 +25,7 @@ public class StatusClient {
      * List PVE IPAM Entries
      */
     public List<Object> ipamindex() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

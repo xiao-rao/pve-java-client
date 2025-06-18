@@ -66,7 +66,7 @@ public class GetOptionsResponse {
      * Optional: True
      */
     @JsonProperty("nf_conntrack_allow_invalid")
-    private Boolean nfConntrackAllowInvalid;
+    private Boolean nfConntrackAllowInvalId;
 
     /**
      * Enable conntrack helpers for specific protocols. Supported protocols: amanda, ftp, irc, netbios-ns, pptp, sane, sip, snmp, tftp

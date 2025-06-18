@@ -23,7 +23,7 @@ public class TotemClient {
      * Get corosync totem protocol settings.
      */
     public Map<String, Object> totem() {
-        PveResponse<Map<String, Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

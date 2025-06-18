@@ -28,7 +28,7 @@ public class VzdumpClient {
      * Create backup.
      */
     public String vzdump(VzdumpRequest request) {
-        PveResponse<String> response = executor.post(this.basePath + "/" + request.getJobId() + "/" + request.getStorage() + "/" + request.getVmid(), request, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath + "/" + request.getJobId() + "/" + request.getStorage() + "/" + request.getVmId(), request, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

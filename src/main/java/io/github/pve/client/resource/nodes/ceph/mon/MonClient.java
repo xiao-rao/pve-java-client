@@ -28,27 +28,29 @@ public class MonClient {
     /**
      * Get Ceph monitor list.
      */
-    public ListmonResponse listmon() {
-        PveResponse<ListmonResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ListmonResponse> listmon() {
+        PveResponse<List<ListmonResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Destroy Ceph Monitor and Manager.
      */
-    public void destroymon(String monid) {
-        executor.delete(this.basePath + "/" + monid);
+    public String destroymon(String monId) {
+        PveResponse<String> response = executor.delete(this.basePath + "/" + monId, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Create Ceph Monitor and Manager
      */
-    public void createmon(String monid, String monAddress) {
-        String path = this.basePath + "/" + monid;
+    public String createmon(String monId, String monAddress) {
+        String path = this.basePath + "/" + monId;
         Map<String, Object> options = new HashMap<>();
         if (monAddress != null) {
             options.put("mon-address", monAddress);
         }
-        executor.post(path, options);
+        PveResponse<String> response = executor.post(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

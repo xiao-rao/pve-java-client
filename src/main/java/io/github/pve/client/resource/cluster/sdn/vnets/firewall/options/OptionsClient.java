@@ -25,8 +25,8 @@ public class OptionsClient {
     /**
      * Get vnet firewall options.
      */
-    public Object getOptions() {
-        PveResponse<Object> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public GetOptionsResponse getOptions() {
+        PveResponse<GetOptionsResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

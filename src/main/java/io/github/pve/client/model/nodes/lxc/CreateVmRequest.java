@@ -356,7 +356,7 @@ public class CreateVmRequest {
      * Optional: True
      */
     @JsonProperty("vmid")
-    private String vmid;
+    private String vmId;
 
 
     

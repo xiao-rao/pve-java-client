@@ -41,20 +41,20 @@ public class AgentClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public AgentClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public AgentClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * QEMU Guest Agent command index.
      */
     public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -74,174 +74,174 @@ public class AgentClient {
      * Returns a client for the sub-resource: `fsfreezeFreeze`
      */
     public FsfreezeFreezeClient fsfreezeFreeze() {
-        return new FsfreezeFreezeClient(this.executor, this.node, this.vmid);
+        return new FsfreezeFreezeClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `fsfreezeStatus`
      */
     public FsfreezeStatusClient fsfreezeStatus() {
-        return new FsfreezeStatusClient(this.executor, this.node, this.vmid);
+        return new FsfreezeStatusClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `fsfreezeThaw`
      */
     public FsfreezeThawClient fsfreezeThaw() {
-        return new FsfreezeThawClient(this.executor, this.node, this.vmid);
+        return new FsfreezeThawClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `fstrim`
      */
     public FstrimClient fstrim() {
-        return new FstrimClient(this.executor, this.node, this.vmid);
+        return new FstrimClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `getFsinfo`
      */
     public GetFsinfoClient getFsinfo() {
-        return new GetFsinfoClient(this.executor, this.node, this.vmid);
+        return new GetFsinfoClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `getHostName`
      */
     public GetHostNameClient getHostName() {
-        return new GetHostNameClient(this.executor, this.node, this.vmid);
+        return new GetHostNameClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `getMemoryBlockInfo`
      */
     public GetMemoryBlockInfoClient getMemoryBlockInfo() {
-        return new GetMemoryBlockInfoClient(this.executor, this.node, this.vmid);
+        return new GetMemoryBlockInfoClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `getMemoryBlocks`
      */
     public GetMemoryBlocksClient getMemoryBlocks() {
-        return new GetMemoryBlocksClient(this.executor, this.node, this.vmid);
+        return new GetMemoryBlocksClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `getOsinfo`
      */
     public GetOsinfoClient getOsinfo() {
-        return new GetOsinfoClient(this.executor, this.node, this.vmid);
+        return new GetOsinfoClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `getTime`
      */
     public GetTimeClient getTime() {
-        return new GetTimeClient(this.executor, this.node, this.vmid);
+        return new GetTimeClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `getTimezone`
      */
     public GetTimezoneClient getTimezone() {
-        return new GetTimezoneClient(this.executor, this.node, this.vmid);
+        return new GetTimezoneClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `getUsers`
      */
     public GetUsersClient getUsers() {
-        return new GetUsersClient(this.executor, this.node, this.vmid);
+        return new GetUsersClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `getVcpus`
      */
     public GetVcpusClient getVcpus() {
-        return new GetVcpusClient(this.executor, this.node, this.vmid);
+        return new GetVcpusClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `info`
      */
     public InfoClient info() {
-        return new InfoClient(this.executor, this.node, this.vmid);
+        return new InfoClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `networkGetInterfaces`
      */
     public NetworkGetInterfacesClient networkGetInterfaces() {
-        return new NetworkGetInterfacesClient(this.executor, this.node, this.vmid);
+        return new NetworkGetInterfacesClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `ping`
      */
     public PingClient ping() {
-        return new PingClient(this.executor, this.node, this.vmid);
+        return new PingClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `shutdown`
      */
     public ShutdownClient shutdown() {
-        return new ShutdownClient(this.executor, this.node, this.vmid);
+        return new ShutdownClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `suspendDisk`
      */
     public SuspendDiskClient suspendDisk() {
-        return new SuspendDiskClient(this.executor, this.node, this.vmid);
+        return new SuspendDiskClient(this.executor, this.node, this.vmId);
     }
 
     /**
-     * Returns a client for the sub-resource: `suspendHybrid`
+     * Returns a client for the sub-resource: `suspendHybrId`
      */
-    public SuspendHybridClient suspendHybrid() {
-        return new SuspendHybridClient(this.executor, this.node, this.vmid);
+    public SuspendHybridClient suspendHybrId() {
+        return new SuspendHybridClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `suspendRam`
      */
     public SuspendRamClient suspendRam() {
-        return new SuspendRamClient(this.executor, this.node, this.vmid);
+        return new SuspendRamClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `setUserPassword`
      */
     public SetUserPasswordClient setUserPassword() {
-        return new SetUserPasswordClient(this.executor, this.node, this.vmid);
+        return new SetUserPasswordClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `exec`
      */
     public ExecClient exec() {
-        return new ExecClient(this.executor, this.node, this.vmid);
+        return new ExecClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `execStatus`
      */
     public ExecStatusClient execStatus() {
-        return new ExecStatusClient(this.executor, this.node, this.vmid);
+        return new ExecStatusClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `fileRead`
      */
     public FileReadClient fileRead() {
-        return new FileReadClient(this.executor, this.node, this.vmid);
+        return new FileReadClient(this.executor, this.node, this.vmId);
     }
 
     /**
      * Returns a client for the sub-resource: `fileWrite`
      */
     public FileWriteClient fileWrite() {
-        return new FileWriteClient(this.executor, this.node, this.vmid);
+        return new FileWriteClient(this.executor, this.node, this.vmId);
     }
 }

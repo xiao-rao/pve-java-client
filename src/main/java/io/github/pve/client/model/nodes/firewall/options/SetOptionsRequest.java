@@ -182,7 +182,7 @@ public class SetOptionsRequest {
      * Optional: True
      */
     @JsonProperty("nf_conntrack_allow_invalid")
-    private String nfConntrackAllowInvalid;
+    private String nfConntrackAllowInvalId;
 
 
 }

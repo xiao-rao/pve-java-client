@@ -24,8 +24,8 @@ public class NodesClient {
     /**
      * Corosync node list.
      */
-    public List<Object> nodes() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<NodesResponse> nodes() {
+        PveResponse<List<NodesResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -39,7 +39,8 @@ public class NodesClient {
     /**
      * Adds a node to the cluster configuration. This call is for internal use.
      */
-    public void addnode(AddnodeRequest request) {
-        executor.post(this.basePath + "/" + request.getNode(), request);
+    public AddnodeResponse addnode(AddnodeRequest request) {
+        PveResponse<AddnodeResponse> response = executor.post(this.basePath + "/" + request.getNode(), request, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

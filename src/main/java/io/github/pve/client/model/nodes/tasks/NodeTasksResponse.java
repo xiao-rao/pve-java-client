@@ -42,7 +42,7 @@ public class NodeTasksResponse {
      * Optional: True
      */
     @JsonProperty("pid")
-    private Integer pid;
+    private Integer pId;
 
     /**
      * 
@@ -82,7 +82,7 @@ public class NodeTasksResponse {
      * Optional: True
      */
     @JsonProperty("upid")
-    private String upid;
+    private String upId;
 
     /**
      * 

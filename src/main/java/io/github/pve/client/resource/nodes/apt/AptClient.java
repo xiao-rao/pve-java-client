@@ -8,6 +8,8 @@ import io.github.pve.client.resource.nodes.apt.update.UpdateClient;
 import io.github.pve.client.resource.nodes.apt.changelog.ChangelogClient;
 import io.github.pve.client.resource.nodes.apt.repositories.RepositoriesClient;
 import io.github.pve.client.resource.nodes.apt.versions.VersionsClient;
+// Import models if needed
+import io.github.pve.client.model.nodes.apt.*;
 
 /**
  * Client for /nodes/{node}/apt
@@ -28,8 +30,8 @@ public class AptClient {
     /**
      * Directory index for apt (Advanced Package Tool).
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<NodesAptIndexResponse> index() {
+        PveResponse<List<NodesAptIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

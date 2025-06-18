@@ -25,7 +25,7 @@ public class NetstatClient {
      * Read tap/vm network device interface counters
      */
     public List<Object> netstat() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

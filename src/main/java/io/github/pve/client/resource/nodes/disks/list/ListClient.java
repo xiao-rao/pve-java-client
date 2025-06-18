@@ -28,7 +28,7 @@ public class ListClient {
     /**
      * List local disks.
      */
-    public ListResponse list(Boolean includePartitions, Boolean skipsmart, String type) {
+    public List<ListResponse> list(Boolean includePartitions, Boolean skipsmart, String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (includePartitions != null) {
             queryParams.put("include-partitions", includePartitions);
@@ -39,7 +39,7 @@ public class ListClient {
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<ListResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<ListResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

@@ -15,22 +15,22 @@ public class ConfigClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
     protected final String snapname;
 
-    public ConfigClient(ProxmoxApiExecutor executor, String node, String vmid, String snapname) {
+    public ConfigClient(ProxmoxApiExecutor executor, String node, String vmId, String snapname) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
+        this.vmId = vmId;
         this.snapname = snapname;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/snapshot/{snapname}/config".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid).replace("{" + "snapname" + "}", snapname);
+        this.basePath = "/nodes/{node}/lxc/{vmid}/snapshot/{snapname}/config".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId).replace("{" + "snapname" + "}", snapname);
     }
 
     /**
      * Get snapshot configuration
      */
     public Map<String, Object> getSnapshotConfig() {
-        PveResponse<Map<String, Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

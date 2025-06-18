@@ -14,6 +14,8 @@ import io.github.pve.client.resource.access.tfa.TfaClient;
 import io.github.pve.client.resource.access.ticket.TicketClient;
 import io.github.pve.client.resource.access.password.PasswordClient;
 import io.github.pve.client.resource.access.permissions.PermissionsClient;
+// Import models if needed
+import io.github.pve.client.model.access.*;
 
 /**
  * Client for /access
@@ -32,8 +34,8 @@ public class AccessClient {
     /**
      * Directory index.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<AccessIndexResponse> index() {
+        PveResponse<List<AccessIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -73,9 +75,9 @@ public class AccessClient {
     }
 
     /**
-     * Returns a client for the sub-resource: `openid`
+     * Returns a client for the sub-resource: `openId`
      */
-    public OpenidClient openid() {
+    public OpenidClient openId() {
         return new OpenidClient(this.executor);
     }
 

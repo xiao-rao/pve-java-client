@@ -7,6 +7,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import io.github.pve.client.resource.cluster.ha.resources.ResourcesClient;
 import io.github.pve.client.resource.cluster.ha.groups.GroupsClient;
 import io.github.pve.client.resource.cluster.ha.status.StatusClient;
+// Import models if needed
+import io.github.pve.client.model.cluster.ha.*;
 
 /**
  * Client for /cluster/ha
@@ -25,8 +27,8 @@ public class HaClient {
     /**
      * Directory index.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<ClusterHaIndexResponse> index() {
+        PveResponse<List<ClusterHaIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

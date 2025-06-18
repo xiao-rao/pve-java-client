@@ -60,7 +60,7 @@ public class UpdatePoolDeprecatedRequest {
      * Optional: True
      */
     @JsonProperty("poolid")
-    private String poolid;
+    private String poolId;
 
 
 }

@@ -30,13 +30,13 @@ public class ContentClient {
     /**
      * List storage content.
      */
-    public IndexResponse index(String vmid, String content) {
-        String path = this.basePath + "/" + vmid;
+    public List<StorageContentIndexResponse> index(String vmId, String content) {
+        String path = this.basePath + "/" + vmId;
         Map<String, Object> queryParams = new HashMap<>();
         if (content != null) {
             queryParams.put("content", content);
         }
-        PveResponse<IndexResponse> response = executor.get(path, queryParams, new TypeReference<>() {});
+        PveResponse<List<StorageContentIndexResponse>> response = executor.get(path, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -44,34 +44,35 @@ public class ContentClient {
      * Allocate disk images.
      */
     public String create(CreateRequest request) {
-        PveResponse<String> response = executor.post(this.basePath + "/" + request.getVmid(), request, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath + "/" + request.getVmId(), request, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Delete volume
      */
-    public void delete(String volume, Integer delay) {
+    public String delete(String volume, Integer delay) {
         String path = this.basePath + "/" + volume;
         Map<String, Object> options = new HashMap<>();
         if (delay != null) {
             options.put("delay", delay);
         }
-        executor.delete(path, options);
+        PveResponse<String> response = executor.delete(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Get volume attributes
      */
     public InfoResponse info(String volume) {
-        PveResponse<InfoResponse> response = executor.get(this.basePath + "/" + volume, null, new TypeReference<>() {});
+        PveResponse<InfoResponse> response = executor.get(this.basePath + "/" + volume, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Copy a volume. This is experimental code - do not use.
      */
-    public void copy(String volume, String target, String targetNode) {
+    public String copy(String volume, String target, String targetNode) {
         String path = this.basePath + "/" + volume;
         Map<String, Object> options = new HashMap<>();
         if (target != null) {
@@ -80,7 +81,8 @@ public class ContentClient {
         if (targetNode != null) {
             options.put("target_node", targetNode);
         }
-        executor.post(path, options);
+        PveResponse<String> response = executor.post(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

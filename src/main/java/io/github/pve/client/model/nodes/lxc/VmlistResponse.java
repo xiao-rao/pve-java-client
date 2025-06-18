@@ -154,7 +154,7 @@ public class VmlistResponse {
      * Optional: True
      */
     @JsonProperty("vmid")
-    private Integer vmid;
+    private Integer vmId;
 
 
 }

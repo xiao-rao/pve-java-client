@@ -44,7 +44,7 @@ public class UpdatePoolRequest {
      * Optional: True
      */
     @JsonProperty("poolid")
-    private String poolid;
+    private String poolId;
 
     /**
      * List of storage IDs to add or remove from this pool.

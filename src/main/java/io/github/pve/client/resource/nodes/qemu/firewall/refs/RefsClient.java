@@ -18,24 +18,24 @@ public class RefsClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public RefsClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public RefsClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/firewall/refs".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/firewall/refs".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Lists possible IPSet/Alias reference which are allowed in source/dest properties.
      */
-    public RefsResponse refs(String type) {
+    public List<RefsResponse> refs(String type) {
         Map<String, Object> queryParams = new HashMap<>();
         if (type != null) {
             queryParams.put("type", type);
         }
-        PveResponse<RefsResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<List<RefsResponse>> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

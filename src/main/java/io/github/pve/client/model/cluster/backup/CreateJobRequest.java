@@ -339,7 +339,7 @@ public class CreateJobRequest {
      * Optional: True
      */
     @JsonProperty("vmid")
-    private String vmid;
+    private String vmId;
 
     /**
      * Zstd threads. N=0 uses half of the available cores, if N is set to a value bigger than 0, N is used as thread count.

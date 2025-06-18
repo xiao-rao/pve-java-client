@@ -24,7 +24,7 @@ public class RawClient {
      * Get the Ceph configuration file.
      */
     public String raw() {
-        PveResponse<String> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

@@ -25,8 +25,8 @@ public class RealmSyncClient {
     /**
      * List configured realm-sync-jobs.
      */
-    public SyncjobIndexResponse syncjobIndex() {
-        PveResponse<SyncjobIndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<SyncjobIndexResponse> syncjobIndex() {
+        PveResponse<List<SyncjobIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -40,8 +40,9 @@ public class RealmSyncClient {
     /**
      * Read realm-sync job definition.
      */
-    public void readJob(String id) {
-        executor.get(this.basePath + "/" + id);
+    public Map<String, Object> readJob(String id) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + id, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

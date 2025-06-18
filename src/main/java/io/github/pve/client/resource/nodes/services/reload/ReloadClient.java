@@ -26,7 +26,7 @@ public class ReloadClient {
      * Reload service. Falls back to restart if service cannot be reloaded.
      */
     public String serviceReload() {
-        PveResponse<String> response = executor.post(this.basePath, null, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

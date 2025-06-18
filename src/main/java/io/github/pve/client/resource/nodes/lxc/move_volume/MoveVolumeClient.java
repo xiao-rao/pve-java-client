@@ -15,20 +15,20 @@ public class MoveVolumeClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public MoveVolumeClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public MoveVolumeClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/move_volume".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/lxc/{vmid}/move_volume".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Move a rootfs-/mp-volume to a different storage or to a different container.
      */
     public String moveVolume(MoveVolumeRequest request) {
-        PveResponse<String> response = executor.post(this.basePath + "/" + request.getStorage() + "/" + request.getTargetVmid(), request, new TypeReference<>() {});
+        PveResponse<String> response = executor.post(this.basePath + "/" + request.getStorage() + "/" + request.getTargetVmId(), request, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

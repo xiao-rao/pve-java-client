@@ -26,8 +26,8 @@ public class AliasesClient {
     /**
      * List aliases
      */
-    public GetAliasesResponse getAliases() {
-        PveResponse<GetAliasesResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetAliasesResponse> getAliases() {
+        PveResponse<List<GetAliasesResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -53,8 +53,9 @@ public class AliasesClient {
     /**
      * Read alias.
      */
-    public void readAlias(String name) {
-        executor.get(this.basePath + "/" + name);
+    public Map<String, Object> readAlias(String name) {
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath + "/" + name, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**

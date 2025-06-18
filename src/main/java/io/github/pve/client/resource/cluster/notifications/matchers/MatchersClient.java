@@ -24,8 +24,8 @@ public class MatchersClient {
     /**
      * Returns a list of all matchers
      */
-    public GetMatchersResponse getMatchers() {
-        PveResponse<GetMatchersResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetMatchersResponse> getMatchers() {
+        PveResponse<List<GetMatchersResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -47,7 +47,7 @@ public class MatchersClient {
      * Return a specific matcher
      */
     public GetMatcherResponse getMatcher(String name) {
-        PveResponse<GetMatcherResponse> response = executor.get(this.basePath + "/" + name, null, new TypeReference<>() {});
+        PveResponse<GetMatcherResponse> response = executor.get(this.basePath + "/" + name, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

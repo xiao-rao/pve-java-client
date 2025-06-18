@@ -6,6 +6,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.access.groups.*;
 
 /**
  * Client for /access/groups
@@ -24,21 +26,21 @@ public class GroupsClient {
     /**
      * Group index.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<AccessGroupsIndexResponse> index() {
+        PveResponse<List<AccessGroupsIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Create new group.
      */
-    public void createGroup(String comment, String groupid) {
+    public void createGroup(String comment, String groupId) {
         Map<String, Object> options = new HashMap<>();
         if (comment != null) {
             options.put("comment", comment);
         }
-        if (groupid != null) {
-            options.put("groupid", groupid);
+        if (groupId != null) {
+            options.put("groupid", groupId);
         }
         executor.post(this.basePath, options);
     }
@@ -46,22 +48,23 @@ public class GroupsClient {
     /**
      * Delete group.
      */
-    public void deleteGroup(String groupid) {
-        executor.delete(this.basePath + "/" + groupid);
+    public void deleteGroup(String groupId) {
+        executor.delete(this.basePath + "/" + groupId);
     }
 
     /**
      * Get group configuration.
      */
-    public void readGroup(String groupid) {
-        executor.get(this.basePath + "/" + groupid);
+    public ReadGroupResponse readGroup(String groupId) {
+        PveResponse<ReadGroupResponse> response = executor.get(this.basePath + "/" + groupId, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * Update group data.
      */
-    public void updateGroup(String groupid, String comment) {
-        String path = this.basePath + "/" + groupid;
+    public void updateGroup(String groupId, String comment) {
+        String path = this.basePath + "/" + groupId;
         Map<String, Object> options = new HashMap<>();
         if (comment != null) {
             options.put("comment", comment);

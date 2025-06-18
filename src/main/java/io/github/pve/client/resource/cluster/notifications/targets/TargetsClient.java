@@ -25,8 +25,8 @@ public class TargetsClient {
     /**
      * Returns a list of all entities that can be used as notification targets.
      */
-    public GetAllTargetsResponse getAllTargets() {
-        PveResponse<GetAllTargetsResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<GetAllTargetsResponse> getAllTargets() {
+        PveResponse<List<GetAllTargetsResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 

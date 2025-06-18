@@ -15,20 +15,20 @@ public class CurrentClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public CurrentClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public CurrentClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/status/current".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/lxc/{vmid}/status/current".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Get virtual machine status.
      */
     public VmStatusResponse vmStatus() {
-        PveResponse<VmStatusResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<VmStatusResponse> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

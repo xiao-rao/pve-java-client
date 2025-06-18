@@ -5,6 +5,8 @@ import java.util.HashMap;
 import io.github.pve.client.http.ProxmoxApiExecutor;
 import io.github.pve.client.http.PveResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
+// Import models if needed
+import io.github.pve.client.model.nodes.qemu.mtunnelwebsocket.*;
 
 /**
  * Client for /nodes/{node}/qemu/{vmid}/mtunnelwebsocket
@@ -15,19 +17,19 @@ public class MtunnelwebsocketClient {
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
     protected final String node;
-    protected final String vmid;
+    protected final String vmId;
 
-    public MtunnelwebsocketClient(ProxmoxApiExecutor executor, String node, String vmid) {
+    public MtunnelwebsocketClient(ProxmoxApiExecutor executor, String node, String vmId) {
         this.executor = executor;
         this.node = node;
-        this.vmid = vmid;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/mtunnelwebsocket".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmid);
+        this.vmId = vmId;
+        this.basePath = "/nodes/{node}/qemu/{vmid}/mtunnelwebsocket".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
     }
 
     /**
      * Migration tunnel endpoint for websocket upgrade - only for internal use by VM migration.
      */
-    public Object mtunnelwebsocket(String socket, String ticket) {
+    public MtunnelwebsocketResponse mtunnelwebsocket(String socket, String ticket) {
         Map<String, Object> queryParams = new HashMap<>();
         if (socket != null) {
             queryParams.put("socket", socket);
@@ -35,7 +37,7 @@ public class MtunnelwebsocketClient {
         if (ticket != null) {
             queryParams.put("ticket", ticket);
         }
-        PveResponse<Object> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
+        PveResponse<MtunnelwebsocketResponse> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

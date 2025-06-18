@@ -74,7 +74,7 @@ public class GetResponse {
      * Optional: True
      */
     @JsonProperty("serverid")
-    private String serverid;
+    private String serverId;
 
     /**
      * Signature for offline keys

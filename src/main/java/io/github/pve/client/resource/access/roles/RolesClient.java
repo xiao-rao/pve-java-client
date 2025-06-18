@@ -26,21 +26,21 @@ public class RolesClient {
     /**
      * Role index.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<AccessRolesIndexResponse> index() {
+        PveResponse<List<AccessRolesIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Create new role.
      */
-    public void createRole(String privs, String roleid) {
+    public void createRole(String privs, String roleId) {
         Map<String, Object> options = new HashMap<>();
         if (privs != null) {
             options.put("privs", privs);
         }
-        if (roleid != null) {
-            options.put("roleid", roleid);
+        if (roleId != null) {
+            options.put("roleid", roleId);
         }
         executor.post(this.basePath, options);
     }
@@ -48,23 +48,23 @@ public class RolesClient {
     /**
      * Delete role.
      */
-    public void deleteRole(String roleid) {
-        executor.delete(this.basePath + "/" + roleid);
+    public void deleteRole(String roleId) {
+        executor.delete(this.basePath + "/" + roleId);
     }
 
     /**
      * Get role configuration.
      */
-    public ReadRoleResponse readRole(String roleid) {
-        PveResponse<ReadRoleResponse> response = executor.get(this.basePath + "/" + roleid, null, new TypeReference<>() {});
+    public ReadRoleResponse readRole(String roleId) {
+        PveResponse<ReadRoleResponse> response = executor.get(this.basePath + "/" + roleId, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
     /**
      * Update an existing role.
      */
-    public void updateRole(String roleid, Boolean append, String privs) {
-        String path = this.basePath + "/" + roleid;
+    public void updateRole(String roleId, Boolean append, String privs) {
+        String path = this.basePath + "/" + roleId;
         Map<String, Object> options = new HashMap<>();
         if (append != null) {
             options.put("append", append);

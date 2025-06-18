@@ -80,7 +80,7 @@ public class UpdateRequest {
      * Optional: True
      */
     @JsonProperty("sid")
-    private String sid;
+    private String sId;
 
 
 }

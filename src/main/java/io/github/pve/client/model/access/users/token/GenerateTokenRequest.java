@@ -44,7 +44,7 @@ public class GenerateTokenRequest {
      * Optional: True
      */
     @JsonProperty("tokenid")
-    private String tokenid;
+    private String tokenId;
 
 
 }

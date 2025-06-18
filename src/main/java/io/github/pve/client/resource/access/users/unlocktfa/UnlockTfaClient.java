@@ -12,19 +12,19 @@ public class UnlockTfaClient {
 
     protected final ProxmoxApiExecutor executor;
     protected final String basePath;
-    protected final String userid;
+    protected final String userId;
 
-    public UnlockTfaClient(ProxmoxApiExecutor executor, String userid) {
+    public UnlockTfaClient(ProxmoxApiExecutor executor, String userId) {
         this.executor = executor;
-        this.userid = userid;
-        this.basePath = "/access/users/{userid}/unlock-tfa".replace("{" + "userid" + "}", userid);
+        this.userId = userId;
+        this.basePath = "/access/users/{userid}/unlock-tfa".replace("{" + "userid" + "}", userId);
     }
 
     /**
      * Unlock a user's TFA authentication.
      */
     public Boolean unlockTfa() {
-        PveResponse<Boolean> response = executor.put(this.basePath, null, new TypeReference<>() {});
+        PveResponse<Boolean> response = executor.put(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 }

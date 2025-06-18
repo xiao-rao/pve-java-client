@@ -23,10 +23,10 @@ public class NextidClient {
     /**
      * Get next free VMID. Pass a VMID to assert that its free (at time of check).
      */
-    public Integer nextid(Integer vmid) {
+    public Integer nextId(Integer vmId) {
         Map<String, Object> queryParams = new HashMap<>();
-        if (vmid != null) {
-            queryParams.put("vmid", vmid);
+        if (vmId != null) {
+            queryParams.put("vmid", vmId);
         }
         PveResponse<Integer> response = executor.get(this.basePath, queryParams, new TypeReference<>() {});
         return response.getData().orElse(null);

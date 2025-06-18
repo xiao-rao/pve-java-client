@@ -28,8 +28,8 @@ public class LvmthinClient {
     /**
      * List LVM thinpools
      */
-    public IndexResponse index() {
-        PveResponse<IndexResponse> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<DisksLvmthinIndexResponse> index() {
+        PveResponse<List<DisksLvmthinIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -44,7 +44,7 @@ public class LvmthinClient {
     /**
      * Remove an LVM thin pool.
      */
-    public void delete(String name, Boolean cleanupConfig, Boolean cleanupDisks, String volumeGroup) {
+    public String delete(String name, Boolean cleanupConfig, Boolean cleanupDisks, String volumeGroup) {
         String path = this.basePath + "/" + name;
         Map<String, Object> options = new HashMap<>();
         if (cleanupConfig != null) {
@@ -56,6 +56,7 @@ public class LvmthinClient {
         if (volumeGroup != null) {
             options.put("volume-group", volumeGroup);
         }
-        executor.delete(path, options);
+        PveResponse<String> response = executor.delete(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 }

@@ -34,7 +34,7 @@ public class OsdClient {
      * Get Ceph osd list/tree.
      */
     public Map<String, Object> index() {
-        PveResponse<Map<String, Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<Map<String, Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -49,59 +49,61 @@ public class OsdClient {
     /**
      * Destroy OSD
      */
-    public void destroyosd(String osdid, Boolean cleanup) {
-        String path = this.basePath + "/" + osdid;
+    public String destroyosd(String osdId, Boolean cleanup) {
+        String path = this.basePath + "/" + osdId;
         Map<String, Object> options = new HashMap<>();
         if (cleanup != null) {
             options.put("cleanup", cleanup);
         }
-        executor.delete(path, options);
+        PveResponse<String> response = executor.delete(path, options, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
      * OSD index.
      */
-    public void osdindex(String osdid) {
-        executor.get(this.basePath + "/" + osdid);
+    public List<Object> osdindex(String osdId) {
+        PveResponse<List<Object>> response = executor.get(this.basePath + "/" + osdId, new TypeReference<>() {});
+        return response.getData().orElse(null);
     }
 
     /**
-     * Client for the specific `osdid` resource.
-     * @param osdid The path parameter `osdid`.
+     * Client for the specific `osdId` resource.
+     * @param osdId The path parameter `osdId`.
      */
-    public MetadataClient metadata(String osdid) {
-        return new MetadataClient(this.executor, this.node, osdid);
+    public MetadataClient metadata(String osdId) {
+        return new MetadataClient(this.executor, this.node, osdId);
     }
 
     /**
-     * Client for the specific `osdid` resource.
-     * @param osdid The path parameter `osdid`.
+     * Client for the specific `osdId` resource.
+     * @param osdId The path parameter `osdId`.
      */
-    public LvInfoClient lvInfo(String osdid) {
-        return new LvInfoClient(this.executor, this.node, osdid);
+    public LvInfoClient lvInfo(String osdId) {
+        return new LvInfoClient(this.executor, this.node, osdId);
     }
 
     /**
-     * Client for the specific `osdid` resource.
-     * @param osdid The path parameter `osdid`.
+     * Client for the specific `osdId` resource.
+     * @param osdId The path parameter `osdId`.
      */
-    public InClient in(String osdid) {
-        return new InClient(this.executor, this.node, osdid);
+    public InClient in(String osdId) {
+        return new InClient(this.executor, this.node, osdId);
     }
 
     /**
-     * Client for the specific `osdid` resource.
-     * @param osdid The path parameter `osdid`.
+     * Client for the specific `osdId` resource.
+     * @param osdId The path parameter `osdId`.
      */
-    public OutClient out(String osdid) {
-        return new OutClient(this.executor, this.node, osdid);
+    public OutClient out(String osdId) {
+        return new OutClient(this.executor, this.node, osdId);
     }
 
     /**
-     * Client for the specific `osdid` resource.
-     * @param osdid The path parameter `osdid`.
+     * Client for the specific `osdId` resource.
+     * @param osdId The path parameter `osdId`.
      */
-    public ScrubClient scrub(String osdid) {
-        return new ScrubClient(this.executor, this.node, osdid);
+    public ScrubClient scrub(String osdId) {
+        return new ScrubClient(this.executor, this.node, osdId);
     }
 }

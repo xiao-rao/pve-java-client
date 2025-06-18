@@ -42,7 +42,7 @@ public class ClusterClient {
      * Cluster index.
      */
     public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+        PveResponse<List<Object>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
@@ -173,9 +173,9 @@ public class ClusterClient {
     }
 
     /**
-     * Returns a client for the sub-resource: `nextid`
+     * Returns a client for the sub-resource: `nextId`
      */
-    public NextidClient nextid() {
+    public NextidClient nextId() {
         return new NextidClient(this.executor);
     }
 }

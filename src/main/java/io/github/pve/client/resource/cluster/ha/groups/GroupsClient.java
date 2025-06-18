@@ -24,8 +24,8 @@ public class GroupsClient {
     /**
      * Get HA groups.
      */
-    public List<Object> index() {
-        PveResponse<List<Object>> response = executor.get(this.basePath, null, new TypeReference<>() {});
+    public List<HaGroupsIndexResponse> index() {
+        PveResponse<List<HaGroupsIndexResponse>> response = executor.get(this.basePath, new TypeReference<>() {});
         return response.getData().orElse(null);
     }
 
