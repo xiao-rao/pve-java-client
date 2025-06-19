@@ -24,7 +24,7 @@ public class RefsClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/firewall/refs".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/lxc/{vmid}/firewall/refs".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

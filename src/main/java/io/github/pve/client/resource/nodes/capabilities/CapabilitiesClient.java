@@ -19,7 +19,7 @@ public class CapabilitiesClient {
     public CapabilitiesClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/capabilities".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/capabilities".replace("{node}", node);
     }
 
     /**

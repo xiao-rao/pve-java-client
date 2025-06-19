@@ -21,7 +21,7 @@ public class TimeClient {
     public TimeClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/time".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/time".replace("{node}", node);
     }
 
     /**

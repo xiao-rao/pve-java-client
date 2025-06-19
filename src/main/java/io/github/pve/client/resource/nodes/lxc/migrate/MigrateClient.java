@@ -21,7 +21,7 @@ public class MigrateClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/migrate".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/lxc/{vmid}/migrate".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

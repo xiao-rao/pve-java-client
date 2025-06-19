@@ -20,7 +20,7 @@ public class DbClient {
     public DbClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/cfg/db".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/cfg/db".replace("{node}", node);
     }
 
     /**

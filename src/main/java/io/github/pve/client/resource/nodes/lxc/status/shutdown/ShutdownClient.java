@@ -21,7 +21,7 @@ public class ShutdownClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/status/shutdown".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/lxc/{vmid}/status/shutdown".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

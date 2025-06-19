@@ -19,7 +19,7 @@ public class StopallClient {
     public StopallClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/stopall".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/stopall".replace("{node}", node);
     }
 
     /**

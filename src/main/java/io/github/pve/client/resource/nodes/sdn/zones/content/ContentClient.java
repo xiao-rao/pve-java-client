@@ -22,7 +22,7 @@ public class ContentClient {
         this.executor = executor;
         this.node = node;
         this.zone = zone;
-        this.basePath = "/nodes/{node}/sdn/zones/{zone}/content".replace("{" + "node" + "}", node).replace("{" + "zone" + "}", zone);
+        this.basePath = "/nodes/{node}/sdn/zones/{zone}/content".replace("{node}", node).replace("{zone}", zone);
     }
 
     /**

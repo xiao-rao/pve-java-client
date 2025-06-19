@@ -19,7 +19,7 @@ public class InClient {
         this.executor = executor;
         this.node = node;
         this.osdId = osdId;
-        this.basePath = "/nodes/{node}/ceph/osd/{osdid}/in".replace("{" + "node" + "}", node).replace("{" + "osdid" + "}", osdId);
+        this.basePath = "/nodes/{node}/ceph/osd/{osdid}/in".replace("{node}", node).replace("{osdid}", osdId);
     }
 
     /**

@@ -22,7 +22,7 @@ public class HardwareClient {
     public HardwareClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/hardware".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/hardware".replace("{node}", node);
     }
 
     /**

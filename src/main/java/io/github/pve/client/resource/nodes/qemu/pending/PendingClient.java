@@ -22,7 +22,7 @@ public class PendingClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/pending".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/pending".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

@@ -19,7 +19,7 @@ public class InitClient {
     public InitClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/init".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/init".replace("{node}", node);
     }
 
     /**

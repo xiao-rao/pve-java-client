@@ -19,7 +19,7 @@ public class TermproxyClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/termproxy".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/lxc/{vmid}/termproxy".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

@@ -22,7 +22,7 @@ public class GlusterfsClient {
     public GlusterfsClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/scan/glusterfs".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/scan/glusterfs".replace("{node}", node);
     }
 
     /**

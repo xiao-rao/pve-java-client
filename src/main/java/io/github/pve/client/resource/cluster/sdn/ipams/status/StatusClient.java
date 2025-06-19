@@ -18,7 +18,7 @@ public class StatusClient {
     public StatusClient(ProxmoxApiExecutor executor, String ipam) {
         this.executor = executor;
         this.ipam = ipam;
-        this.basePath = "/cluster/sdn/ipams/{ipam}/status".replace("{" + "ipam" + "}", ipam);
+        this.basePath = "/cluster/sdn/ipams/{ipam}/status".replace("{ipam}", ipam);
     }
 
     /**

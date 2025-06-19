@@ -19,7 +19,7 @@ public class SyncClient {
     public SyncClient(ProxmoxApiExecutor executor, String realm) {
         this.executor = executor;
         this.realm = realm;
-        this.basePath = "/access/domains/{realm}/sync".replace("{" + "realm" + "}", realm);
+        this.basePath = "/access/domains/{realm}/sync".replace("{realm}", realm);
     }
 
     /**

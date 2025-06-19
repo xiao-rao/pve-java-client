@@ -17,7 +17,7 @@ public class ReportClient {
     public ReportClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/report".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/report".replace("{node}", node);
     }
 
     /**

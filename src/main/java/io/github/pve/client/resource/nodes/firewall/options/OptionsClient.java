@@ -19,7 +19,7 @@ public class OptionsClient {
     public OptionsClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/firewall/options".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/firewall/options".replace("{node}", node);
     }
 
     /**

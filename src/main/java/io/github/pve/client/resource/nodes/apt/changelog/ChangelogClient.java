@@ -19,7 +19,7 @@ public class ChangelogClient {
     public ChangelogClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/apt/changelog".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/apt/changelog".replace("{node}", node);
     }
 
     /**

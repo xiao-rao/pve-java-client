@@ -20,7 +20,7 @@ public class StatusClient {
         this.executor = executor;
         this.node = node;
         this.storage = storage;
-        this.basePath = "/nodes/{node}/storage/{storage}/status".replace("{" + "node" + "}", node).replace("{" + "storage" + "}", storage);
+        this.basePath = "/nodes/{node}/storage/{storage}/status".replace("{node}", node).replace("{storage}", storage);
     }
 
     /**

@@ -28,7 +28,7 @@ public class ScanClient {
     public ScanClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/scan".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/scan".replace("{node}", node);
     }
 
     /**

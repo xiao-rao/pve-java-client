@@ -22,7 +22,7 @@ public class PbsClient {
     public PbsClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/scan/pbs".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/scan/pbs".replace("{node}", node);
     }
 
     /**

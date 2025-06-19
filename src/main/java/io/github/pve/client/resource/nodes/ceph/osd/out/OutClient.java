@@ -19,7 +19,7 @@ public class OutClient {
         this.executor = executor;
         this.node = node;
         this.osdId = osdId;
-        this.basePath = "/nodes/{node}/ceph/osd/{osdid}/out".replace("{" + "node" + "}", node).replace("{" + "osdid" + "}", osdId);
+        this.basePath = "/nodes/{node}/ceph/osd/{osdid}/out".replace("{node}", node).replace("{osdid}", osdId);
     }
 
     /**

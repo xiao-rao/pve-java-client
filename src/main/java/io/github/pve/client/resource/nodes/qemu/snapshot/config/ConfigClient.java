@@ -23,7 +23,7 @@ public class ConfigClient {
         this.node = node;
         this.vmId = vmId;
         this.snapname = snapname;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/snapshot/{snapname}/config".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId).replace("{" + "snapname" + "}", snapname);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/snapshot/{snapname}/config".replace("{node}", node).replace("{vmid}", vmId).replace("{snapname}", snapname);
     }
 
     /**

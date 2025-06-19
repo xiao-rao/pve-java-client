@@ -21,7 +21,7 @@ public class StatusClient {
     public StatusClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/status".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/status".replace("{node}", node);
     }
 
     /**

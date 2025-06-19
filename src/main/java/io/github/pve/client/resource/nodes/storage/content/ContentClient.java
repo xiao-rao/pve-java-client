@@ -24,7 +24,7 @@ public class ContentClient {
         this.executor = executor;
         this.node = node;
         this.storage = storage;
-        this.basePath = "/nodes/{node}/storage/{storage}/content".replace("{" + "node" + "}", node).replace("{" + "storage" + "}", storage);
+        this.basePath = "/nodes/{node}/storage/{storage}/content".replace("{node}", node).replace("{storage}", storage);
     }
 
     /**

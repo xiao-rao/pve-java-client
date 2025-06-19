@@ -23,7 +23,7 @@ public class LvInfoClient {
         this.executor = executor;
         this.node = node;
         this.osdId = osdId;
-        this.basePath = "/nodes/{node}/ceph/osd/{osdid}/lv-info".replace("{" + "node" + "}", node).replace("{" + "osdid" + "}", osdId);
+        this.basePath = "/nodes/{node}/ceph/osd/{osdid}/lv-info".replace("{node}", node).replace("{osdid}", osdId);
     }
 
     /**

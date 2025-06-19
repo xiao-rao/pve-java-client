@@ -21,7 +21,7 @@ public class TfaClient {
     public TfaClient(ProxmoxApiExecutor executor, String userId) {
         this.executor = executor;
         this.userId = userId;
-        this.basePath = "/access/users/{userid}/tfa".replace("{" + "userid" + "}", userId);
+        this.basePath = "/access/users/{userid}/tfa".replace("{userid}", userId);
     }
 
     /**

@@ -47,7 +47,7 @@ public class QemuClient {
     public QemuClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/qemu".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/qemu".replace("{node}", node);
     }
 
     /**

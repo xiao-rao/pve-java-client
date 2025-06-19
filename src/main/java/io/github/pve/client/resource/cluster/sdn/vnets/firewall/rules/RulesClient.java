@@ -22,7 +22,7 @@ public class RulesClient {
     public RulesClient(ProxmoxApiExecutor executor, String vnet) {
         this.executor = executor;
         this.vnet = vnet;
-        this.basePath = "/cluster/sdn/vnets/{vnet}/firewall/rules".replace("{" + "vnet" + "}", vnet);
+        this.basePath = "/cluster/sdn/vnets/{vnet}/firewall/rules".replace("{vnet}", vnet);
     }
 
     /**

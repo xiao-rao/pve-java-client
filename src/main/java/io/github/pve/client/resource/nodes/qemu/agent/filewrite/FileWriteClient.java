@@ -21,7 +21,7 @@ public class FileWriteClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/file-write".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/file-write".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

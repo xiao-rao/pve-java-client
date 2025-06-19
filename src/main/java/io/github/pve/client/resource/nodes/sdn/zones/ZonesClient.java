@@ -21,7 +21,7 @@ public class ZonesClient {
     public ZonesClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/sdn/zones".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/sdn/zones".replace("{node}", node);
     }
 
     /**

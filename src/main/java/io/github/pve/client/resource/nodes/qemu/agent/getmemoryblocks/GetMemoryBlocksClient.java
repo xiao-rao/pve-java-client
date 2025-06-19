@@ -20,7 +20,7 @@ public class GetMemoryBlocksClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/get-memory-blocks".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/get-memory-blocks".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

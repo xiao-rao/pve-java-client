@@ -24,7 +24,7 @@ public class PrunebackupsClient {
         this.executor = executor;
         this.node = node;
         this.storage = storage;
-        this.basePath = "/nodes/{node}/storage/{storage}/prunebackups".replace("{" + "node" + "}", node).replace("{" + "storage" + "}", storage);
+        this.basePath = "/nodes/{node}/storage/{storage}/prunebackups".replace("{node}", node).replace("{storage}", storage);
     }
 
     /**

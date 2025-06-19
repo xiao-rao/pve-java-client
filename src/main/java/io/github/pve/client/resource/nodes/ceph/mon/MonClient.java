@@ -22,7 +22,7 @@ public class MonClient {
     public MonClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/mon".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/mon".replace("{node}", node);
     }
 
     /**

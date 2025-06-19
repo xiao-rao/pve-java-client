@@ -43,7 +43,7 @@ public class LxcClient {
     public LxcClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/lxc".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/lxc".replace("{node}", node);
     }
 
     /**

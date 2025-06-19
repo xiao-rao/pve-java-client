@@ -19,7 +19,7 @@ public class InitgptClient {
     public InitgptClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/disks/initgpt".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/disks/initgpt".replace("{node}", node);
     }
 
     /**

@@ -21,7 +21,7 @@ public class CfgClient {
     public CfgClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/cfg".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/cfg".replace("{node}", node);
     }
 
     /**

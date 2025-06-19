@@ -21,7 +21,7 @@ public class RrdClient {
     public RrdClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/rrd".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/rrd".replace("{node}", node);
     }
 
     /**

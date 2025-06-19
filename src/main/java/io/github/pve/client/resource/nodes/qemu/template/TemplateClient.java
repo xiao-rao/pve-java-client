@@ -21,7 +21,7 @@ public class TemplateClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/template".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/template".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

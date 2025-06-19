@@ -22,7 +22,7 @@ public class SyslogClient {
     public SyslogClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/syslog".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/syslog".replace("{node}", node);
     }
 
     /**

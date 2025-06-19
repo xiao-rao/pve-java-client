@@ -24,7 +24,7 @@ public class TasksClient {
     public TasksClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/tasks".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/tasks".replace("{node}", node);
     }
 
     /**

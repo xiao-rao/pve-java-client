@@ -24,7 +24,7 @@ public class AptClient {
     public AptClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/apt".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/apt".replace("{node}", node);
     }
 
     /**

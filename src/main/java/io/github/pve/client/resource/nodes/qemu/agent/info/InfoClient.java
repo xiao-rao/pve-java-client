@@ -20,7 +20,7 @@ public class InfoClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/info".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/info".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

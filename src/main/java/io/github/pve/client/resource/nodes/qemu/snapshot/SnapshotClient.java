@@ -26,7 +26,7 @@ public class SnapshotClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/snapshot".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/snapshot".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

@@ -20,7 +20,7 @@ public class StateClient {
         this.executor = executor;
         this.node = node;
         this.service = service;
-        this.basePath = "/nodes/{node}/services/{service}/state".replace("{" + "node" + "}", node).replace("{" + "service" + "}", service);
+        this.basePath = "/nodes/{node}/services/{service}/state".replace("{node}", node).replace("{service}", service);
     }
 
     /**

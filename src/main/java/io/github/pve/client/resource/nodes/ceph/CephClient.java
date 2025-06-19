@@ -34,7 +34,7 @@ public class CephClient {
     public CephClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph".replace("{node}", node);
     }
 
     /**

@@ -19,7 +19,7 @@ public class MigrateallClient {
     public MigrateallClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/migrateall".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/migrateall".replace("{node}", node);
     }
 
     /**

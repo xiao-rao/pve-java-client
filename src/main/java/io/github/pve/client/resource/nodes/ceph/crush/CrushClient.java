@@ -17,7 +17,7 @@ public class CrushClient {
     public CrushClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/crush".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/crush".replace("{node}", node);
     }
 
     /**

@@ -21,7 +21,7 @@ public class MoveDiskClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/move_disk".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/move_disk".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

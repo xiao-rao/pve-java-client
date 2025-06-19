@@ -19,7 +19,7 @@ public class StartClient {
         this.executor = executor;
         this.node = node;
         this.service = service;
-        this.basePath = "/nodes/{node}/services/{service}/start".replace("{" + "node" + "}", node).replace("{" + "service" + "}", service);
+        this.basePath = "/nodes/{node}/services/{service}/start".replace("{node}", node).replace("{service}", service);
     }
 
     /**

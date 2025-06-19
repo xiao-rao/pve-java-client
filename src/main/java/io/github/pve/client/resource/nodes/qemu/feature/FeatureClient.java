@@ -23,7 +23,7 @@ public class FeatureClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/feature".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/feature".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

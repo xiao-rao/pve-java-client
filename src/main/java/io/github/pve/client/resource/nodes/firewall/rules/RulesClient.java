@@ -22,7 +22,7 @@ public class RulesClient {
     public RulesClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/firewall/rules".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/firewall/rules".replace("{node}", node);
     }
 
     /**

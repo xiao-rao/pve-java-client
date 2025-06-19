@@ -20,7 +20,7 @@ public class ExecuteClient {
     public ExecuteClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/execute".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/execute".replace("{node}", node);
     }
 
     /**

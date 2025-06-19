@@ -22,7 +22,7 @@ public class ListClient {
     public ListClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/disks/list".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/disks/list".replace("{node}", node);
     }
 
     /**

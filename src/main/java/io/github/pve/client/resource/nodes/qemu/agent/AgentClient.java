@@ -47,7 +47,7 @@ public class AgentClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

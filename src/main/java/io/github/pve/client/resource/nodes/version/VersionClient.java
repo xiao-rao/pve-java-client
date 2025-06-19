@@ -19,7 +19,7 @@ public class VersionClient {
     public VersionClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/version".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/version".replace("{node}", node);
     }
 
     /**

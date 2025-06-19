@@ -20,7 +20,7 @@ public class FsfreezeThawClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/fsfreeze-thaw".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/fsfreeze-thaw".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

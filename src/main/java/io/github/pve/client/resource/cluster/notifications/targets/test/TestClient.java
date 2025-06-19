@@ -17,7 +17,7 @@ public class TestClient {
     public TestClient(ProxmoxApiExecutor executor, String name) {
         this.executor = executor;
         this.name = name;
-        this.basePath = "/cluster/notifications/targets/{name}/test".replace("{" + "name" + "}", name);
+        this.basePath = "/cluster/notifications/targets/{name}/test".replace("{name}", name);
     }
 
     /**

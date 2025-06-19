@@ -25,7 +25,7 @@ public class ServicesClient {
     public ServicesClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/services".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/services".replace("{node}", node);
     }
 
     /**

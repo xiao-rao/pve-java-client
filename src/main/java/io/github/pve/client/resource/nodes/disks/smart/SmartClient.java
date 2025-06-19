@@ -21,7 +21,7 @@ public class SmartClient {
     public SmartClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/disks/smart".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/disks/smart".replace("{node}", node);
     }
 
     /**

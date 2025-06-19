@@ -19,7 +19,7 @@ public class SuspendallClient {
     public SuspendallClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/suspendall".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/suspendall".replace("{node}", node);
     }
 
     /**

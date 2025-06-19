@@ -22,7 +22,7 @@ public class FsClient {
     public FsClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/fs".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/fs".replace("{node}", node);
     }
 
     /**

@@ -21,7 +21,7 @@ public class ExecStatusClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/exec-status".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/exec-status".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

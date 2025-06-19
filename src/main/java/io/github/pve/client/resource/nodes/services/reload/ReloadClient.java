@@ -19,7 +19,7 @@ public class ReloadClient {
         this.executor = executor;
         this.node = node;
         this.service = service;
-        this.basePath = "/nodes/{node}/services/{service}/reload".replace("{" + "node" + "}", node).replace("{" + "service" + "}", service);
+        this.basePath = "/nodes/{node}/services/{service}/reload".replace("{node}", node).replace("{service}", service);
     }
 
     /**

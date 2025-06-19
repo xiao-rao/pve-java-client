@@ -21,7 +21,7 @@ public class CustomClient {
     public CustomClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/certificates/custom".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/certificates/custom".replace("{node}", node);
     }
 
     /**

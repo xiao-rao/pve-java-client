@@ -19,7 +19,7 @@ public class OptionsClient {
     public OptionsClient(ProxmoxApiExecutor executor, String vnet) {
         this.executor = executor;
         this.vnet = vnet;
-        this.basePath = "/cluster/sdn/vnets/{vnet}/firewall/options".replace("{" + "vnet" + "}", vnet);
+        this.basePath = "/cluster/sdn/vnets/{vnet}/firewall/options".replace("{vnet}", vnet);
     }
 
     /**

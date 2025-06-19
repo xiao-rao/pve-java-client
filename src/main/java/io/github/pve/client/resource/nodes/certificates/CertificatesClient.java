@@ -21,7 +21,7 @@ public class CertificatesClient {
     public CertificatesClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/certificates".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/certificates".replace("{node}", node);
     }
 
     /**

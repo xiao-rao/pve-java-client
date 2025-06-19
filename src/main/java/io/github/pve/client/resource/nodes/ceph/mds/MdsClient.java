@@ -22,7 +22,7 @@ public class MdsClient {
     public MdsClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/mds".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/mds".replace("{node}", node);
     }
 
     /**

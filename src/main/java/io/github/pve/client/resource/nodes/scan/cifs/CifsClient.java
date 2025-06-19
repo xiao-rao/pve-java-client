@@ -22,7 +22,7 @@ public class CifsClient {
     public CifsClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/scan/cifs".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/scan/cifs".replace("{node}", node);
     }
 
     /**

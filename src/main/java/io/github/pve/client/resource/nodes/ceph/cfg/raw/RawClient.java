@@ -17,7 +17,7 @@ public class RawClient {
     public RawClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/cfg/raw".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/cfg/raw".replace("{node}", node);
     }
 
     /**

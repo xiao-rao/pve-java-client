@@ -21,7 +21,7 @@ public class HostsClient {
     public HostsClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/hosts".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/hosts".replace("{node}", node);
     }
 
     /**

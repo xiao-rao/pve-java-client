@@ -17,7 +17,7 @@ public class RelocateClient {
     public RelocateClient(ProxmoxApiExecutor executor, String sId) {
         this.executor = executor;
         this.sId = sId;
-        this.basePath = "/cluster/ha/resources/{sid}/relocate".replace("{" + "sid" + "}", sId);
+        this.basePath = "/cluster/ha/resources/{sid}/relocate".replace("{sid}", sId);
     }
 
     /**

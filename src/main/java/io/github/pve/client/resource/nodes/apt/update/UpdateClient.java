@@ -20,7 +20,7 @@ public class UpdateClient {
     public UpdateClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/apt/update".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/apt/update".replace("{node}", node);
     }
 
     /**

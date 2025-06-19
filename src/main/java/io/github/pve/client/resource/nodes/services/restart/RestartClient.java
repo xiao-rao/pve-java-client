@@ -19,7 +19,7 @@ public class RestartClient {
         this.executor = executor;
         this.node = node;
         this.service = service;
-        this.basePath = "/nodes/{node}/services/{service}/restart".replace("{" + "node" + "}", node).replace("{" + "service" + "}", service);
+        this.basePath = "/nodes/{node}/services/{service}/restart".replace("{node}", node).replace("{service}", service);
     }
 
     /**

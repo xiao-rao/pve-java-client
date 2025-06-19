@@ -21,7 +21,7 @@ public class CmdSafetyClient {
     public CmdSafetyClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/cmd-safety".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/cmd-safety".replace("{node}", node);
     }
 
     /**

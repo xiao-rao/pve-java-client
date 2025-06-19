@@ -23,7 +23,7 @@ public class VncwebsocketClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/vncwebsocket".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/lxc/{vmid}/vncwebsocket".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

@@ -22,7 +22,7 @@ public class DirectoryClient {
     public DirectoryClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/disks/directory".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/disks/directory".replace("{node}", node);
     }
 
     /**

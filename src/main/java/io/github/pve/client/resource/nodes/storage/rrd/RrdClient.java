@@ -23,7 +23,7 @@ public class RrdClient {
         this.executor = executor;
         this.node = node;
         this.storage = storage;
-        this.basePath = "/nodes/{node}/storage/{storage}/rrd".replace("{" + "node" + "}", node).replace("{" + "storage" + "}", storage);
+        this.basePath = "/nodes/{node}/storage/{storage}/rrd".replace("{node}", node).replace("{storage}", storage);
     }
 
     /**

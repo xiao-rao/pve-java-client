@@ -22,7 +22,7 @@ public class LvmthinClient {
     public LvmthinClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/disks/lvmthin".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/disks/lvmthin".replace("{node}", node);
     }
 
     /**

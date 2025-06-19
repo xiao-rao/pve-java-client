@@ -20,7 +20,7 @@ public class UsbClient {
     public UsbClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/hardware/usb".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/hardware/usb".replace("{node}", node);
     }
 
     /**

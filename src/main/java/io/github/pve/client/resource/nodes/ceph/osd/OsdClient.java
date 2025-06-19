@@ -27,7 +27,7 @@ public class OsdClient {
     public OsdClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/osd".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/osd".replace("{node}", node);
     }
 
     /**

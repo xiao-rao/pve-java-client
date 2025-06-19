@@ -19,7 +19,7 @@ public class IncludedVolumesClient {
     public IncludedVolumesClient(ProxmoxApiExecutor executor, String id) {
         this.executor = executor;
         this.id = id;
-        this.basePath = "/cluster/backup/{id}/included_volumes".replace("{" + "id" + "}", id);
+        this.basePath = "/cluster/backup/{id}/included_volumes".replace("{id}", id);
     }
 
     /**

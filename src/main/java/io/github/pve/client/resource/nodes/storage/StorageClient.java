@@ -31,7 +31,7 @@ public class StorageClient {
     public StorageClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/storage".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/storage".replace("{node}", node);
     }
 
     /**

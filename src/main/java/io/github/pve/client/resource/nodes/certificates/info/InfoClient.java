@@ -20,7 +20,7 @@ public class InfoClient {
     public InfoClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/certificates/info".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/certificates/info".replace("{node}", node);
     }
 
     /**

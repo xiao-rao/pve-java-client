@@ -17,7 +17,7 @@ public class MigrateClient {
     public MigrateClient(ProxmoxApiExecutor executor, String sId) {
         this.executor = executor;
         this.sId = sId;
-        this.basePath = "/cluster/ha/resources/{sid}/migrate".replace("{" + "sid" + "}", sId);
+        this.basePath = "/cluster/ha/resources/{sid}/migrate".replace("{sid}", sId);
     }
 
     /**

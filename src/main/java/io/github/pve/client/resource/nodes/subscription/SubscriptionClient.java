@@ -21,7 +21,7 @@ public class SubscriptionClient {
     public SubscriptionClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/subscription".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/subscription".replace("{node}", node);
     }
 
     /**

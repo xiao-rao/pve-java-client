@@ -19,7 +19,7 @@ public class WipediskClient {
     public WipediskClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/disks/wipedisk".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/disks/wipedisk".replace("{node}", node);
     }
 
     /**

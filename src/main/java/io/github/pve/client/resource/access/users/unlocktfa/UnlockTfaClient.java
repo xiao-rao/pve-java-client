@@ -17,7 +17,7 @@ public class UnlockTfaClient {
     public UnlockTfaClient(ProxmoxApiExecutor executor, String userId) {
         this.executor = executor;
         this.userId = userId;
-        this.basePath = "/access/users/{userid}/unlock-tfa".replace("{" + "userid" + "}", userId);
+        this.basePath = "/access/users/{userid}/unlock-tfa".replace("{userid}", userId);
     }
 
     /**

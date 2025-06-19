@@ -19,7 +19,7 @@ public class SpiceshellClient {
     public SpiceshellClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/spiceshell".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/spiceshell".replace("{node}", node);
     }
 
     /**

@@ -19,7 +19,7 @@ public class StopClient {
         this.executor = executor;
         this.node = node;
         this.service = service;
-        this.basePath = "/nodes/{node}/services/{service}/stop".replace("{" + "node" + "}", node).replace("{" + "service" + "}", service);
+        this.basePath = "/nodes/{node}/services/{service}/stop".replace("{node}", node).replace("{service}", service);
     }
 
     /**

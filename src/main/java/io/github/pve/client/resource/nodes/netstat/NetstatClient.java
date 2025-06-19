@@ -18,7 +18,7 @@ public class NetstatClient {
     public NetstatClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/netstat".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/netstat".replace("{node}", node);
     }
 
     /**

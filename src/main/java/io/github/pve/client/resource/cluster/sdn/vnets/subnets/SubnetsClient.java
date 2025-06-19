@@ -22,7 +22,7 @@ public class SubnetsClient {
     public SubnetsClient(ProxmoxApiExecutor executor, String vnet) {
         this.executor = executor;
         this.vnet = vnet;
-        this.basePath = "/cluster/sdn/vnets/{vnet}/subnets".replace("{" + "vnet" + "}", vnet);
+        this.basePath = "/cluster/sdn/vnets/{vnet}/subnets".replace("{vnet}", vnet);
     }
 
     /**

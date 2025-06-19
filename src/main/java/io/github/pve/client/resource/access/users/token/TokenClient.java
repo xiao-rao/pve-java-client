@@ -20,7 +20,7 @@ public class TokenClient {
     public TokenClient(ProxmoxApiExecutor executor, String userId) {
         this.executor = executor;
         this.userId = userId;
-        this.basePath = "/access/users/{userid}/token".replace("{" + "userid" + "}", userId);
+        this.basePath = "/access/users/{userid}/token".replace("{userid}", userId);
     }
 
     /**

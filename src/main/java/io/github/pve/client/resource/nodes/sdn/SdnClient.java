@@ -19,7 +19,7 @@ public class SdnClient {
     public SdnClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/sdn".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/sdn".replace("{node}", node);
     }
 
     /**

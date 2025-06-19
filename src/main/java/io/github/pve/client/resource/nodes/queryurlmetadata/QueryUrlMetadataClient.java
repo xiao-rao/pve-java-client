@@ -21,7 +21,7 @@ public class QueryUrlMetadataClient {
     public QueryUrlMetadataClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/query-url-metadata".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/query-url-metadata".replace("{node}", node);
     }
 
     /**

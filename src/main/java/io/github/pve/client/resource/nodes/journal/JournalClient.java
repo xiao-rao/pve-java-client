@@ -20,7 +20,7 @@ public class JournalClient {
     public JournalClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/journal".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/journal".replace("{node}", node);
     }
 
     /**

@@ -22,7 +22,7 @@ public class MdevClient {
         this.executor = executor;
         this.node = node;
         this.pciIdOrMapping = pciIdOrMapping;
-        this.basePath = "/nodes/{node}/hardware/pci/{pci-id-or-mapping}/mdev".replace("{" + "node" + "}", node).replace("{" + "pci-id-or-mapping" + "}", pciIdOrMapping);
+        this.basePath = "/nodes/{node}/hardware/pci/{pci-id-or-mapping}/mdev".replace("{node}", node).replace("{pci-id-or-mapping}", pciIdOrMapping);
     }
 
     /**

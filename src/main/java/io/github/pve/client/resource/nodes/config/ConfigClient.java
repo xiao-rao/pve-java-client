@@ -21,7 +21,7 @@ public class ConfigClient {
     public ConfigClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/config".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/config".replace("{node}", node);
     }
 
     /**

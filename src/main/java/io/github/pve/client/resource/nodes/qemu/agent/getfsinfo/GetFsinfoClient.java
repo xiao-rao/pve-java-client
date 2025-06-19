@@ -20,7 +20,7 @@ public class GetFsinfoClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/get-fsinfo".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/get-fsinfo".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

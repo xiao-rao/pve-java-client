@@ -20,7 +20,7 @@ public class FirewallClient {
     public FirewallClient(ProxmoxApiExecutor executor, String vnet) {
         this.executor = executor;
         this.vnet = vnet;
-        this.basePath = "/cluster/sdn/vnets/{vnet}/firewall".replace("{" + "vnet" + "}", vnet);
+        this.basePath = "/cluster/sdn/vnets/{vnet}/firewall".replace("{vnet}", vnet);
     }
 
     /**

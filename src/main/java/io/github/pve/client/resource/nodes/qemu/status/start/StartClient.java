@@ -21,7 +21,7 @@ public class StartClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/status/start".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/status/start".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

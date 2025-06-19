@@ -19,7 +19,7 @@ public class TermproxyClient {
     public TermproxyClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/termproxy".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/termproxy".replace("{node}", node);
     }
 
     /**

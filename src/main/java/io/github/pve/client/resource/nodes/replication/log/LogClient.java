@@ -24,7 +24,7 @@ public class LogClient {
         this.executor = executor;
         this.node = node;
         this.id = id;
-        this.basePath = "/nodes/{node}/replication/{id}/log".replace("{" + "node" + "}", node).replace("{" + "id" + "}", id);
+        this.basePath = "/nodes/{node}/replication/{id}/log".replace("{node}", node).replace("{id}", id);
     }
 
     /**

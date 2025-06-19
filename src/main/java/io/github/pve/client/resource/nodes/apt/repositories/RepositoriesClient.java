@@ -21,7 +21,7 @@ public class RepositoriesClient {
     public RepositoriesClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/apt/repositories".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/apt/repositories".replace("{node}", node);
     }
 
     /**

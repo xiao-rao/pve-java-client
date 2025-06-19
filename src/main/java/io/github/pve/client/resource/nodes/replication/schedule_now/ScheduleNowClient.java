@@ -19,7 +19,7 @@ public class ScheduleNowClient {
         this.executor = executor;
         this.node = node;
         this.id = id;
-        this.basePath = "/nodes/{node}/replication/{id}/schedule_now".replace("{" + "node" + "}", node).replace("{" + "id" + "}", id);
+        this.basePath = "/nodes/{node}/replication/{id}/schedule_now".replace("{node}", node).replace("{id}", id);
     }
 
     /**

@@ -19,7 +19,7 @@ public class ValueClient {
     public ValueClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/cfg/value".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/cfg/value".replace("{node}", node);
     }
 
     /**

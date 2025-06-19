@@ -21,7 +21,7 @@ public class FirewallClient {
     public FirewallClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/firewall".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/firewall".replace("{node}", node);
     }
 
     /**

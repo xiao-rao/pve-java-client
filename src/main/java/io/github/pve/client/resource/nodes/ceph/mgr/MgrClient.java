@@ -20,7 +20,7 @@ public class MgrClient {
     public MgrClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/ceph/mgr".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/ceph/mgr".replace("{node}", node);
     }
 
     /**

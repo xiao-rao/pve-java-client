@@ -19,7 +19,7 @@ public class ExtractconfigClient {
     public ExtractconfigClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/vzdump/extractconfig".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/vzdump/extractconfig".replace("{node}", node);
     }
 
     /**

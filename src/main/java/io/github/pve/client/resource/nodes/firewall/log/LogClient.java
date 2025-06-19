@@ -22,7 +22,7 @@ public class LogClient {
     public LogClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/firewall/log".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/firewall/log".replace("{node}", node);
     }
 
     /**

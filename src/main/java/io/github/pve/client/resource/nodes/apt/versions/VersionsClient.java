@@ -18,7 +18,7 @@ public class VersionsClient {
     public VersionsClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/apt/versions".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/apt/versions".replace("{node}", node);
     }
 
     /**

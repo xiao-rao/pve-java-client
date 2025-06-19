@@ -23,7 +23,7 @@ public class RollbackClient {
         this.node = node;
         this.vmId = vmId;
         this.snapname = snapname;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/snapshot/{snapname}/rollback".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId).replace("{" + "snapname" + "}", snapname);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/snapshot/{snapname}/rollback".replace("{node}", node).replace("{vmid}", vmId).replace("{snapname}", snapname);
     }
 
     /**

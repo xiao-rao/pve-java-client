@@ -21,7 +21,7 @@ public class CurrentClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/lxc/{vmid}/status/current".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/lxc/{vmid}/status/current".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**

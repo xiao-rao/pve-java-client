@@ -20,7 +20,7 @@ public class CpuClient {
     public CpuClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/capabilities/qemu/cpu".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/capabilities/qemu/cpu".replace("{node}", node);
     }
 
     /**

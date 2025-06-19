@@ -20,7 +20,7 @@ public class MachinesClient {
     public MachinesClient(ProxmoxApiExecutor executor, String node) {
         this.executor = executor;
         this.node = node;
-        this.basePath = "/nodes/{node}/capabilities/qemu/machines".replace("{" + "node" + "}", node);
+        this.basePath = "/nodes/{node}/capabilities/qemu/machines".replace("{node}", node);
     }
 
     /**

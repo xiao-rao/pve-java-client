@@ -20,7 +20,7 @@ public class SuspendDiskClient {
         this.executor = executor;
         this.node = node;
         this.vmId = vmId;
-        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/suspend-disk".replace("{" + "node" + "}", node).replace("{" + "vmid" + "}", vmId);
+        this.basePath = "/nodes/{node}/qemu/{vmid}/agent/suspend-disk".replace("{node}", node).replace("{vmid}", vmId);
     }
 
     /**
